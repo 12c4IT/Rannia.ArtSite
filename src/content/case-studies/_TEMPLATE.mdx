@@ -2,8 +2,11 @@
 # ═══════════════════════════════════════════════════════════════════════════
 # CASE STUDY TEMPLATE
 #
-# Copy this file to a new slug-named file in src/content/case-studies/
-# e.g. src/content/case-studies/bourgeois-louise.mdx
+# Copy this file into a new slug-named FOLDER in src/content/case-studies/ as
+# index.mdx, with the artwork images co-located alongside it:
+#   src/content/case-studies/bourgeois-louise/index.mdx
+#   src/content/case-studies/bourgeois-louise/images/maman.jpg
+#   src/content/case-studies/bourgeois-louise/images/destruction-of-the-father.jpg
 #
 # This template contains NO real content. Every value below is a placeholder.
 # Replace every placeholder with content drawn from cited sources.
@@ -44,7 +47,7 @@ artworks:
     dimensions: "[e.g. 326 × 757 × 706 cm]"
     collection: "[Collection / location]"
     image:
-      src: "../../public/images/[artist-slug]/[artwork-slug]-med.webp"
+      src: "./images/[artwork-slug].jpg"   # co-located; astro:assets optimises at build
       alt: "[Full descriptive alt: artist, title, year, medium]"
       caption: "[Artist], '[Title]' (Year). Medium. Dimensions. Collection. Photo: [credit]."
       artist: "[Artist name]"
@@ -78,7 +81,7 @@ artworks:
     dimensions: ""
     collection: ""
     image:
-      src: ""
+      src: "./images/[artwork-slug-2].jpg"
       alt: ""
       caption: ""
       artist: ""
@@ -145,9 +148,9 @@ contentWarnings: []          # e.g. ['nudity', 'culturally-sensitive']
 
 ---
 
-import ArtworkBlock from '../../components/case-study/ArtworkBlock.astro';
-import ConceptualFrameworkSummary from '../../components/case-study/ConceptualFrameworkSummary.astro';
-import SourceCite from '../../components/ui/SourceCite.astro';
+import ArtworkBlock from '../../../components/case-study/ArtworkBlock.astro';
+import ConceptualFrameworkSummary from '../../../components/case-study/ConceptualFrameworkSummary.astro';
+import SourceCite from '../../../components/ui/SourceCite.astro';
 
 # Artist Practice
 
