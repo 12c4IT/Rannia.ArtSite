@@ -1,0 +1,36 @@
+---
+const builtAt = new Date().toLocaleDateString('en-AU', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="disclosure">
+      Content on this site is researched and authored by Joe with editorial assistance from AI
+      tooling. Every claim is verified against the cited sources before publication.
+    </p>
+    <div class="meta">
+      <a href="/contact">Report a rights concern · contact</a>
+      <span>Last built {builtAt}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { border-top: 1px solid var(--rule); background: var(--paper-2); }
+  .inner {
+    max-width: 1180px; margin: 0 auto; padding: clamp(36px, 5vw, 56px) clamp(16px, 4vw, 28px);
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .disclosure { margin: 0; max-width: 72ch; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: baseline;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .meta a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 1px; }
+  .meta a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+</style>

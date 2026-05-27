@@ -8,7 +8,8 @@
 // This file is the canonical schema. Run `npx astro sync` after any change to
 // regenerate types.
 
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro:schema';
 import { glob } from 'astro/loaders';
 import type { SchemaContext } from 'astro:content';
 

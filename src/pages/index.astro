@@ -1,17 +1,89 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 
+const frames = [
+  { slug: 'subjective', label: 'Subjective' },
+  { slug: 'cultural', label: 'Cultural' },
+  { slug: 'structural', label: 'Structural' },
+  { slug: 'postmodern', label: 'Postmodern' },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Visual Arts — study resource">
+  <section class="hero">
+    <p class="eyebrow">Stage 6 · Preliminary &amp; HSC</p>
+    <h1>Study art the way an <em>examiner</em> reads it.</h1>
+    <p class="lede">
+      Verified case studies analysed through the frames and the conceptual framework, with real past
+      HSC questions and lesson scaffolds.
+    </p>
+
+    {/*
+      TODO(Task 5): REMOVE this shell-disclosure note before production.
+      index.astro is a temporary design-system shell; Task 5 replaces it with the
+      real home page. See tasks/v1-build-tasks.md → Task 5.
+    */}
+    <p class="shell-note">Design-system shell preview — the home page proper is built in Task 5.</p>
+
+    <div class="frames" aria-label="The four frames">
+      {frames.map((f) => (
+        <span class="badge" data-frame={f.slug}><i></i>{f.label}</span>
+      ))}
+    </div>
+
+    <p class="body">
+      The site is built around the three stable pillars of the NSW Visual Arts syllabus — the
+      conceptual framework, the frames, and practice. Every case study pairs two artworks with deep
+      formal and contextual analysis, cites its sources, and clears the rights on every image before
+      it is published.
+    </p>
+
+    <div class="actions">
+      <a class="btn" href="/case-studies">Browse case studies</a>
+      <a class="link" href="/frames">Start with the frames →</a>
+    </div>
+  </section>
+
+  <style>
+    .hero { max-width: 760px; margin: 0 auto; padding: clamp(48px, 8vw, 104px) clamp(20px, 4vw, 28px); }
+    .eyebrow {
+      font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin: 0 0 22px;
+    }
+    h1 { font-size: var(--text-display); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 24px; font-weight: 360; }
+    h1 em { font-style: italic; color: var(--accent); font-weight: 340; }
+    .lede {
+      font-family: var(--font-display); font-weight: 360; font-size: var(--text-lede);
+      line-height: 1.4; color: var(--ink); margin: 0 0 16px; max-width: 52ch;
+    }
+    .shell-note {
+      font-family: var(--font-mono); font-size: var(--text-small); letter-spacing: 0.02em;
+      color: var(--ink-2); margin: 0 0 36px; padding: 8px 0 8px 12px; border-left: 2px solid var(--rule);
+    }
+    .frames { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 40px; }
+    .badge {
+      --tone: var(--ink-2);
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; line-height: 1;
+      padding: 6px 11px; border: 1px solid var(--tone); color: var(--tone); border-radius: 999px;
+    }
+    .badge i { width: 6px; height: 6px; border-radius: 50%; background: var(--tone); }
+    .badge[data-frame='subjective'] { --tone: var(--f-subj); }
+    .badge[data-frame='cultural'] { --tone: var(--f-cult); }
+    .badge[data-frame='structural'] { --tone: var(--f-struct); }
+    .badge[data-frame='postmodern'] { --tone: var(--f-post); }
+    .body { font-size: var(--text-body); line-height: 1.62; color: var(--ink); max-width: 60ch; margin: 0 0 36px; }
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+    .btn {
+      font-family: var(--font-sans); font-size: 13.5px; font-weight: 500;
+      background: var(--accent); color: var(--on-accent); border-radius: var(--radius-card);
+      padding: 12px 22px; text-decoration: none; transition: background 140ms ease, transform 140ms ease;
+    }
+    .btn:hover { background: color-mix(in oklab, var(--accent), var(--ink) 22%); transform: translateY(-1px); }
+    .link {
+      font-family: var(--font-sans); font-size: 13.5px; font-weight: 500; color: var(--accent);
+      text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 55%); padding-bottom: 1px;
+    }
+    .link:hover { color: var(--ink); border-bottom-color: var(--ink); }
+  </style>
+</BaseLayout>

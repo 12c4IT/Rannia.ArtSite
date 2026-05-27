@@ -34,17 +34,16 @@ Before starting **any** task: read `CLAUDE.md`, `PLAN.md`, and `CONTENT_GUIDELIN
 
 ## Task 3 — Design system foundation
 
-- [ ] Pick fonts per the `frontend-design` skill. Distinctive serif display + refined sans body. **Not Inter, not Roboto, not system-ui.** Suggestions: Fraunces / Source Serif Pro for display; Söhne / IBM Plex Sans / Inter Tight (no, not Inter family) — choose one and commit.
-- [ ] Self-host fonts in `public/fonts/` using subsetted woff2 files. Add `@font-face` declarations in `src/styles/global.css`.
-- [ ] Define CSS custom properties for the design tokens:
-  - Colour: `--ink`, `--paper`, `--accent`, `--frame-subjective`, `--frame-cultural`, `--frame-structural`, `--frame-postmodern`, etc.
-  - Type scale: fluid `clamp()`-based.
-  - Spacing scale.
-  - Radii, shadows.
-- [ ] Add a dark mode via `prefers-color-scheme` and a manual toggle persisted in `localStorage`.
-- [ ] Build a `<BaseLayout>` Astro component: `<head>`, header, footer, slot. Include semantic landmarks, skip link, theme toggle.
-- [ ] Build header: logo wordmark, primary nav (Case Studies, Frames, Questions, Lessons, Glossary), search input.
-- [ ] Build footer: AI disclosure, takedown contact link, last-built timestamp.
+- [x] Pick fonts: **Newsreader** (display) + **Hanken Grotesk** (body) + **IBM Plex Mono** (labels). Joe-approved.
+- [x] Self-host fonts in `public/fonts/` (subsetted woff2, latin + latin-ext, OFL-1.1 attributed). `@font-face` in `src/styles/global.css`.
+- [x] Design tokens as CSS custom properties + Tailwind 4 `@theme`:
+  - Colour: Palette A "Gallery" — `--paper`, `--ink`, `--accent`, four `--f-*` frame tones (light + dark).
+  - Type scale: fluid `clamp()` headings, fixed 17px body.
+  - Spacing: 4px grid (Tailwind default). Radius 2px; hairline rules over shadows.
+- [x] Dark mode via `prefers-color-scheme` + manual toggle persisted in `localStorage` (no-FOUC inline script).
+- [x] `<BaseLayout>` Astro component: `<head>`, header, footer, slot, skip link, landmarks.
+- [x] Header: wordmark ("Visual Arts" placeholder), nav (no-JS disclosure on mobile / inline desktop), search placeholder, theme toggle, 1px `--rule` bottom rule.
+- [x] Footer: AI disclosure, takedown contact link, last-built timestamp.
 - [ ] Commit: `feat: design system foundation`.
 
 ## Task 4 — Design comp pass
@@ -77,6 +76,7 @@ Each comp must:
 ## Task 5 — Build the explainer pages
 
 - [ ] Build `src/pages/index.astro` — home. Hero, intro, four-frame cards, featured case study slot (placeholder until content exists).
+- [ ] **REMOVE** the Task 3 shell-disclosure copy from `index.astro` (the `.shell-note` paragraph + its `TODO(Task 5)` comment) when building the real home.
 - [ ] Build `src/pages/conceptual-framework.astro` reading the `pages` collection entry.
 - [ ] Build `src/pages/frames/index.astro` and `src/pages/frames/[frame].astro`.
 - [ ] Build `src/pages/practice.astro`.
