@@ -62,7 +62,7 @@ Content lives in `src/content/`. Each entry has frontmatter (typed by Zod schema
 
 ## Deployment
 
-Azure Static Web Apps. GitHub Actions workflow lives in `.github/workflows/azure-static-web-apps.yml` (Claude Code creates this in task 9).
+Azure Static Web Apps. GitHub Actions workflow lives in `.github/workflows/azure-static-web-apps.yml` (Claude Code creates this in task 10).
 
 ## Licence
 

@@ -14,7 +14,7 @@ Before starting **any** task: read `CLAUDE.md`, `PLAN.md`, and `CONTENT_GUIDELIN
 - [x] `npx astro add sitemap` — sitemap integration.
 - [x] Install dev deps: `pagefind`, `@astrojs/check`, `prettier`, `prettier-plugin-astro`, `prettier-plugin-tailwindcss`.
 - [x] Migrate `schemas/content-config.ts` → `src/content.config.ts`, rewritten for the Content Layer API (`glob()` loaders, `image()` refs). `npx astro sync` clean.
-- [ ] **Delete `schemas/` folder** (superseded by `src/content.config.ts`). _Pending: blocked by the permission classifier; needs Joe's go-ahead._
+- [x] **Deleted `schemas/` folder** (superseded by `src/content.config.ts`). Commit `chore: remove superseded planning schema`.
 - [x] Set `output: 'static'` in `astro.config.mjs`. Configure site URL (placeholder `https://example.com`).
 - [x] Verify `compilerOptions.strict` in `tsconfig.json` (extends `astro/tsconfigs/strict`).
 - [x] Add `npm` scripts: `dev`, `build`, `preview`, `lint`, `format`, `search`, `postbuild`. (+`.prettierrc.mjs` so plugins load.)
@@ -27,7 +27,8 @@ Before starting **any** task: read `CLAUDE.md`, `PLAN.md`, and `CONTENT_GUIDELIN
 - [ ] Move `content/hsc-questions/_TEMPLATE.md` → `src/content/questions/_TEMPLATE.md`.
 - [ ] Move `content/pages/*.md` → `src/content/pages/*.md`.
 - [ ] Delete the now-empty top-level `content/` folder.
-- [ ] Configure the content collection to **exclude files starting with `_`** so templates don't generate routes.
+- [ ] Update the case study `_TEMPLATE.mdx` image paths to the co-located `./images/...` form (folder-per-entry per design decision #3).
+- [ ] Confirm the content collection **excludes files starting with `_`** so templates don't generate routes (handled by the `glob()` pattern `**/[!_]*.{md,mdx}`).
 - [ ] `npx astro sync` — generates the content collection types. Verify no schema errors.
 - [ ] Commit: `feat: add content collections and templates`.
 
@@ -46,7 +47,34 @@ Before starting **any** task: read `CLAUDE.md`, `PLAN.md`, and `CONTENT_GUIDELIN
 - [ ] Build footer: AI disclosure, takedown contact link, last-built timestamp.
 - [ ] Commit: `feat: design system foundation`.
 
-## Task 4 — Build the explainer pages
+## Task 4 — Design comp pass
+
+**Purpose**: lock in the visual design before building Astro components. Iterate cheaply at the HTML stage.
+
+**Gated on Joe.** Joe reviews each comp on phone and desktop. Do **not** proceed to building Astro pages (Task 5 onward) until Joe approves.
+
+**Reference comp**: `docs/sample-preview.html` (the Bourgeois case study detail render) is the canonical aesthetic anchor — editorial / gallery, Fraunces + IBM Plex Sans (or the equivalent distinctive pair committed in Task 3), restrained palette, image-led, considered spacing. Re-read the `frontend-design` skill before starting.
+
+Deliverables — one self-contained HTML file each, written to `docs/comps/`:
+
+- [ ] `docs/comps/home.html`
+- [ ] `docs/comps/case-studies-index.html` — filterable card grid
+- [ ] `docs/comps/frame-detail.html` — use `cultural` as the example frame
+- [ ] `docs/comps/lesson.html` — WALT/WILF block + one `QuestionScaffold`
+- [ ] `docs/comps/question-detail.html` — collapsible scaffold
+- [ ] `docs/comps/glossary.html`
+
+Each comp must:
+
+- Use the design tokens from Task 3 (CSS custom properties, **not** hard-coded values, so changes propagate when we componentise).
+- Match `sample-preview.html`'s typography, palette, density and tone.
+- Render mobile-readable (test at **380px** viewport) and desktop.
+- Use the same image-placeholder pattern as `sample-preview.html` for any artwork imagery.
+- Include realistic placeholder content (**not** Lorem Ipsum) so Joe can judge density and tone.
+
+- [ ] Commit: `docs: design comps`.
+
+## Task 5 — Build the explainer pages
 
 - [ ] Build `src/pages/index.astro` — home. Hero, intro, four-frame cards, featured case study slot (placeholder until content exists).
 - [ ] Build `src/pages/conceptual-framework.astro` reading the `pages` collection entry.
@@ -55,7 +83,7 @@ Before starting **any** task: read `CLAUDE.md`, `PLAN.md`, and `CONTENT_GUIDELIN
 - [ ] Build `src/pages/about.astro`.
 - [ ] Commit: `feat: explainer pages`.
 
-## Task 5 — Case study template
+## Task 6 — Case study template
 
 - [ ] Build component `src/components/case-study/ConceptualFrameworkSummary.astro`.
 - [ ] Build component `src/components/case-study/ArtworkBlock.astro` (image + caption + four-frame tabs/accordion).
@@ -68,7 +96,7 @@ Before starting **any** task: read `CLAUDE.md`, `PLAN.md`, and `CONTENT_GUIDELIN
 - [ ] Build `src/pages/case-studies/[slug].astro` — the flagship template.
 - [ ] Commit: `feat: case study template`.
 
-## Task 6 — Lesson and question templates
+## Task 7 — Lesson and question templates
 
 - [ ] Build component `src/components/lesson/WaltWilf.astro`.
 - [ ] Build component `src/components/lesson/QuestionScaffold.astro`.
@@ -81,28 +109,28 @@ Before starting **any** task: read `CLAUDE.md`, `PLAN.md`, and `CONTENT_GUIDELIN
 - [ ] Build `src/pages/questions/[id].astro`.
 - [ ] Commit: `feat: lesson and question templates`.
 
-## Task 7 — Glossary, references, 404
+## Task 8 — Glossary, references, 404
 
 - [ ] Build `src/pages/glossary.astro` — aggregated alphabetised list from the `glossary` collection.
 - [ ] Build `src/pages/references.astro` — walks every collection's `sources`, dedupes, sorts by author.
 - [ ] Build `src/pages/404.astro` — friendly, with search.
 - [ ] Commit: `feat: glossary and references`.
 
-## Task 8 — Search
+## Task 9 — Search
 
 - [ ] Wire Pagefind into the layout: search input in header opens a modal with live results.
 - [ ] Confirm `npm run build` produces a Pagefind index in `dist/pagefind/`.
 - [ ] Verify search returns case studies, lessons, questions, and glossary entries.
 - [ ] Commit: `feat: pagefind search`.
 
-## Task 9 — Deploy
+## Task 10 — Deploy
 
 - [ ] Create `.github/workflows/azure-static-web-apps.yml` (use the Azure Static Web Apps GitHub action template; Joe will supply the deployment token as a repo secret).
 - [ ] Verify build succeeds with zero published content (the production build should produce explainer pages only and exclude all `draft` entries).
 - [ ] Joe deploys to a staging Static Web App. Verify it serves correctly.
 - [ ] Commit: `chore: deployment workflow`.
 
-## Task 10 — First case study (gated on Joe)
+## Task 11 — First case study (gated on Joe)
 
 **Pause here.** Joe selects one artist from the proposed list (`docs/proposed-case-studies.md`) and supplies starting sources. Then:
 
@@ -114,18 +142,19 @@ Before starting **any** task: read `CLAUDE.md`, `PLAN.md`, and `CONTENT_GUIDELIN
 - [ ] Open a PR. Joe reviews. Iterate.
 - [ ] Merge when Joe sets `status: published` on all three.
 
-## Task 11 — Polish (pre-launch)
+## Task 12 — Polish (pre-launch)
 
 - [ ] Accessibility audit with axe-core or similar. Fix issues. Target WCAG 2.2 AA.
 - [ ] Lighthouse audit on mobile. Target 95+ all four categories.
 - [ ] Print stylesheet for case studies and lessons.
 - [ ] Open Graph image generation per case study at build time.
 - [ ] RSS feed for case studies.
+- [ ] Revisit the `npm audit` moderate advisories from the scaffold.
 - [ ] Commit: `chore: polish for launch`.
 
-## Task 12 — Repeat for remaining seven case studies
+## Task 13 — Repeat for remaining seven case studies
 
-Each follows the Task 10 pattern. One PR per case study.
+Each follows the Task 11 pattern. One PR per case study.
 
 ---
 
