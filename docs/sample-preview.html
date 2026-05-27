@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Louise Bourgeois — HSC Visual Arts (sample case study)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Sans:ital,wght@0,300..600;1,300..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #faf6ef;
+    --paper-tint: #f1ebe0;
+    --ink: #1b1614;
+    --ink-soft: #4a423d;
+    --rule: #d9cfc0;
+    --accent: #8e2f1e;
+    --accent-soft: #c45a3e;
+
+    /* Frame palette — four distinct muted tones */
+    --frame-subjective: #b27a1a;
+    --frame-cultural:   #2c5e62;
+    --frame-structural: #4a6438;
+    --frame-postmodern: #6b3a55;
+
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sans: "IBM Plex Sans", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #14110f;
+      --paper-tint: #1d1916;
+      --ink: #f3ede2;
+      --ink-soft: #b8ada0;
+      --rule: #3a322c;
+      --accent: #e07a5f;
+      --accent-soft: #f4a58b;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.55;
+    font-weight: 350;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--ink); }
+
+  /* ─── Layout ─── */
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+  .narrow { max-width: 720px; margin: 0 auto; padding: 0 28px; }
+  section { padding: clamp(40px, 6vw, 88px) 0; }
+  .rule { height: 1px; background: var(--rule); border: 0; margin: 0; }
+
+  /* ─── Sample banner ─── */
+  .sample-banner {
+    background: var(--accent);
+    color: var(--paper);
+    padding: 14px 28px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .sample-banner strong { font-weight: 500; }
+
+  /* ─── Site header ─── */
+  .site-header {
+    border-bottom: 1px solid var(--rule);
+    padding: 18px 0;
+  }
+  .site-header .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .wordmark {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .wordmark em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  nav.primary {
+    display: none;
+    gap: 28px;
+    font-size: 14px;
+  }
+  @media (min-width: 760px) { nav.primary { display: flex; } }
+  nav.primary a { color: var(--ink-soft); text-decoration: none; }
+  nav.primary a:hover { color: var(--accent); }
+
+  /* ─── Hero ─── */
+  .hero {
+    padding: clamp(48px, 8vw, 120px) 0 clamp(32px, 4vw, 56px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 24px;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 350;
+    font-size: clamp(40px, 7vw, 84px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+    font-variation-settings: "opsz" 144;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 300;
+  }
+  .lifespan {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink-soft);
+    margin: 0 0 32px;
+    font-weight: 300;
+  }
+  .pitch {
+    font-family: var(--serif);
+    font-weight: 350;
+    font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 1.4;
+    max-width: 760px;
+    margin: 0 0 36px;
+    color: var(--ink);
+  }
+
+  /* ─── Badges ─── */
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 400;
+    line-height: 1;
+    border: 1px solid currentColor;
+  }
+  .badge.primary { background: currentColor; }
+  .badge.primary span { color: var(--paper); }
+  .badge-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .badge[data-frame="subjective"] { color: var(--frame-subjective); }
+  .badge[data-frame="cultural"]   { color: var(--frame-cultural); }
+  .badge[data-frame="structural"] { color: var(--frame-structural); }
+  .badge[data-frame="postmodern"] { color: var(--frame-postmodern); }
+
+  /* ─── At-a-glance bar ─── */
+  .glance {
+    background: var(--paper-tint);
+    border-bottom: 1px solid var(--rule);
+    padding: 22px 0;
+    font-size: 14px;
+  }
+  .glance .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 48px;
+    align-items: baseline;
+  }
+  .glance dt {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 6px;
+  }
+  .glance dd { margin: 0; color: var(--ink); font-weight: 400; }
+  .glance .item { min-width: 0; }
+
+  /* ─── Section headings ─── */
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 18px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 350;
+    font-size: clamp(32px, 4.5vw, 48px);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    margin: 0 0 36px;
+    font-variation-settings: "opsz" 144;
+  }
+  h2 em { font-style: italic; color: var(--accent); font-weight: 300; }
+  h3 {
+    font-family: var(--serif);
+    font-weight: 450;
+    font-size: 24px;
+    margin: 36px 0 12px;
+    letter-spacing: -0.005em;
+  }
+  p { margin: 0 0 18px; }
+  .body-prose { color: var(--ink); }
+  .body-prose p:first-of-type::first-letter {
+    /* nothing — restraint */
+  }
+  .body-prose p { max-width: 68ch; }
+
+  /* ─── Conceptual framework grid ─── */
+  .cf-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  @media (min-width: 640px) { .cf-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .cf-grid { grid-template-columns: repeat(4, 1fr); } }
+  .cf-cell {
+    background: var(--paper);
+    padding: 28px 26px 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  .cf-cell .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 12px;
+  }
+  .cf-cell h4 {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 350;
+    margin: 0 0 16px;
+    letter-spacing: -0.01em;
+  }
+  .cf-cell p {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+  }
+
+  /* ─── Artwork block ─── */
+  .artwork {
+    margin: clamp(40px, 6vw, 80px) 0;
+  }
+  .artwork-image {
+    position: relative;
+    background: var(--paper-tint);
+    border: 1px solid var(--rule);
+    aspect-ratio: 3 / 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .artwork-image .placeholder-mark {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(135deg, transparent 0 49%, var(--rule) 49% 51%, transparent 51% 100%);
+    background-size: 22px 22px;
+    opacity: 0.25;
+  }
+  .artwork-image .placeholder-note {
+    position: relative;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: var(--paper);
+    padding: 10px 16px;
+    border: 1px solid var(--rule);
+    max-width: 360px;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .artwork-caption {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 720px;
+    margin: 0 0 32px;
+    padding-left: 16px;
+    border-left: 2px solid var(--rule);
+  }
+  .artwork-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px 32px;
+    font-size: 13.5px;
+    margin: 0 0 36px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--rule);
+  }
+  @media (min-width: 640px) { .artwork-meta { grid-template-columns: repeat(3, 1fr); } }
+  .artwork-meta dt {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 4px;
+  }
+  .artwork-meta dd { margin: 0; color: var(--ink); }
+
+  /* ─── Frame tabs ─── */
+  .frames {
+    border: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .tab-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--rule);
+  }
+  .tab-bar button {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    padding: 18px 14px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .tab-bar button:hover { color: var(--ink); }
+  .tab-bar button[aria-selected="true"] {
+    color: var(--ink);
+    background: var(--paper-tint);
+  }
+  .tab-bar button[aria-selected="true"][data-frame="subjective"] { border-bottom-color: var(--frame-subjective); }
+  .tab-bar button[aria-selected="true"][data-frame="cultural"]   { border-bottom-color: var(--frame-cultural); }
+  .tab-bar button[aria-selected="true"][data-frame="structural"] { border-bottom-color: var(--frame-structural); }
+  .tab-bar button[aria-selected="true"][data-frame="postmodern"] { border-bottom-color: var(--frame-postmodern); }
+
+  .tab-panel {
+    display: none;
+    padding: 32px clamp(24px, 4vw, 48px) 40px;
+  }
+  .tab-panel[aria-hidden="false"] { display: block; }
+  .tab-panel p {
+    max-width: 64ch;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .tab-panel p + p { margin-top: 14px; }
+
+  /* ─── Citations ─── */
+  .cite {
+    color: var(--accent);
+    font-size: 0.78em;
+    vertical-align: super;
+    text-decoration: none;
+    font-family: var(--mono);
+    padding: 0 1px;
+  }
+  .cite::before { content: "["; }
+  .cite::after { content: "]"; }
+
+  /* ─── Linked questions ─── */
+  .q-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 720px) { .q-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .q-grid { grid-template-columns: repeat(3, 1fr); } }
+  .q-card {
+    border: 1px solid var(--rule);
+    padding: 22px 22px 24px;
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color 120ms ease, transform 120ms ease;
+  }
+  .q-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .q-card .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .q-card .marks {
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .q-card .text {
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.45;
+    color: var(--ink);
+    font-weight: 350;
+  }
+  .q-card .cta {
+    margin-top: auto;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* ─── References ─── */
+  .refs {
+    background: var(--paper-tint);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 56px 0;
+  }
+  .refs ol {
+    counter-reset: ref;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    columns: 1;
+    column-gap: 48px;
+  }
+  @media (min-width: 880px) { .refs ol { columns: 2; } }
+  .refs li {
+    counter-increment: ref;
+    break-inside: avoid;
+    padding: 12px 0 12px 32px;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--rule);
+  }
+  .refs li::before {
+    content: counter(ref, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+  }
+  .refs li strong { color: var(--ink); font-weight: 500; }
+  .refs .verify {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid currentColor;
+    padding: 1px 6px;
+    margin-left: 6px;
+    border-radius: 2px;
+  }
+
+  /* ─── Foot ─── */
+  .last-reviewed {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--ink-soft);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    align-items: baseline;
+  }
+  .last-reviewed strong { color: var(--ink); font-weight: 500; }
+
+  footer.site-foot {
+    padding: 56px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  footer.site-foot p { margin: 0 0 8px; }
+
+  /* ─── Small utility ─── */
+  .pull {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 350;
+    font-size: clamp(22px, 2.6vw, 28px);
+    line-height: 1.35;
+    color: var(--ink);
+    border-left: 3px solid var(--accent);
+    padding: 6px 0 6px 24px;
+    margin: 36px 0;
+    max-width: 660px;
+  }
+
+  /* Focus */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="sample-banner">
+  <strong>Sample case study</strong> — structural demonstration only. Every source is marked
+  <span style="border:1px solid currentColor;padding:1px 5px;margin:0 3px;font-size:0.85em;border-radius:2px;">verify</span>
+  pending Joe's confirmation against original materials. Not for publication.
+</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="#">HSC <em>Visual&nbsp;Arts</em></a>
+    <nav class="primary" aria-label="Primary">
+      <a href="#">Case Studies</a>
+      <a href="#">Frames</a>
+      <a href="#">Questions</a>
+      <a href="#">Lessons</a>
+      <a href="#">Glossary</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ─────────────────────────── HERO ─────────────────────────── -->
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Case study · Subjective frame</p>
+    <h1>Louise <em>Bourgeois</em></h1>
+    <p class="lifespan">French-American · 1911–2010</p>
+    <p class="pitch">
+      Across a seventy-year practice, Bourgeois turned private trauma — her mother's death, her father's betrayal — into monumental public form, refusing the modernist separation of life and work.
+    </p>
+    <div class="badge-row" aria-label="Frames and content areas">
+      <span class="badge primary" data-frame="subjective"><span>Subjective</span></span>
+      <span class="badge" data-frame="cultural"><span class="badge-dot"></span> Cultural</span>
+      <span class="badge" data-frame="structural"><span class="badge-dot"></span> Structural</span>
+      <span class="badge" data-frame="postmodern"><span class="badge-dot"></span> Postmodern</span>
+      <span class="badge" style="color:var(--ink-soft)">The body</span>
+      <span class="badge" style="color:var(--ink-soft)">Memory</span>
+      <span class="badge" style="color:var(--ink-soft)">Identity</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────── AT-A-GLANCE ─────────────────────────── -->
+<div class="glance">
+  <dl class="wrap">
+    <div class="item"><dt>Born</dt><dd>Paris, 1911</dd></div>
+    <div class="item"><dt>Died</dt><dd>New York, 2010</dd></div>
+    <div class="item"><dt>Practice</dt><dd>Artmaking</dd></div>
+    <div class="item"><dt>Linked questions</dt><dd>3 past HSC questions</dd></div>
+    <div class="item"><dt>Linked lessons</dt><dd>1 lesson</dd></div>
+    <div class="item"><dt>Content warning</dt><dd>References to family trauma</dd></div>
+  </dl>
+</div>
+
+<!-- ─────────────────────────── CF SUMMARY ─────────────────────────── -->
+<section>
+  <div class="wrap">
+    <p class="section-eyebrow">01 — Conceptual Framework</p>
+    <h2>The four <em>agencies</em>, summarised</h2>
+    <div class="cf-grid">
+      <div class="cf-cell">
+        <p class="label">Artist</p>
+        <h4>Bourgeois</h4>
+        <p>Born Paris 1911; trained in mathematics at the Sorbonne before turning to art under Léger and others. Her family ran a tapestry restoration workshop — an environment of skilled hand-labour that recurs across her work.</p>
+        <p>Two formative events shape the practice: her mother's death in 1932, and the long, openly conducted affair her father carried on with the family's live-in English tutor through Louise's childhood.</p>
+      </div>
+      <div class="cf-cell">
+        <p class="label">Artwork</p>
+        <h4>Seven decades, one lexicon</h4>
+        <p>Sculpture, installation, drawing, fabric, print and writing across seventy years. A recurring vocabulary — the spider, the spiral, the cell, the fragmented body — operates as a personal iconography learned across works.</p>
+        <p>Materials are pointedly chosen: bronze, marble and steel for the public sculptures; latex, plaster, fabric and found objects for the more intimate work.</p>
+      </div>
+      <div class="cf-cell">
+        <p class="label">World</p>
+        <h4>The whole twentieth century</h4>
+        <p>Two world wars; the rise and fall of European modernism; displacement to the United States in 1938; the post-war New York art world's successive dominant modes; second-wave feminism; the late-century institutional re-evaluation of women artists.</p>
+        <p>Bourgeois aligned with none of the dominant movements. Her work proceeds as if from one side.</p>
+      </div>
+      <div class="cf-cell">
+        <p class="label">Audience</p>
+        <h4>An audience that finally arrived</h4>
+        <p>Four decades of relative obscurity. Her 1982 MoMA retrospective — the institution's first for a woman — marked the turning point. The 1990s and 2000s saw her become one of the most exhibited living artists in the world.</p>
+        <p><em>Maman</em>'s installation at the opening of Tate Modern's Turbine Hall in 2000 is the marker of this shift.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ─────────────────────────── ARTIST PRACTICE ─────────────────────────── -->
+<section>
+  <div class="narrow">
+    <p class="section-eyebrow">02 — Artist Practice</p>
+    <h2>A small <em>territory</em>, repeatedly worked</h2>
+    <div class="body-prose">
+      <p>Bourgeois's practice is a sustained inquiry into a small number of psychological territories — the maternal, the paternal, the body, the home, memory — pursued across seven decades and at every available scale, from the page-sized drawing to the building-sized sculpture. The territories do not change. The forms do.</p>
+
+      <h3>Materials as language</h3>
+      <p>Bourgeois worked with whatever the work required: marble carved by hand or by assistants in Italy; bronze cast in New York foundries; latex poured in her Brooklyn studio; fabric stitched from her own discarded clothing in the final two decades of her life. She rejected the modernist hierarchy of materials — the sense that bronze is serious and fabric is decorative — and instead let each material carry the psychological content it could carry best<a class="cite" href="#ref-morris" title="Morris (ed.), 2007">verify</a>. Latex sags and pools like flesh. Marble cradles like a held thing. Steel makes the impossible structure possible. The choice is the content.</p>
+
+      <h3>Recurring forms</h3>
+      <p>Across the practice, a small lexicon of forms returns: the spider (maternal, weaving, protective, threatening); the spiral (compulsion, return, the impossibility of moving on); the cell (containment, the interior of a self or a family); the fragmented body (the limb, the breast, the figure missing a head). These are not symbols in a one-to-one code. They are sites at which Bourgeois worked her territory, repeatedly, the same questions asked of different forms.</p>
+
+      <h3>The late practice</h3>
+      <p>In the final two decades — roughly 1990 to 2010 — Bourgeois worked at the largest scale of her career, producing the <em>Cell</em> installations, the <em>Maman</em> / <em>Spider</em> series, and a body of late fabric work made from clothing. The late work is often read as a summing-up. It is more accurate to say it is the moment when her audience and her resources finally permitted the scale she had been working toward all along.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ─────────────────────────── ARTWORK 1 ─────────────────────────── -->
+<section>
+  <div class="wrap">
+    <p class="section-eyebrow">03 — Artwork one</p>
+    <h2><em>Maman</em>, 1999</h2>
+
+    <article class="artwork">
+      <div class="artwork-image" role="img" aria-label="Image placeholder — Maman to be inserted after rights clearance">
+        <div class="placeholder-mark" aria-hidden="true"></div>
+        <p class="placeholder-note">Image placeholder<br />Louise Bourgeois, <em>Maman</em>, 1999<br />To be inserted with rights clearance</p>
+      </div>
+      <p class="artwork-caption">Louise Bourgeois, <em>Maman</em> (1999). Bronze, marble and stainless steel, approx. 927 × 891 × 1023 cm. Editions held by Tate (London), National Gallery of Canada (Ottawa), Mori Art Museum (Tokyo) and others.</p>
+
+      <dl class="artwork-meta">
+        <div><dt>Medium</dt><dd>Bronze, marble, stainless steel</dd></div>
+        <div><dt>Dimensions</dt><dd>≈ 927 × 891 × 1023 cm</dd></div>
+        <div><dt>Collections</dt><dd>Tate, NGC, Mori Art Museum, others</dd></div>
+      </dl>
+
+      <div class="frames">
+        <div class="tab-bar" role="tablist">
+          <button role="tab" data-frame="subjective" aria-selected="true"  aria-controls="m-subj">Subjective</button>
+          <button role="tab" data-frame="cultural"   aria-selected="false" aria-controls="m-cult">Cultural</button>
+          <button role="tab" data-frame="structural" aria-selected="false" aria-controls="m-stru">Structural</button>
+          <button role="tab" data-frame="postmodern" aria-selected="false" aria-controls="m-post">Postmodern</button>
+        </div>
+
+        <div id="m-subj" class="tab-panel" role="tabpanel" aria-hidden="false">
+          <p>Bourgeois made the <em>Maman</em> sculptures explicit acts of mourning and tribute. In a written statement issued with the work she described the spider as "an ode to my mother. She was my best friend. Like a spider, my mother was a weaver" — drawing the analogy from her family's tapestry restoration workshop in Choisy-le-Roi, where she had assisted from childhood<a class="cite" href="#ref-statement">verify</a>.</p>
+          <p>The subjective reading turns on this transposition of grief into form. The spider is at once protective — the marble sac of eggs cradled beneath her abdomen — and threatening, her thin steel legs creating an enclosure the viewer cannot avoid walking under. Bourgeois has been candid across decades of interviews that her practice is autobiographical and reparative: a way of returning to her mother's death in 1932, when Louise was twenty-one, and to the unresolved grief that followed<a class="cite" href="#ref-destruction">verify</a>.</p>
+          <p>The work refuses the modernist convention that a sculpture's meaning is given by its formal properties alone. It asks to be read alongside her biography.</p>
+        </div>
+
+        <div id="m-cult" class="tab-panel" role="tabpanel" aria-hidden="true">
+          <p><em>Maman</em> arrived at a particular moment in late-twentieth-century art. The 1990s saw a critical re-evaluation of women artists Bourgeois's age who had worked outside the modernist canon for decades — Agnes Martin, Eva Hesse, Lee Bontecou — and Bourgeois became the most visible beneficiary. Her 1982 MoMA retrospective, the institution's first for a woman, marked the inflection point<a class="cite" href="#ref-moma">verify</a>.</p>
+          <p>Read culturally, the spider is also a refusal of the post-war American sculptural orthodoxies — the minimalist grid, the male artist as cool fabricator — that had dominated the institutions while she made her work privately for half a century. <em>Maman</em> is unembarrassedly figurative, unembarrassedly emotional, unembarrassedly maternal. It insists that the maternal is a subject worthy of monumental scale.</p>
+          <p>The work has been read through feminist art history as an act of late-career reclamation: of her own practice, and of the categories the post-war canon excluded<a class="cite" href="#ref-nochlin">verify</a>.</p>
+        </div>
+
+        <div id="m-stru" class="tab-panel" role="tabpanel" aria-hidden="true">
+          <p>The structural reading attends to scale, material and engineering. <em>Maman</em> is built at the threshold of architecture rather than object: at approximately 9.3 metres on the longest axis, she is large enough to occupy the viewer's field of vision and to create a space beneath. Bourgeois exploits this scale: the viewer is forced into the position of a small thing under a large protective/predatory creature, and the experience is bodily before it is intellectual.</p>
+          <p>The material vocabulary is precise. The bronze body and legs are visibly cast, with weld seams and patina left legible — Bourgeois rejected the modernist preference for the seamless object. The marble of the egg sac is in tension with the bronze: organic against industrial, soft against hard, cool against warm. The stainless steel of the supporting structure is functional and clinical, the engineering that makes the impossible animal stand.</p>
+          <p>The composition is asymmetric and unstable. Although the spider has eight legs, no two read alike: each is differently angled, differently weighted. The work cannot be circled and resolved.</p>
+        </div>
+
+        <div id="m-post" class="tab-panel" role="tabpanel" aria-hidden="true">
+          <p><em>Maman</em> exists in multiple editions sited at major museums across continents — Tate, National Gallery of Canada, Mori Art Museum, Crystal Bridges, Bilbao. This proliferation is itself postmodern: the work refuses the modernist insistence on the unique object, instead operating as a recurring motif whose meaning shifts with each location and each photographing.</p>
+          <p>The work also resists the modernist purity of medium. <em>Maman</em> is sculpture <em>and</em> installation <em>and</em> site-marker <em>and</em> photograph (the Tate Modern Turbine Hall opening images of 2000 are inseparable from the work's reception). The <em>Spider</em> series spans drawing, fabric, bronze, found-object cells. The motif is not bound to one form.</p>
+          <p>Postmodernism's interest in the artist's biographical entry into the work — Cindy Sherman's masquerade, Tracey Emin's bed — finds an older relative in Bourgeois. She made autobiographical practice respectable inside the institution long before the 1990s caught up.</p>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ─────────────────────────── ARTWORK 2 ─────────────────────────── -->
+<section>
+  <div class="wrap">
+    <p class="section-eyebrow">04 — Artwork two</p>
+    <h2><em>The Destruction of the Father</em>, 1974</h2>
+
+    <article class="artwork">
+      <div class="artwork-image" role="img" aria-label="Image placeholder — The Destruction of the Father">
+        <div class="placeholder-mark" aria-hidden="true"></div>
+        <p class="placeholder-note">Image placeholder<br />Louise Bourgeois, <em>The Destruction of the Father</em>, 1974<br />To be inserted with rights clearance</p>
+      </div>
+      <p class="artwork-caption">Louise Bourgeois, <em>The Destruction of the Father</em> (1974). Latex, plaster, wood, fabric and red light, approx. 238 × 363 × 249 cm. The Easton Foundation.</p>
+
+      <dl class="artwork-meta">
+        <div><dt>Medium</dt><dd>Latex, plaster, wood, fabric, red light</dd></div>
+        <div><dt>Dimensions</dt><dd>≈ 238 × 363 × 249 cm</dd></div>
+        <div><dt>Collection</dt><dd>The Easton Foundation</dd></div>
+      </dl>
+
+      <div class="frames">
+        <div class="tab-bar" role="tablist">
+          <button role="tab" data-frame="subjective" aria-selected="true"  aria-controls="d-subj">Subjective</button>
+          <button role="tab" data-frame="cultural"   aria-selected="false" aria-controls="d-cult">Cultural</button>
+          <button role="tab" data-frame="structural" aria-selected="false" aria-controls="d-stru">Structural</button>
+          <button role="tab" data-frame="postmodern" aria-selected="false" aria-controls="d-post">Postmodern</button>
+        </div>
+
+        <div id="d-subj" class="tab-panel" role="tabpanel" aria-hidden="false">
+          <p><em>The Destruction of the Father</em> is Bourgeois's most explicit confrontation with the patriarchal violence she identified at the centre of her childhood. She has described the work as the staging of a fantasy: the family children dismembering and consuming the domineering father at the dinner table<a class="cite" href="#ref-destruction">verify</a>.</p>
+          <p>Read subjectively, the work is a primal scene made room-sized. The red light, the wet-looking latex forms, the table-as-altar, the cave-like surround — all of it constructs the dream's interior rather than its exterior. The viewer enters the work physically; they are inside the fantasy, not looking at it from outside.</p>
+          <p>The work's title is also its argument. The father is destroyed not in the world but in the work, repeatedly, ritually, by being made into a piece of art that can be entered and circled and looked at by strangers. The catharsis is the making.</p>
+        </div>
+
+        <div id="d-cult" class="tab-panel" role="tabpanel" aria-hidden="true">
+          <p>Made in 1974, <em>The Destruction of the Father</em> arrived alongside second-wave feminism's project of bringing the private — the kitchen, the bedroom, the family — into political view. The dinner table as site of male power was a recognised feminist theme; Judy Chicago's <em>The Dinner Party</em> (1974–79) was in production simultaneously.</p>
+          <p>Bourgeois's contribution was to refuse the celebratory turn of much feminist art of the period in favour of something darker. Her work is not a recovered women's history. It is a staging of patriarchal violence with the daughter as both victim and avenger. Read culturally, it inserts a Freudian-influenced personal mythology into the feminist discourse — the work owes as much to psychoanalysis as to political feminism<a class="cite" href="#ref-morris">verify</a>.</p>
+        </div>
+
+        <div id="d-stru" class="tab-panel" role="tabpanel" aria-hidden="true">
+          <p>The work's materials are central to its meaning. Latex — soft, organic, bodily, capable of sagging and pooling — operates against the architectural plaster and wood of the supporting structure. The red light unifies the field optically and emotionally: every surface is bathed in the same wavelength, collapsing object and ground into a single sensory experience.</p>
+          <p>The composition is theatrical. A central table-form is flanked by symmetrical clusters of bulbous shapes, the arrangement reading equally as a Last Supper and an operating theatre. Scale is deliberately ambiguous: the forms are too large to be food and too small to be people, occupying a dream-logic register where size is psychological rather than literal.</p>
+          <p>The viewer's relationship to the work is also structurally controlled. Bourgeois built it as a walk-in tableau rather than an object to be circled, so the work begins with the architectural decision of an entrance and a directed line of sight.</p>
+        </div>
+
+        <div id="d-post" class="tab-panel" role="tabpanel" aria-hidden="true">
+          <p><em>The Destruction of the Father</em> is a tableau, a sculptural genre with deep pre-modern roots — Christian Stations of the Cross, baroque grottoes, the dioramas of natural history museums. By picking up that genre in 1974, Bourgeois sidesteps modernism's abstract object-art and aligns with a tradition modernism had dismissed.</p>
+          <p>The work is also narrative — it tells a story, asks the viewer to read it, refuses the modernist injunction against literary content in art. This pre-modernist move turns out to be sharply contemporary: by the 1980s, narrative tableaux would be everywhere (Mike Kelley, Jeff Wall, Cindy Sherman's tableaux photographs).</p>
+          <p>Read postmodernly, Bourgeois's refusal to choose between sculpture, theatre and psychoanalytic illustration is the work's defining gesture.</p>
+        </div>
+      </div>
+    </article>
+
+    <blockquote class="pull">
+      "The work refuses the modernist convention that a sculpture's meaning is given by its formal properties alone. It asks to be read alongside her biography."
+    </blockquote>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ─────────────────────────── LINKED QUESTIONS ─────────────────────────── -->
+<section>
+  <div class="wrap">
+    <p class="section-eyebrow">05 — HSC questions on this case study</p>
+    <h2>Try a <em>real</em> past question</h2>
+
+    <div class="q-grid">
+      <a href="#" class="q-card">
+        <div class="top"><span>HSC 2019 · Section II</span><span class="marks">25 marks</span></div>
+        <p class="text">Sample question placeholder — to be transcribed verbatim from the NESA past paper that engages this case study.</p>
+        <span class="cta">View scaffold →</span>
+      </a>
+      <a href="#" class="q-card">
+        <div class="top"><span>HSC 2021 · Section II</span><span class="marks">25 marks</span></div>
+        <p class="text">Sample question placeholder — to be transcribed verbatim from the NESA past paper that engages this case study.</p>
+        <span class="cta">View scaffold →</span>
+      </a>
+      <a href="#" class="q-card">
+        <div class="top"><span>HSC 2017 · Section I</span><span class="marks">8 marks</span></div>
+        <p class="text">Sample short-answer question placeholder — to be transcribed verbatim from the NESA past paper.</p>
+        <span class="cta">View scaffold →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────── REFERENCES ─────────────────────────── -->
+<section class="refs" id="references">
+  <div class="wrap">
+    <p class="section-eyebrow">06 — References &amp; image credits</p>
+    <h2>Sources</h2>
+    <ol>
+      <li id="ref-statement"><strong>Louise Bourgeois</strong>, <em>Statement on the Spider</em>, 1995. Artist statement. <span class="verify">URL verify</span></li>
+      <li id="ref-destruction"><strong>Louise Bourgeois</strong> (ed. Bernadac &amp; Obrist), <em>Destruction of the Father / Reconstruction of the Father: Writings and Interviews, 1923–1997</em>, MIT Press, 1998. <span class="verify">Source verify</span></li>
+      <li id="ref-moma"><strong>The Museum of Modern Art</strong>, "Louise Bourgeois — collection page", undated. <span class="verify">URL verify</span></li>
+      <li id="ref-morris"><strong>Frances Morris (ed.)</strong>, <em>Louise Bourgeois</em>, Tate Publishing, 2007. Catalogue for the 2007–08 Tate Modern retrospective. <span class="verify">Source verify</span></li>
+      <li id="ref-nochlin"><strong>Linda Nochlin</strong>, "Why Have There Been No Great Women Artists?", <em>ARTnews</em>, 1971. <span class="verify">Source verify</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ─────────────────────────── LAST REVIEWED ─────────────────────────── -->
+<div class="wrap">
+  <div class="last-reviewed">
+    <span><strong>Status:</strong> sample (will not appear in production builds)</span>
+    <span><strong>Last reviewed:</strong> 17 May 2026</span>
+    <span><strong>Reviewed by:</strong> pending Joe's verification</span>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p>HSC Visual Arts — student resource (preview)</p>
+    <p style="color:var(--ink-soft);font-size:12px;">Content on this site is researched and authored by Joe with editorial assistance from AI tooling. Every claim is verified against the cited sources before publication.</p>
+  </div>
+</footer>
+
+<script>
+  // Simple tab controller — works for both artwork frame panels.
+  document.querySelectorAll('.frames').forEach(group => {
+    const tabs = group.querySelectorAll('[role="tab"]');
+    const panels = group.querySelectorAll('[role="tabpanel"]');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+        panels.forEach(p => p.setAttribute('aria-hidden', 'true'));
+        tab.setAttribute('aria-selected', 'true');
+        const targetId = tab.getAttribute('aria-controls');
+        document.getElementById(targetId).setAttribute('aria-hidden', 'false');
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

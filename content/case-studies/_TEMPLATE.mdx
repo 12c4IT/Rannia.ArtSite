@@ -1,0 +1,167 @@
+---
+# ═══════════════════════════════════════════════════════════════════════════
+# CASE STUDY TEMPLATE
+#
+# Copy this file to a new slug-named file in src/content/case-studies/
+# e.g. src/content/case-studies/bourgeois-louise.mdx
+#
+# This template contains NO real content. Every value below is a placeholder.
+# Replace every placeholder with content drawn from cited sources.
+# Status MUST stay 'draft' until Joe reviews and changes it.
+#
+# Read CONTENT_GUIDELINES.md before authoring.
+# ═══════════════════════════════════════════════════════════════════════════
+
+title: "[Artist name]: [Short subtitle that hints at the case study's argument]"
+
+artist:
+  name: "[Full name]"
+  nationality: "[e.g. Australian, French-American, Wiradjuri]"
+  birthYear: 0000
+  deathYear: null  # or a year
+  pronouns: ""     # optional
+
+primaryFrame: subjective           # subjective | cultural | structural | postmodern
+secondaryFrames:
+  - cultural
+
+contentAreas:
+  - the-body
+  - identity
+
+practiceType: artmaking
+
+shortPitch: "[1–2 sentences. The pitch you'd give a student in the corridor. Shows up on cards. 40–280 chars.]"
+
+heroImageRef: artwork-1            # 'artwork-1' | 'artwork-2' | 'custom'
+
+# ───────────────────────── Artworks (exactly two) ─────────────────────────
+
+artworks:
+  - title: "[Verbatim artwork title]"
+    year: 0000
+    medium: "[Medium]"
+    dimensions: "[e.g. 326 × 757 × 706 cm]"
+    collection: "[Collection / location]"
+    image:
+      src: "../../public/images/[artist-slug]/[artwork-slug]-med.webp"
+      alt: "[Full descriptive alt: artist, title, year, medium]"
+      caption: "[Artist], '[Title]' (Year). Medium. Dimensions. Collection. Photo: [credit]."
+      artist: "[Artist name]"
+      title: "[Title]"
+      year: 0000
+      medium: "[Medium]"
+      dimensions: "[Dimensions]"
+      collection: "[Collection]"
+      photoCredit: "[Photo credit]"
+      rightsBasis: educational-fair-dealing   # see CONTENT_GUIDELINES.md §4
+      rightsNotes: "[Justify the rights basis]"
+      sourceUrl: "[URL where the image was sourced]"
+    frames:
+      subjective: |
+        [2–4 paragraphs reading the work through the subjective frame.
+         Every interpretive claim that isn't your own must cite a source [^source-id].]
+      cultural: |
+        [2–4 paragraphs.]
+      structural: |
+        [2–4 paragraphs. Formal elements: colour, line, shape, texture,
+         composition, scale, material; how they make meaning.]
+      postmodern: |
+        [2–4 paragraphs. Appropriation, irony, recontextualisation,
+         questioning of originality, blurring of high/low.]
+    notes: |
+      [Optional further commentary not bound to a single frame.]
+
+  - title: "[Second artwork title]"
+    year: 0000
+    medium: ""
+    dimensions: ""
+    collection: ""
+    image:
+      src: ""
+      alt: ""
+      caption: ""
+      artist: ""
+      title: ""
+      year: 0000
+      medium: ""
+      dimensions: ""
+      collection: ""
+      photoCredit: ""
+      rightsBasis: educational-fair-dealing
+      rightsNotes: ""
+      sourceUrl: ""
+    frames:
+      subjective: |
+      cultural: |
+      structural: |
+      postmodern: |
+
+# ──────────────────── Conceptual Framework summary ────────────────────
+
+conceptualFramework:
+  artist: |
+    [2–4 sentences on the artist as agency in this case study.
+     Who they are, what drives their practice, training, context. Cite.]
+  artwork: |
+    [2–4 sentences on the artworks as agencies. Materials, conventions,
+     formal qualities, how the works themselves do work.]
+  world: |
+    [2–4 sentences on the world the works engage with. Time, place, social,
+     political, cultural conditions.]
+  audience: |
+    [2–4 sentences on audience reception. Who the work was made for,
+     who received it, how reception has shifted, controversies.]
+
+# ─────────────────────────── Linked entries ───────────────────────────
+
+linkedQuestionIds:
+  - hsc-YYYY-sX-qN          # ids of question entries in src/content/questions
+
+linkedLessonSlugs:
+  - "[artist-slug]-lesson-01"
+
+# ─────────────────────────── Sources ───────────────────────────
+
+sources:
+  - id: "[short-source-id]"
+    type: gallery-catalogue   # see CONTENT_GUIDELINES.md §2.2
+    title: "[Title]"
+    author: "[Author / institution]"
+    publisher: ""             # optional
+    year: 0000
+    url: ""
+    pages: ""                 # optional, e.g. 'pp. 22–35'
+    accessed: 2026-05-17
+    notes: ""
+
+# ─────────────────────────── Review metadata ───────────────────────────
+
+status: draft                # draft | review | published
+lastReviewed: 2026-05-17
+reviewedBy: "[Reviewer name]"
+
+contentWarnings: []          # e.g. ['nudity', 'culturally-sensitive']
+
+---
+
+import ArtworkBlock from '../../components/case-study/ArtworkBlock.astro';
+import ConceptualFrameworkSummary from '../../components/case-study/ConceptualFrameworkSummary.astro';
+import SourceCite from '../../components/ui/SourceCite.astro';
+
+# Artist Practice
+
+[Long-form Markdown body. Write the artist practice section here — biography,
+process, materials, recurring concerns, career trajectory. Every factual claim
+cites a source with the [^source-id] inline marker syntax. Example:]
+
+[Artist] was born in [place] in [year][^source-id]. Their early practice was
+shaped by [influence], particularly evident in [work] [^another-source].
+
+## Recurring concerns
+
+[Sub-sections welcome here.]
+
+## Materials and process
+
+[How they make their work. Cite specific sources for technical claims.]
