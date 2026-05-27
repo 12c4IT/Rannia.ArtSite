@@ -1,6 +1,6 @@
 # Content Model
 
-Detailed reference for content collection schemas. Authoritative TypeScript definitions live in `schemas/content-config.ts` (and `src/content/config.ts` once Astro is initialised). This document explains the choices.
+Detailed reference for content collection schemas. The authoritative TypeScript definitions live in `src/content.config.ts` (Content Layer API). This document explains the choices.
 
 ## Collections
 

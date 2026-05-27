@@ -8,16 +8,17 @@ Before starting **any** task: read `CLAUDE.md`, `PLAN.md`, and `CONTENT_GUIDELIN
 
 ## Task 1 — Initialise Astro project
 
-- [ ] `npm create astro@latest .` — choose: Empty, TypeScript Strict, install dependencies, **don't** initialise git (this repo already exists).
-- [ ] `npx astro add tailwind` — install Tailwind CSS 4 integration.
-- [ ] `npx astro add mdx` — install MDX integration.
-- [ ] `npx astro add sitemap` — install sitemap integration.
-- [ ] Install dev deps: `pagefind`, `@astrojs/check`, `prettier`, `prettier-plugin-astro`, `prettier-plugin-tailwindcss`.
-- [ ] Move `schemas/content-config.ts` to `src/content/config.ts`. Delete `schemas/` folder (it was for the planning package).
-- [ ] Set `output: 'static'` in `astro.config.mjs`. Configure site URL.
-- [ ] Set `compilerOptions.strict: true` in `tsconfig.json` (Astro template already does this; verify).
-- [ ] Add `npm` scripts: `dev`, `build`, `preview`, `lint`, `format`, `search` (runs Pagefind on `dist/`), and a `postbuild` that runs `search`.
-- [ ] Commit: `feat: initialise astro project`.
+- [x] `npm create astro@latest .` — Empty, TypeScript Strict, install deps, **don't** init git. (Non-empty-dir guard scaffolded into `./spiffy-shell`; hoisted to root.) Installed **Astro 6**.
+- [x] `npx astro add tailwind` — Tailwind CSS 4 (via `@tailwindcss/vite`).
+- [x] `npx astro add mdx` — MDX integration.
+- [x] `npx astro add sitemap` — sitemap integration.
+- [x] Install dev deps: `pagefind`, `@astrojs/check`, `prettier`, `prettier-plugin-astro`, `prettier-plugin-tailwindcss`.
+- [x] Migrate `schemas/content-config.ts` → `src/content.config.ts`, rewritten for the Content Layer API (`glob()` loaders, `image()` refs). `npx astro sync` clean.
+- [ ] **Delete `schemas/` folder** (superseded by `src/content.config.ts`). _Pending: blocked by the permission classifier; needs Joe's go-ahead._
+- [x] Set `output: 'static'` in `astro.config.mjs`. Configure site URL (placeholder `https://example.com`).
+- [x] Verify `compilerOptions.strict` in `tsconfig.json` (extends `astro/tsconfigs/strict`).
+- [x] Add `npm` scripts: `dev`, `build`, `preview`, `lint`, `format`, `search`, `postbuild`. (+`.prettierrc.mjs` so plugins load.)
+- [x] Commit: `feat: initialise astro project` (preceded by `chore: add planning package baseline`).
 
 ## Task 2 — Move planning content into place
 

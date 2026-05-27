@@ -15,7 +15,7 @@ npm run search       # rebuild Pagefind index (runs in postbuild)
 
 ## Project status
 
-🚧 **Pre-build.** This repository currently contains the planning package only. Run Claude Code with the task list in `tasks/v1-build-tasks.md` to scaffold the Astro project.
+🚧 **In build.** The Astro project is scaffolded (Astro 6 + Tailwind 4 + MDX + sitemap, content schema migrated to the Content Layer API). Working through `tasks/v1-build-tasks.md`.
 
 ## What's here
 
@@ -27,7 +27,7 @@ npm run search       # rebuild Pagefind index (runs in postbuild)
 | `ROADMAP.md` | v1 brochure → v2 logins migration path |
 | `docs/` | Detailed design docs (site map, content model, page templates, proposed case studies) |
 | `content/` | Content templates and starter content (will move to `src/content/` once Astro is initialised) |
-| `schemas/content-config.ts` | Zod schemas for content collections (target: `src/content/config.ts`) |
+| `src/content.config.ts` | Zod schemas for content collections — Content Layer API (canonical). Migrated from the planning package's legacy `schemas/content-config.ts`. |
 | `tasks/v1-build-tasks.md` | Ordered task list for Claude Code to follow |
 
 ## Who this is for
@@ -62,7 +62,7 @@ Content lives in `src/content/`. Each entry has frontmatter (typed by Zod schema
 
 ## Deployment
 
-Azure Static Web Apps. GitHub Actions workflow lives in `.github/workflows/azure-static-web-apps.yml` (Claude Code creates this in task 1).
+Azure Static Web Apps. GitHub Actions workflow lives in `.github/workflows/azure-static-web-apps.yml` (Claude Code creates this in task 9).
 
 ## Licence
 

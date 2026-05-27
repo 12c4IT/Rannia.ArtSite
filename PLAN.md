@@ -29,12 +29,12 @@ A student-facing resource site for NSW Stage 6 Visual Arts (Preliminary + HSC), 
 
 | Concern | Choice | Rationale |
 |---|---|---|
-| Framework | **Astro 5** | Content-first, MDX support, fast static output, easy Markdown authoring, component islands when needed |
+| Framework | **Astro 6** | Content-first, MDX support, fast static output, easy Markdown authoring, component islands when needed. Content Layer API (`glob()` loaders) for collections. |
 | Language | TypeScript | Type-safe content schemas via Astro Content Collections |
 | Styling | Tailwind CSS 4 | Utility-first, fast iteration, easy to keep typography editorial |
 | Content | MDX (case studies, lessons) + Markdown (pages, questions) | MDX lets us embed analysis components (frame breakdowns, artwork blocks) inside prose |
 | Search | Pagefind | Fully static, no backend, indexes at build time |
-| Images | `@astrojs/image` / sharp | Auto-optimised, responsive `srcset`, lazy loading |
+| Images | `astro:assets` (built-in, sharp) | Auto-optimised, responsive `srcset`, lazy loading. (`@astrojs/image` was removed; `astro:assets` replaces it.) Case-study images co-locate with each entry and are validated via the schema `image()` helper. |
 | Hosting | **Azure Static Web Apps** | Fits Joe's existing Azure stack; free tier covers this; clean CI/CD from GitHub |
 | Source control | GitHub | Content changes flow through PRs for review |
 | Domain | TBC (suggest a memorable name, e.g. `hscvisualarts.com.au`) | |

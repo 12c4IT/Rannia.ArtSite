@@ -21,10 +21,10 @@ Joe, the author/teacher. He's a senior .NET developer (20 years) — speak techn
 
 ## Tech stack
 
-- **Astro 5** (static site generator). Read the Astro docs if you need to — don't guess at the API.
+- **Astro 6** (static site generator). Read the Astro docs if you need to — don't guess at the API.
 - **TypeScript** strict mode.
 - **Tailwind CSS 4**. Configure via `@import "tailwindcss"` in the global CSS; no `tailwind.config.js` unless plugins are needed.
-- **Astro Content Collections** with Zod schemas defined in `src/content/config.ts`. Schemas are mirrored/derived from `schemas/content-config.ts` in the planning package.
+- **Astro Content Collections** (Content Layer API) with Zod schemas defined in `src/content.config.ts` — the canonical schema. It uses `glob()` loaders (underscore-prefixed files excluded so templates don't route) and the `image()` helper for co-located image refs. Migrated from the planning package's legacy-API `schemas/content-config.ts`, which is now superseded.
 - **MDX** for case studies and lessons. Plain Markdown for static pages and individual questions.
 - **Pagefind** for search (built statically after Astro build).
 - **Deploy target**: Azure Static Web Apps via GitHub Actions.
@@ -39,9 +39,9 @@ When making design choices, commit to them. Don't produce three variants of ever
 
 ```
 src/
+├── content.config.ts              # Zod schemas — Content Layer API (canonical)
 ├── content/
-│   ├── config.ts                  # Zod schemas (from schemas/content-config.ts)
-│   ├── case-studies/              # MDX case study files
+│   ├── case-studies/              # folder-per-entry: <slug>/index.mdx + images/
 │   ├── lessons/                   # MDX lesson files
 │   ├── questions/                 # MD HSC question files (one per question)
 │   ├── glossary/                  # MD glossary entries
@@ -55,14 +55,14 @@ src/
 ├── pages/
 └── styles/
 public/
-├── images/                        # case study images, organised by artist slug
+├── images/                        # global/site images only — case-study images co-locate under src/content/case-studies/<slug>/images/
 └── fonts/                         # self-hosted fonts
 ```
 
 ## Conventions
 
 - **Slugs**: kebab-case, artist surname first for case studies (e.g. `bourgeois-louise`). Lesson slugs: `[case-study-slug]-lesson-NN`.
-- **Image filenames**: `[artwork-slug]-[size].webp` where size is one of `thumb`, `med`, `full`.
+- **Image filenames**: co-locate under the case study's `images/` folder, named by artwork slug (e.g. `maman.jpg`). `astro:assets` generates responsive `srcset`/formats at build — no manual `-thumb/-med/-full` variants.
 - **Commit messages**: conventional commits (`feat:`, `fix:`, `content:`, `docs:`).
 - **PRs**: one case study per PR. Joe reviews and merges.
 - **Branch protection**: `main` is protected; everything goes through a PR.
@@ -102,4 +102,4 @@ Ask. Don't guess. Especially:
 - Don't paraphrase HSC questions. Verbatim only.
 - Don't embed images you haven't sourced and rights-checked.
 - Don't add analytics, fingerprinting, or third-party trackers.
-- Don't break the content schema without updating `schemas/content-config.ts` and `src/content/config.ts` together.
+- Don't break the content schema without running `npx astro sync` to verify; `src/content.config.ts` is the canonical source.
