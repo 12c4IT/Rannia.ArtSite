@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HSC question — Visual Arts (comp)</title>
+<link rel="stylesheet" href="_kit.css" />
+<style>
+  .q-head { padding: clamp(40px, 6vw, 72px) 0 0; }
+  .q-meta { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 18px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+  .q-meta .sep { color: var(--rule); }
+  .q-meta .marks { color: var(--accent); font-weight: 500; }
+  .q-tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 28px; }
+
+  .q-statement { font-family: var(--serif); font-weight: 360; font-size: clamp(1.5rem, 1.1rem + 2vw, 2.25rem); line-height: 1.28; color: var(--ink); border-left: 3px solid var(--accent); padding: 6px 0 6px 24px; max-width: 26ch; margin: 0 0 18px; }
+  .q-source { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.04em; }
+  .q-source a { color: var(--accent); text-decoration: none; }
+  .q-note { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); opacity: 0.75; margin: 10px 0 0; }
+
+  .stimulus { display: flex; gap: 16px; align-items: center; border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px; background: var(--paper-2); margin-top: 30px; }
+  .stimulus .ph { width: 96px; flex: none; aspect-ratio: 4/3; }
+  .stimulus p { font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+
+  /* collapsible scaffold (collapsed by default) */
+  .reveal { margin-top: 8px; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+  .reveal > summary { list-style: none; cursor: pointer; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--paper-2); }
+  .reveal > summary::-webkit-details-marker { display: none; }
+  .reveal > summary .t { font-family: var(--serif); font-size: 20px; color: var(--ink); }
+  .reveal > summary .hint { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+  .reveal[open] > summary .hint::after { content: " — hide"; }
+  .reveal:not([open]) > summary .hint::after { content: " — show"; }
+  .reveal .reveal-body { padding: 8px 22px 24px; }
+  .sc-block { padding: 20px 0; border-top: 1px solid var(--rule); }
+  .sc-block:first-child { border-top: 0; }
+  .sc-block h4 { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+  .sc-block p, .sc-block li { font-size: 15px; line-height: 1.62; color: var(--ink-2); }
+  .sc-block ul { margin: 0; padding-left: 18px; }
+  .sc-block .stem { font-family: var(--serif); font-style: italic; color: var(--ink); margin: 0 0 8px; }
+
+  .anchors { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 640px) { .anchors { grid-template-columns: 1fr 1fr; } }
+  .anchor { display: flex; gap: 14px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px; text-decoration: none; transition: border-color 140ms ease; }
+  .anchor:hover { border-color: var(--accent); }
+  .anchor .ph { width: 70px; flex: none; aspect-ratio: 3/4; }
+  .anchor .ph .ph-note { font-size: 9px; padding: 3px 5px; }
+  .anchor .a-name { font-family: var(--serif); font-size: 18px; color: var(--ink); line-height: 1.1; }
+  .anchor .a-why { font-size: 12.5px; line-height: 1.45; color: var(--ink-2); margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a href="home.html" class="wordmark">Visual <em>Arts</em></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="case-studies-index.html">Case Studies</a>
+      <a href="frame-detail.html">Frames</a>
+      <a href="question-detail.html" aria-current="page">Questions</a>
+      <a href="lesson.html">Lessons</a>
+      <a href="glossary.html">Glossary</a>
+    </nav>
+    <div class="site-tools">
+      <form class="site-search" role="search" onsubmit="return false">
+        <label class="sr-only" for="q">Search the site</label>
+        <input id="q" type="search" placeholder="Search…" autocomplete="off" />
+      </form>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="narrow">
+    <div class="q-head">
+      <p class="q-meta">
+        <span>HSC 2019</span><span class="sep">·</span><span>Section II</span><span class="sep">·</span><span>Question 9</span><span class="sep">·</span><span class="marks">25 marks</span>
+      </p>
+      <div class="q-tags">
+        <span class="badge" data-frame="subjective"><i></i>Subjective</span>
+        <span class="chip">Content · The body</span>
+        <span class="chip">Extended response</span>
+      </div>
+
+      <blockquote class="q-statement">Analyse how an artist's choice of materials and processes can shape meaning in their work.</blockquote>
+      <p class="q-source"><a href="#">View the original paper on NESA →</a></p>
+      <p class="q-note">Illustrative wording — real questions are transcribed verbatim from the NESA past paper.</p>
+
+      <div class="stimulus">
+        <div class="ph"><span class="ph-note">Plate</span></div>
+        <p><strong>Stimulus:</strong> this question references Plate 3 in the paper. Where rights allow, the plate is reproduced with full caption; otherwise it links out to the NESA PDF.</p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="narrow">
+      <details class="reveal">
+        <summary>
+          <span class="t">Scaffold</span>
+          <span class="hint">Try it first</span>
+        </summary>
+        <div class="reveal-body">
+          <div class="sc-block">
+            <h4>Decode the question</h4>
+            <ul>
+              <li><strong>Analyse</strong> — break into parts and show how they relate.</li>
+              <li><strong>Materials and processes</strong> — the physical means and the making, not the subject.</li>
+              <li><strong>Shape meaning</strong> — argue the causal link, don't merely describe.</li>
+            </ul>
+          </div>
+          <div class="sc-block">
+            <h4>Plan</h4>
+            <ul>
+              <li>Intro: thesis — materials carry meaning; nominate a frame and name your artist(s).</li>
+              <li>Body 1 &amp; 2: one work each; material choice → reading, with cited evidence.</li>
+              <li>Conclusion: return to the thesis; the choice is the content.</li>
+            </ul>
+          </div>
+          <div class="sc-block">
+            <h4>Sentence stems</h4>
+            <p class="stem">“By casting the legs in visibly-seamed bronze, the artist …”</p>
+            <p class="stem">“The shift from marble to latex registers as a shift from … to …”</p>
+            <p class="stem">“Read through the subjective frame, this material choice …”</p>
+          </div>
+          <div class="sc-block">
+            <h4>Marker's view</h4>
+            <p><strong>Band 6:</strong> a sustained argument that integrates the frame with close material analysis, precise vocabulary, and cited evidence across two works.</p>
+            <p><strong>Band 4:</strong> materials and frame named, but description outweighs analysis and the causal link stays implicit.</p>
+          </div>
+          <div class="sc-block">
+            <h4>Exemplar structure</h4>
+            <p>A skeleton, not a model essay: thesis → Bourgeois <em>Maman</em> (bronze/marble/steel, scale, tension) → Bourgeois <em>The Destruction of the Father</em> (latex, red light, the room as fantasy) → synthesis. Two works, one argument.</p>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section>
+    <div class="narrow">
+      <p class="section-eyebrow">Anchors</p>
+      <h2 style="font-size:var(--h2);font-weight:380;margin:0 0 24px;max-width:24ch;">Case studies that could <em>anchor</em> a response</h2>
+      <div class="anchors">
+        <a class="anchor" href="#">
+          <div class="ph"><span class="ph-note">Bourgeois</span></div>
+          <div>
+            <span class="a-name">Louise Bourgeois</span>
+            <p class="a-why">Bronze, marble, latex — a whole practice built on material as psychological content.</p>
+          </div>
+        </a>
+        <a class="anchor" href="#">
+          <div class="ph"><span class="ph-note">Gascoigne</span></div>
+          <div>
+            <span class="a-name">Rosalie Gascoigne</span>
+            <p class="a-why">Found retro-reflective signage; the process of cutting and re-setting is the meaning.</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="last-reviewed" style="margin-top:40px;">
+        <span><span class="lab">Last reviewed</span><b>17 May 2026</b></span>
+        <span><span class="lab">By</span><b>Joe</b></span>
+        <span><span class="lab">Source</span><b>NESA past paper</b></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="disclosure">Content on this site is researched and authored by Joe with editorial assistance from AI tooling. Every claim is verified against the cited sources before publication.</p>
+    <div class="meta"><a href="#">Report a rights concern · contact</a><span>Last built 27 May 2026</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

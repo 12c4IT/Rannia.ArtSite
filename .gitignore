@@ -34,3 +34,6 @@ public/pagefind/
 
 # astro
 .astro/
+
+# Ephemeral review folder for Netlify Drop — not part of the repo
+preview-build/

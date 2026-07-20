@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Body of Works — Visual Arts (comp)</title>
+<link rel="stylesheet" href="_kit.css" />
+<style>
+  .index-head { padding: clamp(40px, 6vw, 72px) 0 0; }
+  .index-head h1 { font-size: var(--h2); font-weight: 380; margin: 0 0 12px; }
+  .index-head p { color: var(--ink-2); font-size: 15.5px; max-width: 60ch; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-end; padding: 28px 0; border-bottom: 1px solid var(--rule); margin-top: 28px; }
+  .filter-group { display: flex; flex-direction: column; gap: 8px; }
+  .filter-group > .lab { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+  .pillset { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fpill { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-2); background: transparent; border: 1px solid var(--rule); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+  .fpill[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  .count { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); align-self: center; }
+
+  .grid { display: grid; grid-template-columns: 1fr; gap: 22px; padding: 36px 0 0; }
+  @media (min-width: 620px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  .card { display: flex; flex-direction: column; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; background: var(--paper); text-decoration: none; transition: border-color 140ms ease, transform 140ms ease; }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card .ph { aspect-ratio: 4 / 5; border: 0; border-bottom: 1px solid var(--rule); }
+  .card .body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .card .toprow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .card .medium { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .card .band { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--ink-2); border: 1px solid var(--rule); border-radius: 999px; padding: 3px 8px; }
+  .card .name { font-family: var(--serif); font-size: 20px; font-weight: 420; line-height: 1.14; color: var(--ink); }
+  .card .year { font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink-2); margin-top: -4px; }
+  .card .pitch { font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  .card .chips { margin-top: auto; display: flex; flex-wrap: wrap; gap: 5px; padding-top: 6px; }
+  .hidden { display: none !important; }
+
+  .consent-note { margin-top: clamp(40px, 6vw, 72px); padding: 22px 24px; border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: var(--radius); background: var(--paper-2); }
+  .consent-note h3 { font-family: var(--serif); font-size: 20px; font-weight: 440; margin: 0 0 8px; }
+  .consent-note p { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); max-width: 68ch; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a href="home.html" class="wordmark">Visual <em>Arts</em></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="case-studies-index.html">Case Studies</a>
+      <a href="body-of-works.html" aria-current="page">Body of Works</a>
+      <a href="practice.html">Practice</a>
+      <a href="command-words.html">Command Words</a>
+      <a href="ai-tutor.html">AI Tutor</a>
+    </nav>
+    <div class="site-tools">
+      <form class="site-search" role="search" onsubmit="return false">
+        <label class="sr-only" for="q">Search the site</label>
+        <input id="q" type="search" placeholder="Search…" autocomplete="off" />
+      </form>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="index-head">
+      <p class="eyebrow">Student body of works</p>
+      <h1>What a <em>Band 6</em> BOW looks like</h1>
+      <p>Selected examples from graduates who agreed to share their work. Each entry breaks down concept, materials, frames engaged, practice narrative, why it scored highly, and things you could take into your own BOW.</p>
+    </div>
+
+    <div class="filters">
+      <div class="filter-group">
+        <span class="lab">Medium</span>
+        <div class="pillset" id="med-pills">
+          <button class="fpill" data-val="all" aria-pressed="true">All</button>
+          <button class="fpill" data-val="painting" aria-pressed="false">Painting</button>
+          <button class="fpill" data-val="drawing" aria-pressed="false">Drawing</button>
+          <button class="fpill" data-val="sculpture" aria-pressed="false">Sculpture</button>
+          <button class="fpill" data-val="ceramics" aria-pressed="false">Ceramics</button>
+          <button class="fpill" data-val="photography" aria-pressed="false">Photography</button>
+          <button class="fpill" data-val="time-based" aria-pressed="false">Time-based</button>
+          <button class="fpill" data-val="digital" aria-pressed="false">Digital</button>
+          <button class="fpill" data-val="collection-of-works" aria-pressed="false">Collection of works</button>
+        </div>
+      </div>
+      <span class="count" id="count">Showing 8 of 8</span>
+    </div>
+
+    <div class="grid" id="grid">
+      <a class="card" href="#" data-medium="painting">
+        <div class="ph"><span class="ph-note">Oil on linen · four panels<br />"Kitchen Table Portraits"</span></div>
+        <div class="body">
+          <div class="toprow"><span class="medium">Painting</span><span class="band">Band 6</span></div>
+          <span class="name">"Kitchen Table Portraits"</span>
+          <span class="year">Amira · Class of 2024</span>
+          <p class="pitch">Four large-scale portraits of the artist's grandmother at the kitchen table, sustained across a term.</p>
+          <div class="chips"><span class="chip">Identity</span><span class="chip">Memory</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-medium="drawing">
+        <div class="ph"><span class="ph-note">Graphite &amp; conté · A1<br />"Six Studies of Water"</span></div>
+        <div class="body">
+          <div class="toprow"><span class="medium">Drawing</span><span class="band">Band 6</span></div>
+          <span class="name">"Six Studies of Water"</span>
+          <span class="year">Jake · Class of 2023</span>
+          <p class="pitch">Six graphite studies tracking a single stretch of the Cooks River through drought and flood.</p>
+          <div class="chips"><span class="chip">Place</span><span class="chip">Nature</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-medium="sculpture">
+        <div class="ph"><span class="ph-note">Cast concrete + wire<br />"Nannup"</span></div>
+        <div class="body">
+          <div class="toprow"><span class="medium">Sculpture</span><span class="band">Band 6</span></div>
+          <span class="name">"Nannup"</span>
+          <span class="year">Zoe · Class of 2024</span>
+          <p class="pitch">Concrete casts of found domestic objects, cast, cracked, and stitched back with wire.</p>
+          <div class="chips"><span class="chip">Objects</span><span class="chip">The everyday</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-medium="ceramics">
+        <div class="ph"><span class="ph-note">Wheel-thrown stoneware<br />"Vessels for grief"</span></div>
+        <div class="body">
+          <div class="toprow"><span class="medium">Ceramics</span><span class="band">Band 6</span></div>
+          <span class="name">"Vessels for grief"</span>
+          <span class="year">Sam · Class of 2022</span>
+          <p class="pitch">Ten thrown vessels, each fired to a different atmosphere. A meditation on impermanence.</p>
+          <div class="chips"><span class="chip">Spirituality</span><span class="chip">Objects</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-medium="photography">
+        <div class="ph"><span class="ph-note">Silver gelatin · series of 12<br />"Lakemba after midnight"</span></div>
+        <div class="body">
+          <div class="toprow"><span class="medium">Photography</span><span class="band">Band 6</span></div>
+          <span class="name">"Lakemba after midnight"</span>
+          <span class="year">Nadia · Class of 2023</span>
+          <p class="pitch">Twelve silver gelatin prints of the artist's suburb between 11pm and 3am over one summer.</p>
+          <div class="chips"><span class="chip">Place</span><span class="chip">Time</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-medium="time-based">
+        <div class="ph"><span class="ph-note">Single-channel video · 7&nbsp;min<br />"Threshold"</span></div>
+        <div class="body">
+          <div class="toprow"><span class="medium">Time-based</span><span class="band">Band 6</span></div>
+          <span class="name">"Threshold"</span>
+          <span class="year">Priya · Class of 2024</span>
+          <p class="pitch">Seven-minute video of the artist crossing the same doorway 200 times over a year.</p>
+          <div class="chips"><span class="chip">Identity</span><span class="chip">Time</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-medium="digital">
+        <div class="ph"><span class="ph-note">Digital collage · variable<br />"Kin"</span></div>
+        <div class="body">
+          <div class="toprow"><span class="medium">Digital</span><span class="band">Band 6</span></div>
+          <span class="name">"Kin"</span>
+          <span class="year">Jonah · Class of 2023</span>
+          <p class="pitch">Layered family photographs re-woven into landscape scans of Country.</p>
+          <div class="chips"><span class="chip">Identity</span><span class="chip">Place</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-medium="collection-of-works">
+        <div class="ph"><span class="ph-note">Mixed media · 9 pieces<br />"An index of small losses"</span></div>
+        <div class="body">
+          <div class="toprow"><span class="medium">Collection of Works</span><span class="band">Band 6</span></div>
+          <span class="name">"An index of small losses"</span>
+          <span class="year">Rae · Class of 2022</span>
+          <p class="pitch">Nine works — painted, stitched, cast, and printed — indexing objects the artist has lost.</p>
+          <div class="chips"><span class="chip">Memory</span><span class="chip">Objects</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="consent-note">
+      <h3>About these examples</h3>
+      <p>Every BOW shown here is published with written consent from the student (and their guardian where required). Names are shown as first names or pseudonyms unless the student has explicitly permitted their full name. If you're a former student and would like your work removed, contact us via the footer link.</p>
+    </div>
+  </div>
+  <div style="height: var(--section-pad)"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="disclosure">Content on this site is researched and authored by Joe with editorial assistance from AI tooling. Student BOW examples are shared with signed consent. Every claim is verified against the cited sources before publication.</p>
+    <div class="meta"><a href="#">Report a rights concern · contact</a><span>Last built 20 July 2026</span></div>
+  </div>
+</footer>
+
+<script>
+  const state = { medium: 'all' };
+  const cards = [...document.querySelectorAll('#grid .card')];
+  const count = document.getElementById('count');
+  function applyFilters() {
+    let shown = 0;
+    cards.forEach((c) => {
+      const ok = state.medium === 'all' || c.dataset.medium === state.medium;
+      c.classList.toggle('hidden', !ok);
+      if (ok) shown++;
+    });
+    count.textContent = `Showing ${shown} of ${cards.length}`;
+  }
+  document.querySelectorAll('#med-pills .fpill').forEach((p) => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('#med-pills .fpill').forEach((x) => x.setAttribute('aria-pressed', 'false'));
+      p.setAttribute('aria-pressed', 'true');
+      state.medium = p.dataset.val;
+      applyFilters();
+    });
+  });
+</script>
+
+</body>
+</html>

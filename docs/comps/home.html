@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Home — Visual Arts (comp)</title>
+<link rel="stylesheet" href="_kit.css" />
+<style>
+  .hero { padding: clamp(56px, 9vw, 120px) 0 clamp(36px, 5vw, 64px); border-bottom: 1px solid var(--rule); }
+  .hero h1 { font-size: var(--display); line-height: 1.0; font-weight: 360; margin: 0 0 24px; max-width: 14ch; }
+  .hero .lede { font-family: var(--serif); font-weight: 360; font-size: var(--lede); line-height: 1.4; color: var(--ink); max-width: 54ch; margin: 0 0 34px; }
+  .hero .cta-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+
+  .frames-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  @media (min-width: 560px) { .frames-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1000px) { .frames-grid { grid-template-columns: repeat(4, 1fr); } }
+  .frame-card { background: var(--paper); padding: 28px 24px 26px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; border-top: 3px solid var(--tone); transition: background 140ms ease; }
+  .frame-card:hover { background: var(--paper-2); }
+  .frame-card[data-frame="subjective"] { --tone: var(--f-subj); }
+  .frame-card[data-frame="cultural"]   { --tone: var(--f-cult); }
+  .frame-card[data-frame="structural"] { --tone: var(--f-struct); }
+  .frame-card[data-frame="postmodern"] { --tone: var(--f-post); }
+  .frame-card .fname { font-family: var(--serif); font-size: 23px; color: var(--ink); }
+  .frame-card p { font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  .frame-card .go { margin-top: auto; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tone); }
+
+  .how { display: grid; grid-template-columns: 1fr; gap: 28px; }
+  @media (min-width: 760px) { .how { grid-template-columns: repeat(3, 1fr); gap: 40px; } }
+  .step .n { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.1em; }
+  .step h3 { font-size: 21px; font-weight: 440; margin: 10px 0 8px; }
+  .step p { font-size: 14.5px; line-height: 1.55; color: var(--ink-2); max-width: 34ch; }
+
+  .featured { display: grid; grid-template-columns: 1fr; gap: 0; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+  @media (min-width: 820px) { .featured { grid-template-columns: 1.1fr 1fr; } }
+  .featured .ph { aspect-ratio: 4 / 3; min-height: 240px; border: 0; border-bottom: 1px solid var(--rule); }
+  @media (min-width: 820px) { .featured .ph { border-bottom: 0; border-right: 1px solid var(--rule); } }
+  .featured .body { padding: clamp(24px, 4vw, 44px); display: flex; flex-direction: column; gap: 14px; }
+  .featured .badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .featured h3 { font-size: clamp(26px, 3vw, 34px); font-weight: 380; line-height: 1.1; }
+  .featured .dates { font-family: var(--serif); font-style: italic; color: var(--ink-2); font-size: 17px; }
+  .featured p { font-size: 15.5px; line-height: 1.6; color: var(--ink-2); max-width: 48ch; }
+  .featured .go { margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a href="home.html" class="wordmark">Visual <em>Arts</em></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="case-studies-index.html">Case Studies</a>
+      <a href="frame-detail.html">Frames</a>
+      <a href="question-detail.html">Questions</a>
+      <a href="lesson.html">Lessons</a>
+      <a href="glossary.html">Glossary</a>
+    </nav>
+    <div class="site-tools">
+      <form class="site-search" role="search" onsubmit="return false">
+        <label class="sr-only" for="q">Search the site</label>
+        <input id="q" type="search" placeholder="Search…" autocomplete="off" />
+      </form>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Stage 6 · Preliminary &amp; HSC</p>
+      <h1>Study art the way an <em>examiner</em> reads it.</h1>
+      <p class="lede">Verified case studies analysed through the four frames and the conceptual framework, paired with real past HSC questions and lesson scaffolds. Every claim cited. Every image rights-cleared.</p>
+      <div class="cta-row">
+        <a class="btn" href="case-studies-index.html">Browse case studies</a>
+        <a class="textlink" href="frame-detail.html">Start with the frames →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUR FRAMES -->
+  <section>
+    <div class="wrap">
+      <p class="section-eyebrow">The four frames</p>
+      <h2 style="font-size:var(--h2);margin:0 0 32px;max-width:18ch;">Four ways of <em>reading</em> a work</h2>
+      <div class="frames-grid">
+        <a class="frame-card" data-frame="subjective" href="frame-detail.html">
+          <span class="fname">Subjective</span>
+          <p>Feeling, intuition, memory, psychology — the personal and biographical reading of a work.</p>
+          <span class="go">Explore →</span>
+        </a>
+        <a class="frame-card" data-frame="cultural" href="frame-detail.html">
+          <span class="fname">Cultural</span>
+          <p>Class, race, gender, politics, time and place — the work in its social conditions.</p>
+          <span class="go">Explore →</span>
+        </a>
+        <a class="frame-card" data-frame="structural" href="frame-detail.html">
+          <span class="fname">Structural</span>
+          <p>Signs, symbols, materials, composition and convention — how form makes meaning.</p>
+          <span class="go">Explore →</span>
+        </a>
+        <a class="frame-card" data-frame="postmodern" href="frame-detail.html">
+          <span class="fname">Postmodern</span>
+          <p>Appropriation, irony, recontextualisation — questioning originality and high/low.</p>
+          <span class="go">Explore →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- HOW TO USE -->
+  <section>
+    <div class="wrap">
+      <p class="section-eyebrow">How to use this site</p>
+      <h2 style="font-size:var(--h2);margin:0 0 40px;max-width:20ch;">Read, then <em>practise</em>, then check yourself</h2>
+      <div class="how">
+        <div class="step">
+          <span class="n">01</span>
+          <h3>Read a case study</h3>
+          <p>Two artworks, analysed through all four frames and tied back to the conceptual framework — with sources you can follow.</p>
+        </div>
+        <div class="step">
+          <span class="n">02</span>
+          <h3>Attempt a real question</h3>
+          <p>Each case study links to past HSC questions. Try one before you peek at the scaffold.</p>
+        </div>
+        <div class="step">
+          <span class="n">03</span>
+          <h3>Work the scaffold</h3>
+          <p>Decode the verbs, plan the paragraphs, borrow the sentence stems, and see what a marker rewards.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- FEATURED CASE STUDY -->
+  <section>
+    <div class="wrap">
+      <p class="section-eyebrow">Featured case study</p>
+      <div class="featured">
+        <div class="ph"><span class="ph-note">Louise Bourgeois, <em>Maman</em>, 1999<br />Rights-cleared image</span></div>
+        <div class="body">
+          <div class="badges">
+            <span class="badge primary" data-frame="subjective">Subjective</span>
+            <span class="badge" data-frame="cultural"><i></i>Cultural</span>
+            <span class="badge" data-frame="structural"><i></i>Structural</span>
+          </div>
+          <h3>Louise <em>Bourgeois</em></h3>
+          <span class="dates">French-American · 1911–2010</span>
+          <p>Across a seventy-year practice, Bourgeois turned private trauma — her mother's death, her father's betrayal — into monumental public form, refusing the modernist separation of life and work.</p>
+          <a class="textlink go" href="#">Read the case study →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="disclosure">Content on this site is researched and authored by Joe with editorial assistance from AI tooling. Every claim is verified against the cited sources before publication.</p>
+    <div class="meta"><a href="#">Report a rights concern · contact</a><span>Last built 27 May 2026</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

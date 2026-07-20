@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lesson — Visual Arts (comp)</title>
+<link rel="stylesheet" href="_kit.css" />
+<style>
+  .lesson-head { padding: clamp(40px, 6vw, 72px) 0 0; }
+  .lesson-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+  .lesson-head h1 { font-size: var(--h2); font-weight: 380; line-height: 1.08; margin: 0 0 12px; max-width: 22ch; }
+  .lesson-head .for { font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--ink-2); }
+  .lesson-head .for a { color: var(--accent); text-decoration: none; }
+
+  .ww { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 32px; }
+  @media (min-width: 720px) { .ww { grid-template-columns: 1fr 1fr; } }
+  .ww-card { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper-2); padding: 22px 24px; }
+  .ww-card h3 { font-size: 20px; font-weight: 440; margin: 0 0 4px; }
+  .ww-card .sub { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 16px; }
+  .ww-card ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .ww-card li { display: flex; gap: 11px; font-size: 15px; line-height: 1.5; color: var(--ink); }
+  .ww-card li::before { content: "◆"; color: var(--accent); font-size: 10px; padding-top: 5px; }
+
+  .prior { display: grid; grid-template-columns: 1fr; gap: 28px; margin-top: 8px; }
+  @media (min-width: 720px) { .prior { grid-template-columns: 1fr 1fr; } }
+  .prior .lab { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 12px; }
+  .prior ul { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 14.5px; line-height: 1.7; }
+  .prior .vocab { display: flex; flex-wrap: wrap; gap: 7px; }
+
+  .step h3 { font-size: var(--h3); font-weight: 440; margin: 30px 0 6px; }
+  .step .time { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+
+  /* QuestionScaffold */
+  .scaffold { border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; margin-top: 22px; }
+  .scaffold .sc-head { background: var(--paper-2); border-bottom: 1px solid var(--rule); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .scaffold .sc-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+  .scaffold .sc-marks { color: var(--accent); font-weight: 500; }
+  .scaffold .sc-q { font-family: var(--serif); font-size: 19px; line-height: 1.4; color: var(--ink); padding: 20px; border-bottom: 1px solid var(--rule); }
+  details.sc { border-bottom: 1px solid var(--rule); }
+  details.sc:last-child { border-bottom: 0; }
+  details.sc > summary { list-style: none; cursor: pointer; padding: 15px 20px; display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+  details.sc > summary::-webkit-details-marker { display: none; }
+  details.sc > summary::before { content: "▸"; color: var(--accent); transition: transform 150ms ease; }
+  details.sc[open] > summary::before { transform: rotate(90deg); }
+  details.sc .sc-body { padding: 0 20px 20px; }
+  details.sc .sc-body p { font-size: 15px; line-height: 1.6; color: var(--ink-2); margin: 0 0 10px; max-width: 62ch; }
+  details.sc .sc-body ul { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+  details.sc .sc-body .stem { font-family: var(--serif); font-style: italic; color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a href="home.html" class="wordmark">Visual <em>Arts</em></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="case-studies-index.html">Case Studies</a>
+      <a href="frame-detail.html">Frames</a>
+      <a href="question-detail.html">Questions</a>
+      <a href="lesson.html" aria-current="page">Lessons</a>
+      <a href="glossary.html">Glossary</a>
+    </nav>
+    <div class="site-tools">
+      <form class="site-search" role="search" onsubmit="return false">
+        <label class="sr-only" for="q">Search the site</label>
+        <input id="q" type="search" placeholder="Search…" autocomplete="off" />
+      </form>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="narrow">
+    <div class="lesson-head">
+      <div class="lesson-chips">
+        <span class="chip">Year 12</span>
+        <span class="chip">60 min</span>
+        <span class="badge" data-frame="subjective"><i></i>Subjective</span>
+      </div>
+      <h1>Reading <em>Maman</em> through the subjective frame</h1>
+      <p class="for">For the case study <a href="#">Louise Bourgeois →</a></p>
+    </div>
+
+    <!-- WALT / WILF -->
+    <div class="ww">
+      <div class="ww-card">
+        <h3>Learning intentions</h3>
+        <p class="sub">WALT — We Are Learning To</p>
+        <ul>
+          <li>analyse a sculpture through the subjective frame using precise art-historical vocabulary</li>
+          <li>explain how Bourgeois transposes biography into material and form</li>
+        </ul>
+      </div>
+      <div class="ww-card">
+        <h3>Success criteria</h3>
+        <p class="sub">WILF — What I'm Looking For</p>
+        <ul>
+          <li>I can link at least three formal choices to a psychological reading</li>
+          <li>I can integrate one reference to a cited source</li>
+          <li>I can sustain a single argument across a paragraph</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="narrow">
+      <div class="prior">
+        <div>
+          <p class="lab">Prior knowledge</p>
+          <ul>
+            <li>The four frames</li>
+            <li>The conceptual framework</li>
+            <li>Vocabulary: composition, scale, material, mark-making</li>
+          </ul>
+        </div>
+        <div>
+          <p class="lab">Vocabulary</p>
+          <div class="vocab">
+            <a class="chip" href="glossary.html#scale">Scale</a>
+            <a class="chip" href="glossary.html#materiality">Materiality</a>
+            <a class="chip" href="glossary.html#motif">Motif</a>
+            <a class="chip" href="glossary.html#autobiography">Autobiography</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- LESSON BODY -->
+  <section>
+    <div class="narrow prose">
+      <p class="section-eyebrow">Lesson</p>
+      <h2 style="font-size:var(--h2);font-weight:380;margin:0 0 8px;max-width:20ch;">Biography, made <em>monumental</em></h2>
+
+      <div class="step"><span class="time">Hook · 5 min</span><h3>One image, one question</h3></div>
+      <p>Project <em>Maman</em> at full Turbine-Hall scale. One prompt on the board: <strong>“Is this spider protecting you or trapping you?”</strong> Sixty seconds, no hands down.</p>
+
+      <div class="step"><span class="time">Modelled · 15 min</span><h3>A worked paragraph</h3></div>
+      <p>Think aloud through one paragraph of subjective analysis, naming each move as you make it — claim, evidence, frame, link back to the artist.</p>
+      <blockquote class="pull">Bourgeois described the spider as “an ode to my mother … like a spider, my mother was a weaver.” The marble egg-sac cradled beneath the abdomen makes the protective reading literal, while the thin steel legs enclose the viewer — the work holds tenderness and threat in the same body.</blockquote>
+
+      <div class="step"><span class="time">Guided · 15 min</span><h3>Now the second artwork</h3></div>
+      <p>In pairs, students attempt the same move on <em>The Destruction of the Father</em>. Circulate; push for the link between a material choice (latex, red light) and a psychological reading.</p>
+
+      <div class="step"><span class="time">Independent · 10 min</span><h3>Attempt the question</h3></div>
+      <p>Students attempt the linked HSC question below. They may open the scaffold only after a first attempt.</p>
+    </div>
+  </section>
+
+  <!-- QUESTION SCAFFOLD -->
+  <section style="padding-top:0;">
+    <div class="narrow">
+      <p class="section-eyebrow">Question scaffold</p>
+      <div class="scaffold">
+        <div class="sc-head">
+          <span class="sc-meta">HSC 2019 · Section II · Question 9</span>
+          <span class="sc-meta sc-marks">25 marks</span>
+        </div>
+        <p class="sc-q">Analyse how an artist's choice of materials and processes can shape meaning in their work. In your response, refer to at least one artist you have studied.</p>
+
+        <details class="sc" open>
+          <summary>Decode the question</summary>
+          <div class="sc-body">
+            <ul>
+              <li><strong>Analyse</strong> — break the work into parts and show how they relate; don't just describe.</li>
+              <li><strong>Materials and processes</strong> — the physical stuff and the making, not the subject matter.</li>
+              <li><strong>Shape meaning</strong> — argue the causal link: this choice → this reading.</li>
+            </ul>
+          </div>
+        </details>
+        <details class="sc">
+          <summary>Plan your response</summary>
+          <div class="sc-body">
+            <ul>
+              <li><strong>Intro:</strong> thesis — materials are not neutral; nominate the subjective frame and name Bourgeois.</li>
+              <li><strong>Body 1:</strong> bronze, marble, steel in <em>Maman</em> — scale and tension.</li>
+              <li><strong>Body 2:</strong> latex and red light in <em>The Destruction of the Father</em>.</li>
+              <li><strong>Conclusion:</strong> return to the thesis — the choice is the content.</li>
+            </ul>
+          </div>
+        </details>
+        <details class="sc">
+          <summary>Sentence stems</summary>
+          <div class="sc-body">
+            <p class="stem">“By casting the legs in visibly-seamed bronze, Bourgeois …”</p>
+            <p class="stem">“The shift from marble to latex registers as a shift from … to …”</p>
+            <p class="stem">“Read through the subjective frame, the material choice …”</p>
+          </div>
+        </details>
+        <details class="sc">
+          <summary>Marker's view</summary>
+          <div class="sc-body">
+            <p><strong>Band 6:</strong> sustains a single argument, integrates the frame with close material analysis, uses precise vocabulary and cited evidence.</p>
+            <p><strong>Band 4:</strong> names materials and the frame, but description outweighs analysis; the causal link stays implicit.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="disclosure">Content on this site is researched and authored by Joe with editorial assistance from AI tooling. Every claim is verified against the cited sources before publication.</p>
+    <div class="meta"><a href="#">Report a rights concern · contact</a><span>Last built 27 May 2026</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

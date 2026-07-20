@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Glossary — Visual Arts (comp)</title>
+<link rel="stylesheet" href="_kit.css" />
+<style>
+  .g-head { padding: clamp(40px, 6vw, 72px) 0 0; }
+  .g-head h1 { font-size: var(--h2); font-weight: 380; margin: 0 0 12px; }
+  .g-head p { color: var(--ink-2); font-size: 15.5px; max-width: 56ch; }
+
+  .alpha { position: sticky; top: 0; z-index: 5; background: color-mix(in oklab, var(--paper), transparent 8%); backdrop-filter: blur(6px); display: flex; flex-wrap: wrap; gap: 3px; padding: 14px 0; margin-top: 24px; border-bottom: 1px solid var(--rule); }
+  .alpha a, .alpha span { font-family: var(--mono); font-size: 12px; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 2px; text-decoration: none; }
+  .alpha a { color: var(--accent); }
+  .alpha a:hover { background: var(--paper-2); }
+  .alpha span { color: var(--rule); }
+
+  .g-letter { font-family: var(--serif); font-size: 40px; color: var(--ink-2); font-weight: 300; margin: 44px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
+  .term { padding: 22px 0; border-bottom: 1px solid var(--rule); scroll-margin-top: 64px; }
+  .term h3 { font-family: var(--serif); font-size: 24px; font-weight: 440; margin: 0 0 8px; }
+  .term .def { font-size: 16px; line-height: 1.62; color: var(--ink); max-width: 64ch; margin: 0 0 14px; }
+  .term .rel { display: flex; flex-wrap: wrap; gap: 7px 16px; align-items: center; }
+  .term .rel .badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .term .rel .also { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-2); }
+  .term .rel .also a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a href="home.html" class="wordmark">Visual <em>Arts</em></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="case-studies-index.html">Case Studies</a>
+      <a href="frame-detail.html">Frames</a>
+      <a href="question-detail.html">Questions</a>
+      <a href="lesson.html">Lessons</a>
+      <a href="glossary.html" aria-current="page">Glossary</a>
+    </nav>
+    <div class="site-tools">
+      <form class="site-search" role="search" onsubmit="return false">
+        <label class="sr-only" for="q">Search the site</label>
+        <input id="q" type="search" placeholder="Search…" autocomplete="off" />
+      </form>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="narrow">
+    <div class="g-head">
+      <p class="eyebrow">Glossary</p>
+      <h1>The words, <em>defined</em></h1>
+      <p>Terminology used across the case studies and frames. Each entry deep-links, so the analysis can point straight here.</p>
+    </div>
+
+    <nav class="alpha" aria-label="Jump to letter">
+      <a href="#L-A">A</a><span>B</span><a href="#L-C">C</a><span>D</span><span>E</span><span>F</span>
+      <a href="#L-G">G</a><span>H</span><a href="#L-I">I</a><span>J</span><span>K</span><span>L</span>
+      <a href="#L-M">M</a><span>N</span><span>O</span><span>P</span><span>Q</span><a href="#L-R">R</a>
+      <a href="#L-S">S</a><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span>
+    </nav>
+
+    <!-- A -->
+    <h2 class="g-letter" id="L-A">A</h2>
+    <div class="term" id="appropriation">
+      <h3>Appropriation</h3>
+      <p class="def">Taking an existing image, object or style and re-using it in a new work so that its original meaning is recast. A defining strategy of the postmodern frame.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="postmodern"><i></i>Postmodern</span></div>
+        <span class="also">See also <a href="#motif">motif</a>, <a href="#signifier">signifier</a></span>
+      </div>
+    </div>
+    <div class="term" id="autobiography">
+      <h3>Autobiography</h3>
+      <p class="def">Art that draws directly on the artist's own life, family and memory as its subject matter — the engine of much work read through the subjective frame.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="subjective"><i></i>Subjective</span></div>
+        <span class="also">See also <a href="#motif">motif</a></span>
+      </div>
+    </div>
+
+    <!-- C -->
+    <h2 class="g-letter" id="L-C">C</h2>
+    <div class="term" id="colonialism">
+      <h3>Colonialism</h3>
+      <p class="def">The historical and ongoing structures of settler and imperial power. A recurring concern of the cultural frame, especially in Australian and First Nations art.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="cultural"><i></i>Cultural</span></div>
+        <span class="also">See also <a href="#identity">identity</a>, <a href="#representation">representation</a></span>
+      </div>
+    </div>
+    <div class="term" id="composition">
+      <h3>Composition</h3>
+      <p class="def">The arrangement of visual elements within a work — what is placed where, and the relationships between the parts. The bedrock of structural analysis.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="structural"><i></i>Structural</span></div>
+        <span class="also">See also <a href="#scale">scale</a></span>
+      </div>
+    </div>
+    <div class="term" id="context">
+      <h3>Context</h3>
+      <p class="def">The circumstances — historical, social, personal — in which a work is made and received. Meaning is never produced in a vacuum.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="cultural"><i></i>Cultural</span><span class="badge" data-frame="subjective"><i></i>Subjective</span></div>
+      </div>
+    </div>
+
+    <!-- G -->
+    <h2 class="g-letter" id="L-G">G</h2>
+    <div class="term" id="gaze">
+      <h3>The gaze</h3>
+      <p class="def">Who looks and who is looked at — the power relations built into the way a work positions its viewer, and whom it assumes that viewer to be.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="cultural"><i></i>Cultural</span><span class="badge" data-frame="postmodern"><i></i>Postmodern</span></div>
+        <span class="also">See also <a href="#representation">representation</a></span>
+      </div>
+    </div>
+
+    <!-- I -->
+    <h2 class="g-letter" id="L-I">I</h2>
+    <div class="term" id="identity">
+      <h3>Identity</h3>
+      <p class="def">How a work constructs or questions selfhood — personal, cultural, national, gendered. A content area as well as a lens.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="cultural"><i></i>Cultural</span><span class="badge" data-frame="subjective"><i></i>Subjective</span></div>
+      </div>
+    </div>
+    <div class="term" id="ideology">
+      <h3>Ideology</h3>
+      <p class="def">A system of beliefs and values — often unspoken — that a work can carry, naturalise, or set out to contest.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="cultural"><i></i>Cultural</span></div>
+        <span class="also">See also <a href="#representation">representation</a></span>
+      </div>
+    </div>
+
+    <!-- M -->
+    <h2 class="g-letter" id="L-M">M</h2>
+    <div class="term" id="materiality">
+      <h3>Materiality</h3>
+      <p class="def">The physical properties of a work's materials treated as carriers of meaning rather than neutral supports — latex reads differently from marble.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="structural"><i></i>Structural</span><span class="badge" data-frame="subjective"><i></i>Subjective</span></div>
+        <span class="also">See also <a href="#scale">scale</a></span>
+      </div>
+    </div>
+    <div class="term" id="mise-en-scene">
+      <h3>Mise-en-scène</h3>
+      <p class="def">Everything arranged within the frame of an image — setting, props, lighting, pose. Borrowed from film, indispensable for reading staged photography.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="structural"><i></i>Structural</span><span class="badge" data-frame="cultural"><i></i>Cultural</span></div>
+      </div>
+    </div>
+    <div class="term" id="motif">
+      <h3>Motif</h3>
+      <p class="def">A recurring image, form or element that accrues meaning as it returns across a body of work — Bourgeois's spider, spiral and cell.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="subjective"><i></i>Subjective</span><span class="badge" data-frame="structural"><i></i>Structural</span></div>
+      </div>
+    </div>
+
+    <!-- R -->
+    <h2 class="g-letter" id="L-R">R</h2>
+    <div class="term" id="representation">
+      <h3>Representation</h3>
+      <p class="def">The way a work stands in for — and shapes our understanding of — people, places or ideas. Always a construction, never a neutral mirror.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="cultural"><i></i>Cultural</span><span class="badge" data-frame="postmodern"><i></i>Postmodern</span></div>
+        <span class="also">See also <a href="#gaze">the gaze</a>, <a href="#ideology">ideology</a></span>
+      </div>
+    </div>
+
+    <!-- S -->
+    <h2 class="g-letter" id="L-S">S</h2>
+    <div class="term" id="scale">
+      <h3>Scale</h3>
+      <p class="def">The size of a work relative to the human body, and the meaning that size produces — intimacy, intimidation, monumentality.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="structural"><i></i>Structural</span></div>
+        <span class="also">See also <a href="#composition">composition</a></span>
+      </div>
+    </div>
+    <div class="term" id="signifier">
+      <h3>Signifier</h3>
+      <p class="def">In semiotics, the form — an image, mark or object — that carries a meaning (the signified). The structural frame reads works as systems of signs.</p>
+      <div class="rel">
+        <div class="badges"><span class="badge" data-frame="structural"><i></i>Structural</span><span class="badge" data-frame="postmodern"><i></i>Postmodern</span></div>
+        <span class="also">See also <a href="#appropriation">appropriation</a></span>
+      </div>
+    </div>
+  </div>
+  <div style="height: var(--section-pad)"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="disclosure">Content on this site is researched and authored by Joe with editorial assistance from AI tooling. Every claim is verified against the cited sources before publication.</p>
+    <div class="meta"><a href="#">Report a rights concern · contact</a><span>Last built 27 May 2026</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

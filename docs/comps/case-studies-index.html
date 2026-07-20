@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Case studies — Visual Arts (comp)</title>
+<link rel="stylesheet" href="_kit.css" />
+<style>
+  .index-head { padding: clamp(40px, 6vw, 72px) 0 0; }
+  .index-head h1 { font-size: var(--h2); font-weight: 380; margin: 0 0 12px; }
+  .index-head p { color: var(--ink-2); font-size: 15.5px; max-width: 56ch; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-end; padding: 28px 0; border-bottom: 1px solid var(--rule); margin-top: 28px; }
+  .filter-group { display: flex; flex-direction: column; gap: 8px; }
+  .filter-group > .lab { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+  .pillset { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fpill { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-2); background: transparent; border: 1px solid var(--rule); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+  .fpill[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  select { font-family: var(--sans); font-size: 13px; color: var(--ink); background: var(--paper-2); border: 1px solid var(--rule); border-radius: 999px; padding: 9px 14px; }
+  .count { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); align-self: center; }
+
+  .grid { display: grid; grid-template-columns: 1fr; gap: 22px; padding: 36px 0 0; }
+  @media (min-width: 620px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  .card { display: flex; flex-direction: column; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; background: var(--paper); text-decoration: none; transition: border-color 140ms ease, transform 140ms ease; }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card .ph { aspect-ratio: 4 / 3; border: 0; border-bottom: 1px solid var(--rule); }
+  .card .body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .card .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .card .name { font-family: var(--serif); font-size: 22px; font-weight: 420; line-height: 1.12; color: var(--ink); }
+  .card .dates { font-family: var(--serif); font-style: italic; font-size: 14.5px; color: var(--ink-2); margin-top: -4px; }
+  .card .pitch { font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  .card .areas { margin-top: auto; display: flex; flex-wrap: wrap; gap: 5px; padding-top: 6px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a href="home.html" class="wordmark">Visual <em>Arts</em></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="case-studies-index.html" aria-current="page">Case Studies</a>
+      <a href="frame-detail.html">Frames</a>
+      <a href="question-detail.html">Questions</a>
+      <a href="lesson.html">Lessons</a>
+      <a href="glossary.html">Glossary</a>
+    </nav>
+    <div class="site-tools">
+      <form class="site-search" role="search" onsubmit="return false">
+        <label class="sr-only" for="q">Search the site</label>
+        <input id="q" type="search" placeholder="Search…" autocomplete="off" />
+      </form>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="index-head">
+      <p class="eyebrow">Case studies</p>
+      <h1>Eight artists, <em>read</em> through the frames</h1>
+      <p>Each case study analyses two artworks through all four frames and the conceptual framework, with cited sources and rights-cleared images. Filter by frame, origin or medium.</p>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filters">
+      <div class="filter-group">
+        <span class="lab">Primary frame</span>
+        <div class="pillset" id="frame-pills">
+          <button class="fpill" data-val="all" aria-pressed="true">All</button>
+          <button class="fpill" data-val="subjective" aria-pressed="false">Subjective</button>
+          <button class="fpill" data-val="cultural" aria-pressed="false">Cultural</button>
+          <button class="fpill" data-val="structural" aria-pressed="false">Structural</button>
+          <button class="fpill" data-val="postmodern" aria-pressed="false">Postmodern</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="lab">Origin</span>
+        <select id="f-nat">
+          <option value="all">All</option>
+          <option value="australian">Australian</option>
+          <option value="international">International</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="lab">Medium</span>
+        <select id="f-med">
+          <option value="all">All</option>
+          <option value="sculpture">Sculpture</option>
+          <option value="photography">Photography</option>
+          <option value="assemblage">Assemblage</option>
+          <option value="painting">Painting</option>
+          <option value="mixed-media">Mixed media</option>
+        </select>
+      </div>
+      <span class="count" id="count">Showing 8 of 8</span>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid" id="grid">
+      <a class="card" href="#" data-frame="subjective" data-nat="international" data-medium="sculpture">
+        <div class="ph"><span class="ph-note">Bourgeois, <em>Maman</em></span></div>
+        <div class="body">
+          <div class="badges"><span class="badge primary" data-frame="subjective">Subjective</span></div>
+          <span class="name">Louise Bourgeois</span>
+          <span class="dates">1911–2010 · French-American</span>
+          <p class="pitch">Private trauma turned into monumental public form across seven decades.</p>
+          <div class="areas"><span class="chip">The body</span><span class="chip">Memory</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-frame="subjective" data-nat="australian" data-medium="photography">
+        <div class="ph"><span class="ph-note">Henson, <em>Untitled</em></span></div>
+        <div class="body">
+          <div class="badges"><span class="badge primary" data-frame="subjective">Subjective</span></div>
+          <span class="name">Bill Henson</span>
+          <span class="dates">b. 1955 · Australian</span>
+          <p class="pitch">Mood, atmosphere and adolescence rendered in deep chiaroscuro.</p>
+          <div class="areas"><span class="chip">Time</span><span class="chip">The everyday</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-frame="cultural" data-nat="australian" data-medium="photography">
+        <div class="ph"><span class="ph-note">Moffatt, <em>Something More</em></span></div>
+        <div class="body">
+          <div class="badges"><span class="badge primary" data-frame="cultural">Cultural</span></div>
+          <span class="name">Tracey Moffatt</span>
+          <span class="dates">b. 1960 · Australian</span>
+          <p class="pitch">Race, class and gender staged through cinematic photographic series.</p>
+          <div class="areas"><span class="chip">Identity</span><span class="chip">Place</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-frame="cultural" data-nat="australian" data-medium="mixed-media">
+        <div class="ph"><span class="ph-note">Brook Andrew, <em>Sexy &amp; Dangerous</em></span></div>
+        <div class="body">
+          <div class="badges"><span class="badge primary" data-frame="cultural">Cultural</span></div>
+          <span class="name">Brook Andrew</span>
+          <span class="dates">b. 1970 · Wiradjuri</span>
+          <p class="pitch">Colonial archives and ethnographic photography turned back on the viewer.</p>
+          <div class="areas"><span class="chip">Identity</span><span class="chip">Memory</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-frame="structural" data-nat="australian" data-medium="assemblage">
+        <div class="ph"><span class="ph-note">Gascoigne, <em>Monaro</em></span></div>
+        <div class="body">
+          <div class="badges"><span class="badge primary" data-frame="structural">Structural</span></div>
+          <span class="name">Rosalie Gascoigne</span>
+          <span class="dates">1917–1999 · NZ-Australian</span>
+          <p class="pitch">Weathered road signs re-sawn into luminous grids of place.</p>
+          <div class="areas"><span class="chip">Place</span><span class="chip">Objects</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-frame="structural" data-nat="international" data-medium="sculpture">
+        <div class="ph"><span class="ph-note">Kapoor, <em>Cloud Gate</em></span></div>
+        <div class="body">
+          <div class="badges"><span class="badge primary" data-frame="structural">Structural</span></div>
+          <span class="name">Anish Kapoor</span>
+          <span class="dates">b. 1954 · British-Indian</span>
+          <p class="pitch">Pure form, void and mirrored surface at monumental scale.</p>
+          <div class="areas"><span class="chip">Spirituality</span><span class="chip">Place</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-frame="postmodern" data-nat="international" data-medium="photography">
+        <div class="ph"><span class="ph-note">Morimura, <em>Futago</em></span></div>
+        <div class="body">
+          <div class="badges"><span class="badge primary" data-frame="postmodern">Postmodern</span></div>
+          <span class="name">Yasumasa Morimura</span>
+          <span class="dates">b. 1951 · Japanese</span>
+          <p class="pitch">The artist inserts himself into canonical Western paintings.</p>
+          <div class="areas"><span class="chip">Identity</span><span class="chip">The body</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="#" data-frame="postmodern" data-nat="australian" data-medium="painting">
+        <div class="ph"><span class="ph-note">Tillers, <em>The Nine Shots</em></span></div>
+        <div class="body">
+          <div class="badges"><span class="badge primary" data-frame="postmodern">Postmodern</span></div>
+          <span class="name">Imants Tillers</span>
+          <span class="dates">b. 1950 · Australian</span>
+          <p class="pitch">Appropriation across a system of individually-numbered canvas boards.</p>
+          <div class="areas"><span class="chip">Place</span><span class="chip">Identity</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div style="height: var(--section-pad)"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="disclosure">Content on this site is researched and authored by Joe with editorial assistance from AI tooling. Every claim is verified against the cited sources before publication.</p>
+    <div class="meta"><a href="#">Report a rights concern · contact</a><span>Last built 27 May 2026</span></div>
+  </div>
+</footer>
+
+<script>
+  const state = { frame: 'all', nat: 'all', med: 'all' };
+  const cards = [...document.querySelectorAll('#grid .card')];
+  const count = document.getElementById('count');
+
+  function applyFilters() {
+    let shown = 0;
+    cards.forEach((c) => {
+      const ok =
+        (state.frame === 'all' || c.dataset.frame === state.frame) &&
+        (state.nat === 'all' || c.dataset.nat === state.nat) &&
+        (state.med === 'all' || c.dataset.medium === state.med);
+      c.classList.toggle('hidden', !ok);
+      if (ok) shown++;
+    });
+    count.textContent = `Showing ${shown} of ${cards.length}`;
+  }
+
+  document.querySelectorAll('#frame-pills .fpill').forEach((p) => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('#frame-pills .fpill').forEach((x) => x.setAttribute('aria-pressed', 'false'));
+      p.setAttribute('aria-pressed', 'true');
+      state.frame = p.dataset.val;
+      applyFilters();
+    });
+  });
+  document.getElementById('f-nat').addEventListener('change', (e) => { state.nat = e.target.value; applyFilters(); });
+  document.getElementById('f-med').addEventListener('change', (e) => { state.med = e.target.value; applyFilters(); });
+</script>
+
+</body>
+</html>

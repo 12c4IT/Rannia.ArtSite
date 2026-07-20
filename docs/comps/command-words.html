@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Command Words — Visual Arts (comp)</title>
+<link rel="stylesheet" href="_kit.css" />
+<style>
+  .index-head { padding: clamp(40px, 6vw, 72px) 0 clamp(20px, 3vw, 40px); }
+  .index-head h1 { font-size: var(--h2); font-weight: 380; margin: 0 0 12px; }
+  .index-head p { color: var(--ink-2); font-size: 15.5px; max-width: 62ch; }
+
+  .matrix { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 12px; }
+  @media (min-width: 620px) { .matrix { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 980px) { .matrix { grid-template-columns: repeat(4, 1fr); } }
+  .verb { background: var(--paper); padding: 24px 22px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; transition: background 140ms ease; border-top: 3px solid var(--tone); }
+  .verb:hover { background: var(--paper-2); }
+  .verb .rung { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tone); }
+  .verb h3 { font-family: var(--serif); font-size: 26px; font-weight: 430; color: var(--ink); }
+  .verb p { font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+  .verb[data-rung="analyse"]     { --tone: var(--f-subj); }
+  .verb[data-rung="locate"]      { --tone: var(--f-cult); }
+  .verb[data-rung="apply"]       { --tone: var(--f-struct); }
+  .verb[data-rung="relate"]      { --tone: var(--f-post); }
+  .verb[data-rung="monitor"]     { --tone: var(--accent); }
+  .verb[data-rung="synthesise"]  { --tone: var(--ink-2); }
+
+  .divider { padding: clamp(30px, 5vw, 56px) 0 24px; border-top: 1px solid var(--rule); margin-top: clamp(30px, 5vw, 56px); }
+  .divider .eyebrow, .divider .section-eyebrow { margin-bottom: 10px; }
+  .divider h2 { font-size: var(--h2); font-weight: 380; margin: 0 0 12px; max-width: 22ch; }
+  .divider p.sub { color: var(--ink-2); font-size: 15px; max-width: 56ch; }
+
+  .worked { display: grid; grid-template-columns: 1fr; gap: 0; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; background: var(--paper); }
+  @media (min-width: 900px) { .worked { grid-template-columns: 1fr 1.4fr; } }
+  .worked .lhs { padding: clamp(24px, 4vw, 36px); border-bottom: 1px solid var(--rule); background: var(--paper-2); }
+  @media (min-width: 900px) { .worked .lhs { border-bottom: 0; border-right: 1px solid var(--rule); } }
+  .worked .lhs .verb-name { font-family: var(--serif); font-size: clamp(2.4rem, 1.6rem + 2.8vw, 3.8rem); font-weight: 380; line-height: 1; color: var(--ink); margin-bottom: 8px; }
+  .worked .lhs .verb-name em { color: var(--accent); font-style: italic; font-weight: 380; }
+  .worked .lhs .rung-lab { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--f-subj); margin-bottom: 22px; }
+  .worked .lhs .def { font-family: var(--serif); font-size: 17px; line-height: 1.6; color: var(--ink); margin-bottom: 16px; }
+  .worked .lhs .gloss { font-size: 14.5px; line-height: 1.65; color: var(--ink-2); border-left: 2px solid var(--accent); padding-left: 14px; }
+  .worked .lhs .gloss .lab { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 6px; }
+
+  .worked .rhs { padding: clamp(24px, 4vw, 36px); display: flex; flex-direction: column; gap: 18px; }
+  .worked .step { padding-top: 12px; border-top: 1px solid var(--rule); }
+  .worked .step:first-child { border-top: 0; padding-top: 0; }
+  .worked .step .lab { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .worked .q { font-family: var(--serif); font-size: 20px; line-height: 1.4; color: var(--ink); margin-bottom: 6px; }
+  .worked .marks { font-family: var(--mono); font-size: 11px; color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.08em; }
+  .worked .response { font-size: 15px; line-height: 1.7; color: var(--ink); }
+  .worked .response p { margin: 0 0 14px; }
+  .worked .response p:last-child { margin: 0; }
+  .worked .markersnote { background: var(--paper-2); border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: var(--radius); padding: 16px 18px; }
+  .worked .markersnote .lab { color: var(--accent); }
+  .worked .markersnote p { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 0; }
+
+  .todo { margin-top: clamp(30px, 5vw, 56px); padding: 22px 24px; border: 1px dashed var(--rule); border-radius: var(--radius); background: var(--paper-2); }
+  .todo h3 { font-family: var(--serif); font-size: 20px; font-weight: 440; margin: 0 0 8px; }
+  .todo p { font-size: 14px; line-height: 1.6; color: var(--ink-2); max-width: 68ch; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a href="home.html" class="wordmark">Visual <em>Arts</em></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="case-studies-index.html">Case Studies</a>
+      <a href="body-of-works.html">Body of Works</a>
+      <a href="practice.html">Practice</a>
+      <a href="command-words.html" aria-current="page">Command Words</a>
+      <a href="ai-tutor.html">AI Tutor</a>
+    </nav>
+    <div class="site-tools">
+      <form class="site-search" role="search" onsubmit="return false">
+        <label class="sr-only" for="q">Search the site</label>
+        <input id="q" type="search" placeholder="Search…" autocomplete="off" />
+      </form>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="index-head">
+      <p class="eyebrow">Delany College · ALARMS matrix</p>
+      <h1>Read the <em>verb</em>. It tells you what to do.</h1>
+      <p>NESA marking is verb-driven. "Analyse" is not "describe". "Evaluate" is not "explain". Each command word below has a NESA definition, a plain-English gloss, and a worked example paragraph so you can see the verb <em>in action</em>.</p>
+    </div>
+
+    <div class="matrix">
+      <a class="verb" href="#worked" data-rung="analyse">
+        <span class="rung">Analyse</span>
+        <h3>Analyse</h3>
+        <p>Identify components and the relationship between them; draw out and relate implications.</p>
+      </a>
+      <a class="verb" href="#" data-rung="analyse">
+        <span class="rung">Analyse</span>
+        <h3>Explain</h3>
+        <p>Relate cause and effect; make relationships evident; provide why and how.</p>
+      </a>
+      <a class="verb" href="#" data-rung="monitor">
+        <span class="rung">Monitor</span>
+        <h3>Evaluate</h3>
+        <p>Make a judgement based on criteria; determine value of. Not just "assess" — pass judgement.</p>
+      </a>
+      <a class="verb" href="#" data-rung="relate">
+        <span class="rung">Relate</span>
+        <h3>Discuss</h3>
+        <p>Identify issues and provide points for and/or against. Move around the argument.</p>
+      </a>
+      <a class="verb" href="#" data-rung="relate">
+        <span class="rung">Relate</span>
+        <h3>Account for</h3>
+        <p>Account for = state reasons for, report on. Give an account of = narrate a series of events.</p>
+      </a>
+      <a class="verb" href="#" data-rung="monitor">
+        <span class="rung">Monitor</span>
+        <h3>Justify</h3>
+        <p>Support an argument or conclusion. Show why your position is defensible.</p>
+      </a>
+      <a class="verb" href="#" data-rung="relate">
+        <span class="rung">Relate</span>
+        <h3>Compare</h3>
+        <p>Show how things are similar or different. Both similarities <em>and</em> differences.</p>
+      </a>
+      <a class="verb" href="#" data-rung="monitor">
+        <span class="rung">Monitor</span>
+        <h3>Assess</h3>
+        <p>Make a judgement of value, quality, outcomes, results, or size. Like "evaluate" — but softer.</p>
+      </a>
+    </div>
+
+    <!-- WORKED EXAMPLE -->
+    <section id="worked">
+      <div class="divider">
+        <p class="section-eyebrow">Worked example</p>
+        <h2>What it looks like to actually <em>analyse</em></h2>
+        <p class="sub">One question. One Band 6 paragraph. One marker's note. Bookmark this and come back when the verb changes.</p>
+      </div>
+
+      <div class="worked">
+        <div class="lhs">
+          <div class="verb-name"><em>Analyse</em></div>
+          <div class="rung-lab" style="color:var(--f-subj)">ALARMS · A — Analyse</div>
+          <p class="def">Identify components and the relationship between them; draw out and relate implications.</p>
+          <div class="gloss">
+            <span class="lab">In plain English</span>
+            Break the work into parts. Say what each part is doing. Then say how the parts <em>work on each other</em>. It's not "describe" — description alone won't reach the mark.
+          </div>
+        </div>
+        <div class="rhs">
+          <div class="step">
+            <span class="lab">The question</span>
+            <p class="q">Analyse how <em>one</em> artist you have studied uses scale to make meaning.</p>
+            <span class="marks">8 marks</span>
+          </div>
+          <div class="step">
+            <span class="lab">Band 6 response</span>
+            <div class="response">
+              <p>Louise Bourgeois uses scale in <em>Maman</em> (1999) as a compositional device that produces meaning through the viewer's body. The spider stands 9.27 metres tall<a class="cite" href="#">1</a>: a scale that forces adults to stand under her, in the position of a small child. The relationship Bourgeois analyses through scale is therefore not just formal — it is <em>relational</em>. The viewer becomes a subordinate figure inside a maternal architecture.</p>
+              <p>This scale also transforms the material. Cast bronze at monumental size reads not as an insect but as a shelter: a hollow underside carrying twenty-six eggs<a class="cite" href="#">1</a>. The shift from small (real spider) to monumental (public sculpture) is what allows Bourgeois to move the work from personal biography into public reception, where audiences read it as an homage to her mother.</p>
+            </div>
+          </div>
+          <div class="markersnote">
+            <span class="lab">Marker's note</span>
+            <p>The response earns the mark because it doesn't stop at description. It names a component (scale), says what that component does (forces a bodily position on the viewer), and then relates that back to meaning (the viewer becomes subordinate to a maternal architecture). That third move is where "analyse" lives.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="todo">
+        <h3>Content pending Rannia's Delany matrix</h3>
+        <p>Definitions above are placeholders (drawn from NESA's public glossary of key words). Once Rannia supplies the Delany College ALARMS matrix, we'll transcribe verbatim and update rung placements. Every entry will keep <code>status: draft</code> until that transcription is done and Joe reviews.</p>
+      </div>
+    </section>
+  </div>
+  <div style="height: var(--section-pad)"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="disclosure">Definitions on this page draw from NESA's public glossary of key words for HSC papers, cross-referenced with Delany College's ALARMS teaching matrix (Rannia). All examples are teacher-authored.</p>
+    <div class="meta"><a href="#">Report a rights concern · contact</a><span>Last built 20 July 2026</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

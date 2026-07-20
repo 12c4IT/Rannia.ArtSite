@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The cultural frame — Visual Arts (comp)</title>
+<link rel="stylesheet" href="_kit.css" />
+<style>
+  /* this page is tinted with the cultural frame tone */
+  .frame-hero { --tone: var(--f-cult); padding: clamp(48px, 7vw, 96px) 0 clamp(32px, 4vw, 52px); border-bottom: 1px solid var(--rule); position: relative; }
+  .frame-hero::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--tone); }
+  .frame-hero .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tone); margin: 0 0 16px; display: inline-flex; align-items: center; gap: 8px; }
+  .frame-hero .kicker i { width: 7px; height: 7px; border-radius: 50%; background: var(--tone); }
+  .frame-hero h1 { font-size: var(--display); font-weight: 360; line-height: 1.0; margin: 0 0 22px; }
+  .frame-hero .def { font-family: var(--serif); font-weight: 360; font-size: var(--lede); line-height: 1.42; color: var(--ink); max-width: 56ch; }
+
+  .two-col { display: grid; grid-template-columns: 1fr; gap: clamp(36px, 5vw, 64px); }
+  @media (min-width: 860px) { .two-col { grid-template-columns: 1.4fr 1fr; } }
+
+  .qlist { list-style: none; margin: 18px 0 0; padding: 0; }
+  .qlist li { padding: 16px 0; border-top: 1px solid var(--rule); font-family: var(--serif); font-size: 19px; line-height: 1.4; color: var(--ink); display: flex; gap: 14px; }
+  .qlist li::before { content: counter(q, decimal-leading-zero); counter-increment: q; font-family: var(--mono); font-size: 12px; color: var(--f-cult); padding-top: 6px; }
+  .qlist { counter-reset: q; }
+
+  .vocab { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+
+  .cs-mini { display: flex; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px; background: var(--paper); text-decoration: none; transition: border-color 140ms ease; }
+  .cs-mini:hover { border-color: var(--f-cult); }
+  .cs-mini .ph { width: 84px; flex: none; aspect-ratio: 3/4; border-radius: 2px; }
+  .cs-mini .ph .ph-note { font-size: 9px; padding: 4px 6px; }
+  .cs-mini .m-body { display: flex; flex-direction: column; gap: 4px; }
+  .cs-mini .m-name { font-family: var(--serif); font-size: 19px; color: var(--ink); line-height: 1.1; }
+  .cs-mini .m-dates { font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--ink-2); }
+  .cs-mini .m-pitch { font-size: 13px; line-height: 1.45; color: var(--ink-2); margin-top: 2px; }
+  .aside-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 14px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a href="home.html" class="wordmark">Visual <em>Arts</em></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="case-studies-index.html">Case Studies</a>
+      <a href="frame-detail.html" aria-current="page">Frames</a>
+      <a href="question-detail.html">Questions</a>
+      <a href="lesson.html">Lessons</a>
+      <a href="glossary.html">Glossary</a>
+    </nav>
+    <div class="site-tools">
+      <form class="site-search" role="search" onsubmit="return false">
+        <label class="sr-only" for="q">Search the site</label>
+        <input id="q" type="search" placeholder="Search…" autocomplete="off" />
+      </form>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="frame-hero">
+    <div class="wrap">
+      <p class="kicker"><i></i>Frame · 02 of 04</p>
+      <h1>The <em>cultural</em> frame</h1>
+      <p class="def">The cultural frame reads a work through the social conditions that produced and received it — class, race, gender, ethnicity, politics, religion, and the particular time and place. Art is treated as embedded in society, not separate from it.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap two-col">
+      <div>
+        <p class="section-eyebrow" style="color:var(--f-cult)">Key questions</p>
+        <h2 style="font-size:var(--h2);font-weight:380;margin:0 0 4px;max-width:18ch;">What to ask a work through this frame</h2>
+        <ol class="qlist">
+          <li>What social, political or historical conditions shaped this work?</li>
+          <li>Whose values does it carry — and whose does it challenge?</li>
+          <li>How do class, race, gender or ethnicity operate within it?</li>
+          <li>Who was it made for, and how did different audiences receive it?</li>
+          <li>What does the work reveal about its own time and place?</li>
+        </ol>
+      </div>
+
+      <aside>
+        <p class="aside-label">Vocabulary</p>
+        <div class="vocab">
+          <a class="chip" href="glossary.html#ideology">Ideology</a>
+          <a class="chip" href="glossary.html#representation">Representation</a>
+          <a class="chip" href="glossary.html#appropriation">Appropriation</a>
+          <a class="chip" href="glossary.html#gaze">The gaze</a>
+          <a class="chip" href="glossary.html#colonialism">Colonialism</a>
+          <a class="chip" href="glossary.html#identity">Identity</a>
+          <a class="chip" href="glossary.html#context">Context</a>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:var(--ink-2);margin-top:20px;">The frames are a syllabus framework — defined once here, applied throughout the case studies. They are not mutually exclusive: most works reward more than one.</p>
+      </aside>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section>
+    <div class="wrap">
+      <p class="section-eyebrow" style="color:var(--f-cult)">Case studies through this frame</p>
+      <h2 style="font-size:var(--h2);font-weight:380;margin:0 0 28px;max-width:20ch;">Artists whose <em>primary</em> reading is cultural</h2>
+      <div class="two-col" style="grid-template-columns:1fr;gap:16px;">
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;">
+          <a class="cs-mini" href="#">
+            <div class="ph"><span class="ph-note">Moffatt</span></div>
+            <div class="m-body">
+              <span class="m-name">Tracey Moffatt</span>
+              <span class="m-dates">b. 1960 · Australian</span>
+              <span class="m-pitch">Race, class and gender staged through cinematic photographic series — <em>Something More</em>, <em>Up in the Sky</em>.</span>
+            </div>
+          </a>
+          <a class="cs-mini" href="#">
+            <div class="ph"><span class="ph-note">Brook Andrew</span></div>
+            <div class="m-body">
+              <span class="m-name">Brook Andrew</span>
+              <span class="m-dates">b. 1970 · Wiradjuri</span>
+              <span class="m-pitch">Colonial archives and ethnographic photography turned back on the viewer through Wiradjuri visual language.</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="disclosure">Content on this site is researched and authored by Joe with editorial assistance from AI tooling. Every claim is verified against the cited sources before publication.</p>
+    <div class="meta"><a href="#">Report a rights concern · contact</a><span>Last built 27 May 2026</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Practice — Visual Arts (comp)</title>
+<link rel="stylesheet" href="_kit.css" />
+<style>
+  .index-head { padding: clamp(40px, 6vw, 72px) 0 clamp(20px, 3vw, 40px); }
+  .index-head h1 { font-size: var(--h2); font-weight: 380; margin: 0 0 12px; }
+  .index-head p { color: var(--ink-2); font-size: 15.5px; max-width: 60ch; }
+
+  .hub { display: grid; grid-template-columns: 1fr; gap: 16px; padding: 12px 0 var(--section-pad); }
+  @media (min-width: 720px) { .hub { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1080px) { .hub { grid-template-columns: repeat(3, 1fr); } }
+  .hub-card { display: flex; flex-direction: column; gap: 10px; padding: 22px 22px 24px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); text-decoration: none; transition: border-color 140ms ease; }
+  .hub-card:hover { border-color: var(--accent); }
+  .hub-card .kicker { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .hub-card h3 { font-family: var(--serif); font-size: 22px; font-weight: 440; color: var(--ink); }
+  .hub-card p { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+  .hub-card .go { margin-top: auto; font-family: var(--sans); font-size: 12.5px; font-weight: 500; color: var(--accent); padding-top: 6px; }
+
+  .generator { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); padding: clamp(24px, 4vw, 40px); display: grid; grid-template-columns: 1fr; gap: 24px; }
+  @media (min-width: 900px) { .generator { grid-template-columns: 1.4fr 1fr; } }
+  .generator .qside { display: flex; flex-direction: column; gap: 20px; }
+  .generator .qhead { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .generator .qhead .marks { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); padding: 5px 10px; border: 1px solid var(--accent); border-radius: 999px; }
+  .generator .qhead .frames { display: flex; gap: 6px; flex-wrap: wrap; }
+  .generator .qtext { font-family: var(--serif); font-size: clamp(1.1rem, 0.9rem + 0.7vw, 1.35rem); line-height: 1.42; color: var(--ink); max-width: 52ch; }
+  .generator .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding-top: 4px; }
+  .generator .sideside { border-left: 0; border-top: 1px solid var(--rule); padding-top: 24px; }
+  @media (min-width: 900px) { .generator .sideside { border-left: 1px solid var(--rule); border-top: 0; padding: 0 0 0 24px; } }
+  .generator .sidehead { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 10px; }
+  .prompt { background: var(--paper-2); border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 16px; font-family: var(--mono); font-size: 12.5px; line-height: 1.55; color: var(--ink); max-height: 220px; overflow: auto; margin-bottom: 12px; }
+  .prompt em { font-style: italic; color: var(--accent); font-family: var(--serif); font-size: 13.5px; }
+  .copybtn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--sans); font-size: 12.5px; font-weight: 500; color: var(--ink); background: var(--paper-2); border: 1px solid var(--rule); border-radius: var(--radius); padding: 9px 14px; cursor: pointer; }
+  .copybtn:hover { border-color: var(--accent); color: var(--accent); }
+  .copybtn[data-copied="true"] { color: var(--accent); border-color: var(--accent); }
+  .copybtn[data-copied="true"]::before { content: "✓ "; }
+  .hint { font-size: 13px; color: var(--ink-2); line-height: 1.55; margin-top: 10px; }
+
+  .divider { padding: clamp(30px, 5vw, 56px) 0 20px; border-top: 1px solid var(--rule); margin-top: clamp(30px, 5vw, 56px); }
+  .divider h2 { font-size: 26px; font-weight: 440; margin: 0 0 8px; }
+  .divider p { color: var(--ink-2); font-size: 14.5px; max-width: 56ch; }
+
+  .topics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 24px 0 0; }
+  @media (min-width: 720px) { .topics { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1080px) { .topics { grid-template-columns: repeat(4, 1fr); } }
+  .topic { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 14px 16px; border: 1px solid var(--rule); border-radius: var(--radius); text-decoration: none; color: var(--ink); background: var(--paper); transition: border-color 140ms ease; }
+  .topic:hover { border-color: var(--accent); color: var(--accent); }
+  .topic .n { font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a href="home.html" class="wordmark">Visual <em>Arts</em></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="case-studies-index.html">Case Studies</a>
+      <a href="body-of-works.html">Body of Works</a>
+      <a href="practice.html" aria-current="page">Practice</a>
+      <a href="command-words.html">Command Words</a>
+      <a href="ai-tutor.html">AI Tutor</a>
+    </nav>
+    <div class="site-tools">
+      <form class="site-search" role="search" onsubmit="return false">
+        <label class="sr-only" for="q">Search the site</label>
+        <input id="q" type="search" placeholder="Search…" autocomplete="off" />
+      </form>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="index-head">
+      <p class="eyebrow">Practice</p>
+      <h1>Practise the way you'll be <em>examined</em></h1>
+      <p>Short-answer warm-ups, mark-value generators for the 5-, 8- and 10-mark responses, trial paper questions, and every past HSC question sorted by topic. Every question has a "copy prompt" button so you can drill variants in your own AI tool.</p>
+    </div>
+
+    <div class="hub">
+      <a class="hub-card" href="#daily">
+        <span class="kicker">Daily · warm-up</span>
+        <h3>Daily short answer</h3>
+        <p>A single 2-mark warm-up served fresh every day. Two minutes. Just to keep the hand moving.</p>
+        <span class="go">Today's question →</span>
+      </a>
+      <a class="hub-card" href="#gen5">
+        <span class="kicker">Generator · 5 marks</span>
+        <h3>5-mark generator</h3>
+        <p>Random-draw from the 5-mark bank. Answer, then reveal the scaffold and marker's view.</p>
+        <span class="go">Roll a question →</span>
+      </a>
+      <a class="hub-card" href="#gen8">
+        <span class="kicker">Generator · 8 marks</span>
+        <h3>8-mark generator</h3>
+        <p>Extended short-response practice. Two paragraphs, one frame, one case study.</p>
+        <span class="go">Roll a question →</span>
+      </a>
+      <a class="hub-card" href="#gen10">
+        <span class="kicker">Generator · 10 marks</span>
+        <h3>10-mark generator</h3>
+        <p>Full extended-response practice. Three paragraphs, cross-frame, cross-case-study.</p>
+        <span class="go">Roll a question →</span>
+      </a>
+      <a class="hub-card" href="#trials">
+        <span class="kicker">Trial papers</span>
+        <h3>Trial questions</h3>
+        <p>Trial-paper style questions from previous years, grouped by paper and section.</p>
+        <span class="go">Browse trials →</span>
+      </a>
+      <a class="hub-card" href="#topics">
+        <span class="kicker">Real HSC · by topic</span>
+        <h3>HSC questions by topic</h3>
+        <p>Every past HSC question in the library, sorted by content area — from The Body to Technology.</p>
+        <span class="go">Sort by topic →</span>
+      </a>
+    </div>
+
+    <!-- LIVE-EXAMPLE GENERATOR -->
+    <section id="gen8">
+      <div class="divider" style="margin-top:0;border-top:0;padding-top:0">
+        <p class="section-eyebrow">Live example · 8-mark generator</p>
+        <h2 style="font-size:var(--h2);margin:0 0 12px;max-width:22ch">How the generator <em>works</em></h2>
+        <p>Draw a random question from the bank. Answer it. Peek the scaffold. Or grab the prompt and drill a fresh variant in your own AI tool.</p>
+      </div>
+
+      <div class="generator">
+        <div class="qside">
+          <div class="qhead">
+            <span class="marks">8 marks</span>
+            <div class="frames">
+              <span class="badge" data-frame="cultural"><i></i>Cultural</span>
+              <span class="badge" data-frame="structural"><i></i>Structural</span>
+            </div>
+          </div>
+          <p class="qtext" id="qtext">Explain how <em>one</em> artist you have studied uses material choices to comment on the culture they were formed by. In your response, refer to at least one specific artwork.</p>
+          <div class="controls">
+            <button class="btn" id="roll">Roll another</button>
+            <a class="textlink" href="#">Show the scaffold →</a>
+          </div>
+          <p class="hint">There are 24 questions in the 8-mark bank. Pool sourced from teacher-authored practice + trial papers, never real past HSC (those live under <a href="#" class="textlink">Questions</a>).</p>
+        </div>
+
+        <aside class="sideside">
+          <p class="sidehead">Drill a variant</p>
+          <div class="prompt">You are helping me practise for HSC Visual Arts. Give me one 8-mark short-answer question in NESA style about the <em>cultural frame</em> and the artist's material choices. Do not give me the answer. After I respond, comment on where my response would land in the marking rubric and suggest one specific improvement.</div>
+          <button class="copybtn" id="copy" data-copied="false">Copy prompt</button>
+          <p class="hint" style="margin-top:14px">Paste this into ChatGPT, Claude, or any LLM you already use. This site doesn't call any AI — you stay in control of what tool you use and what data leaves your device.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- BY TOPIC -->
+    <section id="topics">
+      <div class="divider">
+        <p class="section-eyebrow">Real HSC · by topic</p>
+        <h2 style="font-size:26px;margin:0 0 8px">Sorted by content area</h2>
+        <p>The full library of past HSC questions, grouped by the content areas they engage most directly. Question text is verbatim from NESA past papers.</p>
+      </div>
+
+      <div class="topics">
+        <a class="topic" href="#"><span>The body</span><span class="n">17</span></a>
+        <a class="topic" href="#"><span>Identity</span><span class="n">22</span></a>
+        <a class="topic" href="#"><span>Place</span><span class="n">19</span></a>
+        <a class="topic" href="#"><span>Time</span><span class="n">11</span></a>
+        <a class="topic" href="#"><span>Memory</span><span class="n">14</span></a>
+        <a class="topic" href="#"><span>Objects</span><span class="n">9</span></a>
+        <a class="topic" href="#"><span>Nature</span><span class="n">12</span></a>
+        <a class="topic" href="#"><span>Technology</span><span class="n">8</span></a>
+        <a class="topic" href="#"><span>Spirituality</span><span class="n">6</span></a>
+        <a class="topic" href="#"><span>The everyday</span><span class="n">15</span></a>
+      </div>
+    </section>
+  </div>
+  <div style="height: var(--section-pad)"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="disclosure">Practice-generator questions are teacher-authored and clearly separated from real past HSC (which live under Questions and are verbatim from NESA). No prompts leave your device — this site doesn't call any AI service.</p>
+    <div class="meta"><a href="#">Report a rights concern · contact</a><span>Last built 20 July 2026</span></div>
+  </div>
+</footer>
+
+<script>
+  const pool = [
+    { text: 'Explain how <em>one</em> artist you have studied uses material choices to comment on the culture they were formed by. In your response, refer to at least one specific artwork.', frames: ['cultural', 'structural'] },
+    { text: 'Analyse how the postmodern frame changes what we can see in <em>one</em> work by an artist you have studied.', frames: ['postmodern'] },
+    { text: 'Discuss how <em>one</em> artist you have studied uses the body as subject, material, or metaphor.', frames: ['subjective', 'cultural'] },
+    { text: 'Evaluate the role of place in the practice of <em>one</em> artist you have studied.', frames: ['cultural', 'structural'] },
+  ];
+  const q = document.getElementById('qtext');
+  const roll = document.getElementById('roll');
+  const copy = document.getElementById('copy');
+  let i = 0;
+  roll.addEventListener('click', () => { i = (i + 1) % pool.length; q.innerHTML = pool[i].text; });
+  copy.addEventListener('click', async () => {
+    const text = document.querySelector('.prompt').innerText;
+    try { await navigator.clipboard.writeText(text); copy.dataset.copied = 'true'; copy.textContent = 'Copied'; setTimeout(() => { copy.dataset.copied = 'false'; copy.textContent = 'Copy prompt'; }, 1600); } catch (e) {}
+  });
+</script>
+
+</body>
+</html>
