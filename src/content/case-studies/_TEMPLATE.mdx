@@ -60,6 +60,17 @@ artworks:
       rightsBasis: educational-fair-dealing   # see CONTENT_GUIDELINES.md §4
       rightsNotes: "[Justify the rights basis]"
       sourceUrl: "[URL where the image was sourced]"
+    # Labelled observations tied to features in the image. Rendered as
+    # numbered callouts beside the artwork; if x/y coords are supplied,
+    # they also appear as hotspots on the image itself.
+    annotations:
+      - label: "[Short caption — e.g. 'Steel legs']"
+        note: "[1–2 sentences on what to notice here and why it matters.]"
+        # Optional 0–100 coords into the image; omit for list-only.
+        # x: 40
+        # y: 55
+      - label: "[Second annotation]"
+        note: "[…]"
     frames:
       subjective: |
         [2–4 paragraphs reading the work through the subjective frame.
@@ -94,6 +105,7 @@ artworks:
       rightsBasis: educational-fair-dealing
       rightsNotes: ""
       sourceUrl: ""
+    annotations: []
     frames:
       subjective: |
       cultural: |
@@ -115,6 +127,39 @@ conceptualFramework:
   audience: |
     [2–4 sentences on audience reception. Who the work was made for,
      who received it, how reception has shifted, controversies.]
+
+# ──────────────────── Themes & techniques (artist page) ────────────────
+# Recurring subject matter across the practice — short phrases, not paragraphs.
+themes:
+  - "[e.g. maternal body]"
+  - "[e.g. memory and place]"
+
+# Materials, processes, and methods the artist is known for.
+techniques:
+  - "[e.g. cast bronze at monumental scale]"
+  - "[e.g. fabric assemblage from personal clothing]"
+
+# ──────────────────── Sample questions and worked answers ──────────────
+# Teacher-authored practice tied to this case study. NOT real past HSC
+# (those live in src/content/questions). Include a worked answer at the
+# band level students should be aiming for, plus a marker's note.
+sampleQuestionsAndAnswers:
+  - question: "[Full question text, HSC-style.]"
+    markValue: 10
+    frames:
+      - cultural
+    workedAnswer: |
+      [Band 6 response, 2–4 paragraphs. Cite where a real student would cite.]
+    markersNote: |
+      [What earns the marks here — the moves a marker rewards, in one paragraph.]
+    # Optional. Copy-to-clipboard prompt so students can drill a fresh
+    # variant of this question in their own AI tool, tailored to this artist.
+    variantPrompt: |
+      You are helping me practise for HSC Visual Arts. Give me one [markValue]-mark
+      question in NESA style about [Artist name] and the [primary frame] frame,
+      similar in shape to this one but with a different angle. Do not give me the
+      answer. After I respond, tell me where my response would land in the
+      marking rubric and suggest one specific improvement.
 
 # ─────────────────────────── Linked entries ───────────────────────────
 

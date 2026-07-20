@@ -1,0 +1,86 @@
+---
+# ═══════════════════════════════════════════════════════════════════════════
+# BODY OF WORKS TEMPLATE
+#
+# One folder per entry, mirroring case studies:
+#   src/content/body-of-works/<student-slug>/index.mdx
+#   src/content/body-of-works/<student-slug>/images/plate-1.jpg
+#
+# Every entry MUST have signed consent on file before status leaves 'draft'.
+# See CONTENT_GUIDELINES.md for the consent workflow.
+# ═══════════════════════════════════════════════════════════════════════════
+
+title: "[Short pitch / title of the body of work]"
+
+studentDisplayName: "[Pseudonym or first-name-only unless consent.allowsFullName is true]"
+
+yearGraduated: 2025
+
+# painting | drawing | sculpture | ceramics | photography | time-based | digital | collection-of-works
+medium: painting
+
+band: 6                             # optional; 1–6
+
+shortPitch: "[1–2 sentences describing the BOW. Shows up on gallery cards. 40–280 chars.]"
+
+heroImage:
+  src: "./images/plate-1.jpg"
+  alt: "[Descriptive alt text: student, work, medium — 20+ chars]"
+  caption: "[Student name or pseudonym], [Title] (Year). Medium. Dimensions. Photo: [credit]."
+  artist: "[Student display name]"
+  title: "[Work title]"
+  year: 0000
+  medium: "[Medium]"
+  dimensions: ""
+  collection: "Student portfolio"
+  photoCredit: "[Photo credit — usually 'Student' or 'Delany College']"
+  rightsBasis: licensed             # student-supplied with consent
+  rightsNotes: "Student consent on file — see consent block below."
+  sourceUrl: ""
+
+additionalImages: []                # further plates, process shots, details
+
+concept: |
+  [What the work is about — the driving idea, in the student's terms
+   as much as possible. 1–2 paragraphs.]
+
+materials:
+  - "[e.g. oil on linen]"
+  - "[e.g. found domestic objects]"
+
+frames:
+  - subjective
+  - cultural
+
+practice: |
+  [How the student worked — process, timeline, key decisions,
+   what they iterated on. 1–2 paragraphs.]
+
+whyScoredHighly: |
+  [Marker's view — what earned the mark. Which strengths a HSC marker
+   would rate: resolution, technical control, conceptual depth,
+   sustained exploration. Be specific.]
+
+thingsToLearn:
+  - "[One-line takeaway a student could carry into their own BOW]"
+  - "[Another takeaway]"
+  - "[Another]"
+
+# ───────────────────────── Consent (required) ─────────────────────────
+consent:
+  onFile: false                     # MUST be true before status: published
+  signedBy: "[Student full name; add guardian name if under 18]"
+  dateSigned: 2026-01-01
+  allowsFullName: false             # true only if student explicitly consents
+  notes: ""
+
+sources: []
+
+status: draft
+lastReviewed: 2026-07-20
+reviewedBy: "[Reviewer name]"
+---
+
+## Notes
+
+[Any additional context that doesn't fit the structured fields above.]
