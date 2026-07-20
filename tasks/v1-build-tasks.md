@@ -56,12 +56,19 @@ Before starting **any** task: read `CLAUDE.md`, `PLAN.md`, and `CONTENT_GUIDELIN
 
 Deliverables — one self-contained HTML file each, written to `docs/comps/`:
 
-- [ ] `docs/comps/home.html`
-- [ ] `docs/comps/case-studies-index.html` — filterable card grid
-- [ ] `docs/comps/frame-detail.html` — use `cultural` as the example frame
-- [ ] `docs/comps/lesson.html` — WALT/WILF block + one `QuestionScaffold`
-- [ ] `docs/comps/question-detail.html` — collapsible scaffold
-- [ ] `docs/comps/glossary.html`
+- [x] `docs/comps/home.html`
+- [x] `docs/comps/case-studies-index.html` — filterable card grid
+- [x] `docs/comps/frame-detail.html` — use `cultural` as the example frame
+- [x] `docs/comps/lesson.html` — WALT/WILF block + one `QuestionScaffold`
+- [x] `docs/comps/question-detail.html` — collapsible scaffold
+- [x] `docs/comps/glossary.html`
+
+Client-review additions (2026-07-20 — Rannia's handwritten notes):
+
+- [ ] `docs/comps/body-of-works.html` — student BOW gallery landing, cards by medium (Client note ①)
+- [ ] `docs/comps/practice.html` — practice hub with generator UI + copy-prompt buttons (Client note ②)
+- [ ] `docs/comps/command-words.html` — ALARMS matrix landing + one worked-verb detail (Client note ③)
+- [ ] `docs/comps/ai-tutor.html` — v1 static prompt library, v2 stub explanation (Client note ⑤)
 
 Each comp must:
 
@@ -86,9 +93,11 @@ Each comp must:
 ## Task 6 — Case study template
 
 - [ ] Build component `src/components/case-study/ConceptualFrameworkSummary.astro`.
-- [ ] Build component `src/components/case-study/ArtworkBlock.astro` (image + caption + four-frame tabs/accordion).
+- [ ] Build component `src/components/case-study/ArtworkBlock.astro` (image + caption + four-frame tabs/accordion + **annotations panel** with optional x/y hotspots).
 - [ ] Build component `src/components/case-study/FrameBadge.astro`.
 - [ ] Build component `src/components/case-study/ContentAreaBadge.astro`.
+- [ ] Build component `src/components/case-study/ThemesTechniques.astro` — renders artist-page `themes` and `techniques` arrays (Client note ④).
+- [ ] Build component `src/components/case-study/SampleQuestionsAndAnswers.astro` — collapsible per-question worked answer + marker's note (Client note ④).
 - [ ] Build component `src/components/ui/SourceCite.astro` (inline `[^id]` rendered as superscript + popover).
 - [ ] Build component `src/components/ui/LastReviewed.astro`.
 - [ ] Build component `src/components/ui/StatusBadge.astro` (only renders in non-prod).
@@ -108,6 +117,51 @@ Each comp must:
 - [ ] Build `src/pages/questions/by-type/[type].astro`.
 - [ ] Build `src/pages/questions/[id].astro`.
 - [ ] Commit: `feat: lesson and question templates`.
+
+## Task 7a — Body of Works gallery (Client note ①)
+
+Rannia supplies content + consent. This task builds the *shell*.
+
+- [ ] Build `src/pages/body-of-works/index.astro` — landing page grouped by medium (painting, drawing, sculpture, ceramics, photography, time-based, digital, collection-of-works). Filter chips.
+- [ ] Build `src/pages/body-of-works/[medium].astro` — medium-specific listing.
+- [ ] Build `src/pages/body-of-works/[slug].astro` — individual student example. Renders concept, materials, frames, practice, whyScoredHighly, thingsToLearn, image gallery.
+- [ ] Build component `src/components/bow/BowCard.astro`.
+- [ ] Build component `src/components/bow/BowMediumBadge.astro`.
+- [ ] Enforce publication gate: entries with `status: published` AND `consent.onFile: true` only.
+- [ ] Commit: `feat: body of works gallery`.
+
+## Task 7b — Practice hub (Client note ②)
+
+Static, no LLM. `variantPrompt` field powers a copy-to-clipboard button for students to use in their own tools.
+
+- [ ] Build `src/pages/practice/index.astro` — hub cards for daily / 5 / 8 / 10 / trial.
+- [ ] Build `src/pages/practice/daily.astro` — one short-answer per day (deterministic per date, no JS shuffling needed).
+- [ ] Build `src/pages/practice/generator/[marks].astro` — random-draw client-side from `practice-questions` filtered by marks (5, 8, or 10). "Re-roll" button.
+- [ ] Build `src/pages/practice/trial.astro` — trial-paper questions listing.
+- [ ] Build `src/pages/questions/by-topic.astro` — HSC questions grouped by content area (Rannia specifically called this out).
+- [ ] Build component `src/components/practice/CopyPromptButton.astro` — clipboard button on any question with a `variantPrompt`.
+- [ ] Commit: `feat: practice hub`.
+
+## Task 7c — Command Words / ALARMS matrix (Client note ③)
+
+**Gated on Joe supplying the Delany College ALARMS matrix source.** Build the shell now; transcribe content when Joe delivers.
+
+- [ ] Build `src/pages/command-words/index.astro` — matrix landing. Grid of the eight verbs (Analyse, Explain, Evaluate, Discuss, Account for, Justify, Compare, Assess).
+- [ ] Build `src/pages/command-words/[slug].astro` — individual verb page with definition, student gloss, worked example.
+- [ ] Once Joe supplies the Delany matrix: create one draft entry per verb in `src/content/command-words/` using the template.
+- [ ] Commit: `feat: command words page`.
+
+## Task 7d — AI Art Tutor stub (Client note ⑤ — v2)
+
+v1 ships a **static prompt library**. Live AI backend is deferred to v2 per CLAUDE.md.
+
+- [ ] Build `src/pages/ai-tutor.astro` — explanation of what the v2 tutor will do, plus a static, copyable prompt library covering:
+  - Paragraph feedback against HSC criteria
+  - BOW photo critique (composition / technique / concept)
+  - Practice question generation (with the disclaimer that guidance ≠ marking)
+  - Band 6 response scaffolding
+- [ ] Log v2 build ticket in `ROADMAP.md` for the live-backend version.
+- [ ] Commit: `feat: ai tutor stub`.
 
 ## Task 8 — Glossary, references, 404
 

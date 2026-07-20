@@ -61,7 +61,25 @@ A student-facing resource site for NSW Stage 6 Visual Arts (Preliminary + HSC), 
   /questions/by-content-area/[area]
   /questions/by-year/[year]
   /questions/by-type/[type]
+  /questions/by-topic       Client-requested — HSC questions sorted by topic
   /questions/[id]          Individual question with scaffold + exemplar structure
+/practice                  Practice hub (Client note ②)
+  /practice/daily          Daily short answers
+  /practice/generator/5    5-mark practice — random draw + copy-prompt
+  /practice/generator/8    8-mark practice — random draw + copy-prompt
+  /practice/generator/10   10-mark practice — random draw + copy-prompt
+  /practice/trial          Trial-paper questions
+/body-of-works             Student BOW gallery, indexed by medium (Client note ①)
+  /body-of-works/[medium]  painting | drawing | sculpture | ceramics |
+                           photography | time-based | digital | collection-of-works
+  /body-of-works/[slug]    Individual student example — every entry requires
+                           signed consent on file before publication
+/command-words             Delany College ALARMS matrix — command-verb reference
+  /command-words/[slug]    Analyse, Explain, Evaluate, Discuss, Account for,
+                           Justify, Compare, Assess — each with worked example
+/ai-tutor                  v2 stub page (Client note ⑤). v1 ships a static
+                           prompt library students can paste into their own
+                           LLM; live AI backend deferred to v2 per CLAUDE.md.
 /glossary                  Art terminology (linked from MDX content)
 /references                Master bibliography and image credits
 /about                     About the site, editorial policy, who Joe is
@@ -145,16 +163,19 @@ A student-facing resource site for NSW Stage 6 Visual Arts (Preliminary + HSC), 
 
 ## 7. Content model
 
-Defined via Astro Content Collections with Zod schemas (see `schemas/content-config.ts`). Summary:
+Defined via Astro Content Collections with Zod schemas in `src/content.config.ts` (canonical). Summary:
 
-- **CaseStudy** — artist metadata, two artwork sub-entries, primary/secondary frames, content areas, sources, review status
-- **Artwork** (nested in case study) — title, year, medium, dimensions, location, image, four-frame analysis blocks
-- **Question** — year, paper, section, marks, frame tags, content area tags, question type, scaffold, exemplar structure, source URL
+- **CaseStudy** — artist metadata, two artwork sub-entries, primary/secondary frames, content areas, conceptual framework, **themes**, **techniques**, **sampleQuestionsAndAnswers** (teacher-authored practice with worked answers), sources, review status. Client note ④ fields (biography, practice, techniques, sample Q+A) are covered by the frontmatter block plus MDX body.
+- **Artwork** (nested in case study) — title, year, medium, dimensions, location, image, **annotations** (labelled features with optional x/y hotspot coords), four-frame analysis blocks
+- **Question** — year, paper, section, marks, frame tags, content area tags, question type, scaffold, exemplar structure, source URL. STRICT verbatim-from-NESA rule.
+- **PracticeQuestion** — teacher-authored / generator-seeded practice (5/8/10-mark, trial, daily). Not verbatim; may include a `variantPrompt` for students to paste into their own LLM.
 - **Lesson** — year level, duration, WALT, WILF, linked case studies, linked questions, scaffolds
+- **BodyOfWork** — student BOW gallery entry. Medium, concept, materials, frames, practice, whyScoredHighly, thingsToLearn, images, **consent block** (required — publication-gated).
+- **CommandWord** — ALARMS matrix entry per directive verb (Analyse, Explain, Evaluate, Discuss, Account for, Justify, Compare, Assess). Definition, student gloss, worked example (question + response + marker's note).
 - **GlossaryTerm** — term, definition, related frame
 - **Reference** — citation in a consistent format
 
-Every content entry has: `status` (draft/review/published), `lastReviewed`, `reviewedBy`. Only `published` items render in production builds.
+Every content entry has: `status` (draft/review/published), `lastReviewed`, `reviewedBy`. Only `published` items render in production builds. BodyOfWork entries additionally require `consent.onFile: true` before publication.
 
 ## 8. Design direction
 
@@ -218,6 +239,8 @@ Eight is a sensible v1 launch number — meaningful coverage without drowning in
 ## 12. v2 roadmap (future)
 
 See `ROADMAP.md` for the full path. Headline: migrate the static renderer to ASP.NET Core 9 + Razor Pages + PostgreSQL on Azure, keeping the Markdown/MDX content unchanged. Add Identity for student accounts, then: bookmarks, highlights, practice attempts, teacher-set tasks, marking feedback.
+
+**AI Art Tutor** (Client note ⑤) is v2 work. It needs a backend for API-key management, rate limiting, and cost containment — all forbidden in v1 per CLAUDE.md. v1 ships a static prompt library at `/ai-tutor` that students can copy into their own LLM. v2 adds live paragraph feedback against HSC criteria, BOW photo critique on composition/technique/concept (with a "guidance, not marking" disclaimer), tailored practice-question generation, and step-by-step Band 6 response scaffolding.
 
 ## 13. Risks and mitigations
 
