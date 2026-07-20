@@ -86,6 +86,7 @@ Each comp must:
 - [ ] **REMOVE** the Task 3 shell-disclosure copy from `index.astro` (the `.shell-note` paragraph + its `TODO(Task 5)` comment) when building the real home.
 - [ ] Build `src/pages/conceptual-framework.astro` reading the `pages` collection entry.
 - [ ] Build `src/pages/frames/index.astro` and `src/pages/frames/[frame].astro`.
+- [ ] Extend each `src/content/pages/frames/[frame].md` (or the equivalent per-frame content entry) with a **worked example** that answers the frame's guiding questions in the format Rannia asked for — question + Band 6 response + marker's note. Client note (2026-07-20): "In the frames section add more information format with a worked example that answers the questions".
 - [ ] Build `src/pages/practice.astro`.
 - [ ] Build `src/pages/about.astro`.
 - [ ] Commit: `feat: explainer pages`.
