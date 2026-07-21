@@ -1,0 +1,176 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FrameBadge from '../../components/case-study/FrameBadge.astro';
+import ContentAreaBadge from '../../components/case-study/ContentAreaBadge.astro';
+
+// Review environment — every entry renders. Drafts are visually flagged
+// by the <StatusBadge/> corner chip. When we stand up a separate public
+// production site, add PUBLIC_HIDE_DRAFTS filtering here.
+const all = await getCollection('case-studies');
+const entries = all;
+
+entries.sort((a, b) => a.data.artist.name.localeCompare(b.data.artist.name));
+
+// Derive filter facets from the actual entries so filters never show empty
+// options.
+const framesInUse = new Set<string>();
+const areasInUse = new Set<string>();
+entries.forEach((e) => {
+  framesInUse.add(e.data.primaryFrame);
+  e.data.contentAreas.forEach((a) => areasInUse.add(a));
+});
+---
+
+<BaseLayout title="Case studies — Visual Arts" description="Verified case studies analysed through the four frames and the conceptual framework.">
+  <div class="wrap">
+    <div class="index-head">
+      <p class="eyebrow">Case studies</p>
+      <h1>Artists <em>read</em> through the frames</h1>
+      <p class="lede">Each case study analyses two artworks through all four frames and the conceptual framework, with cited sources and rights-cleared images.</p>
+    </div>
+
+    {entries.length === 0 && (
+      <div class="empty">
+        <p class="eyebrow">No case studies yet</p>
+        <h2>Coming soon</h2>
+        <p>Rannia's authoring the first case studies now. Once she flips one from draft to published, it appears here.</p>
+      </div>
+    )}
+
+    {entries.length > 0 && (
+      <>
+        <div class="filters">
+          <div class="filter-group">
+            <span class="lab">Primary frame</span>
+            <div class="pillset" id="frame-pills">
+              <button class="fpill" data-val="all" aria-pressed="true">All</button>
+              {['subjective', 'cultural', 'structural', 'postmodern'].filter((f) => framesInUse.has(f)).map((f) => (
+                <button class="fpill" data-val={f}>{f.charAt(0).toUpperCase() + f.slice(1)}</button>
+              ))}
+            </div>
+          </div>
+          <span class="count" id="count">Showing {entries.length} of {entries.length}</span>
+        </div>
+
+        <div class="grid" id="grid">
+          {entries.map((e) => {
+            const hero = e.data.heroImageRef === 'artwork-2' ? e.data.artworks[1] : e.data.artworks[0];
+            const dates = `${e.data.artist.birthYear}${e.data.artist.deathYear ? `–${e.data.artist.deathYear}` : ''} · ${e.data.artist.nationality}`;
+            return (
+              <a class="card" href={`/case-studies/${e.id}`} data-frame={e.data.primaryFrame}>
+                <div class="image">
+                  <Image src={hero.image.src} alt={hero.image.alt} widths={[320, 640, 900]} sizes="(min-width: 980px) 33vw, (min-width: 620px) 50vw, 100vw" />
+                </div>
+                <div class="body">
+                  <div class="badges">
+                    <FrameBadge frame={e.data.primaryFrame} primary />
+                  </div>
+                  <span class="name">{e.data.artist.name}</span>
+                  <span class="dates">{dates}</span>
+                  <p class="pitch">{e.data.shortPitch}</p>
+                  <div class="areas">
+                    {e.data.contentAreas.slice(0, 3).map((a) => <ContentAreaBadge area={a} />)}
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </>
+    )}
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+
+  .index-head { padding: clamp(40px, 6vw, 72px) 0 0; }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+  h1 { font-size: var(--text-h2); font-weight: 380; margin: 0 0 12px; letter-spacing: -0.015em; }
+  h1 em { font-style: italic; color: var(--accent); font-weight: 380; }
+  .lede { color: var(--ink-2); font-size: 15.5px; max-width: 60ch; margin: 0; }
+
+  .empty { padding: clamp(48px, 8vw, 96px) 0; text-align: left; }
+  .empty h2 { font-family: var(--font-display); font-size: var(--text-h2); font-weight: 380; margin: 0 0 12px; letter-spacing: -0.015em; }
+  .empty p { color: var(--ink-2); max-width: 52ch; margin: 0; }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 28px;
+    align-items: flex-end;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+    margin-top: 28px;
+  }
+  .filter-group { display: flex; flex-direction: column; gap: 8px; }
+  .lab { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+  .pillset { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fpill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 7px 12px;
+    cursor: pointer;
+  }
+  .fpill[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  .count { margin-left: auto; font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-2); align-self: center; }
+
+  .grid { display: grid; grid-template-columns: 1fr; gap: 22px; padding: 36px 0 0; }
+  @media (min-width: 620px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--paper);
+    text-decoration: none;
+    transition: border-color 140ms ease, transform 140ms ease;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .image { aspect-ratio: 4 / 3; overflow: hidden; background: var(--paper-2); border-bottom: 1px solid var(--rule); }
+  .image :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .name { font-family: var(--font-display); font-size: 22px; font-weight: 420; line-height: 1.12; color: var(--ink); }
+  .dates { font-family: var(--font-display); font-style: italic; font-size: 14.5px; color: var(--ink-2); margin-top: -4px; }
+  .pitch { font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  .areas { margin-top: auto; display: flex; flex-wrap: wrap; gap: 5px; padding-top: 6px; }
+  .hidden { display: none !important; }
+</style>
+
+<script>
+  const state = { frame: 'all' };
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('#grid .card'));
+  const countEl = document.getElementById('count');
+  const pills = document.querySelectorAll<HTMLButtonElement>('#frame-pills .fpill');
+
+  function apply() {
+    let shown = 0;
+    cards.forEach((c) => {
+      const ok = state.frame === 'all' || c.dataset.frame === state.frame;
+      c.classList.toggle('hidden', !ok);
+      if (ok) shown++;
+    });
+    if (countEl) countEl.textContent = `Showing ${shown} of ${cards.length}`;
+  }
+  pills.forEach((p) => {
+    p.addEventListener('click', () => {
+      pills.forEach((x) => x.setAttribute('aria-pressed', 'false'));
+      p.setAttribute('aria-pressed', 'true');
+      state.frame = p.dataset.val ?? 'all';
+      apply();
+    });
+  });
+</script>

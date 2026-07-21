@@ -1,0 +1,239 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const prompts = [
+  {
+    kicker: 'Prompt · 01',
+    title: 'Paragraph feedback',
+    blurb: "Paste your paragraph. The AI reads it against HSC marking criteria and suggests one specific improvement.",
+    body: `You are helping me practise for HSC Visual Arts. I will paste one paragraph of a short-answer response. Read it against NESA marking criteria for [5 / 8 / 10]-mark responses. Comment on:
+
+1. Which frame(s) I appear to be using and whether I've named them.
+2. Whether I analyse or only describe.
+3. One specific improvement I could make in a rewrite.
+
+Do not rewrite my paragraph for me. Guidance, not marking.
+
+My paragraph:
+[paste here]`,
+    footnote: 'Works in ChatGPT, Claude, Gemini, Perplexity.',
+  },
+  {
+    kicker: 'Prompt · 02',
+    title: 'BOW photo critique',
+    blurb: "Attach a photo of your BOW. The AI critiques composition, technique, and concept in that order. Not marking — guidance.",
+    body: `You are helping me practise for HSC Visual Arts. I have attached a photo of one work from my Body of Work. My conceptual intent is:
+
+[one or two sentences]
+
+Give me a critique in three sections, in this order:
+
+1. Composition — what's working, what's fighting.
+2. Technique — what the surface / material / process is doing.
+3. Concept — how well the work is delivering the intent I stated.
+
+End with one specific thing I could try in the next iteration. Remind me this is guidance, not marking.`,
+    footnote: 'Use a tool that accepts image uploads.',
+  },
+  {
+    kicker: 'Prompt · 03',
+    title: 'Practice question generator',
+    blurb: "Generates fresh practice questions tailored to a specific artist, frame, or content area. Doesn't give you the answer.",
+    body: `You are helping me practise for HSC Visual Arts. Generate one [5 / 8 / 10]-mark short-answer question in NESA style about:
+
+- Artist: [e.g. Louise Bourgeois]
+- Frame focus: [e.g. cultural]
+- Content area (optional): [e.g. the body]
+
+Do not give me the answer. After I respond, tell me where my response would land in the marking rubric and suggest one specific improvement.`,
+    footnote: 'Great for daily drills.',
+  },
+  {
+    kicker: 'Prompt · 04',
+    title: 'Band 6 scaffold builder',
+    blurb: "Walks you through building a Band 6 response step by step. Each step is a fresh prompt to you.",
+    body: `You are helping me build a Band 6 HSC Visual Arts extended response, step by step. I will give you the question and my case study. Guide me through, one step at a time, waiting for my answer before continuing.
+
+Question: [paste here]
+Case study I'll anchor the response in: [artist name]
+
+Steps in order:
+1. Decode the verbs and key terms in the question.
+2. Choose the frames most useful for this question.
+3. Draft a thesis sentence — I write it, you critique it.
+4. Plan three paragraphs (topic sentence + one artwork citation each).
+5. Draft one paragraph — I write it, you critique it.
+
+Guidance, not marking.`,
+    footnote: 'Great as an exam-week routine.',
+  },
+];
+---
+
+<BaseLayout title="AI Tutor — Visual Arts" description="A curated library of prompts you can paste into ChatGPT, Claude, or any AI tool you already use. The site itself doesn't call any AI service.">
+  <div class="wrap">
+    <header class="head">
+      <p class="eyebrow">AI Tutor · prompt library</p>
+      <h1>Bring your own <em>AI</em>. We bring the prompts.</h1>
+      <p class="lede">A curated library of prompts you can paste into ChatGPT, Claude, or whichever tool you already use. Copy, paste, drill. The site itself doesn't call any AI service — your data stays on your device.</p>
+    </header>
+
+    <div class="callout">
+      <div class="side now">
+        <span class="badge-soon">Available now · v1</span>
+        <span class="kicker">Prompt library</span>
+        <h2>Copy-and-paste prompts</h2>
+        <p>Ready-to-use prompts covering the four things students most often want AI help with. Each is tuned for HSC criteria and includes the "guidance, not marking" reminder for the tutor.</p>
+        <ul>
+          <li>Paragraph feedback against HSC criteria</li>
+          <li>Photo critique of your BOW (composition, technique, concept)</li>
+          <li>Practice-question generation for a specific artist or frame</li>
+          <li>Band 6 response scaffolding, step by step</li>
+        </ul>
+      </div>
+      <div class="side">
+        <span class="badge-soon">Coming in v2</span>
+        <span class="kicker">Live tutor</span>
+        <h2>Live in-page feedback</h2>
+        <p>Once we build the v2 backend, these same tasks run in-page: paste a paragraph, get feedback; upload a BOW photo, get a critique. Guidance, never official marking.</p>
+        <ul>
+          <li>Cost-controlled and rate-limited</li>
+          <li>Student data stays on-server, never trained on</li>
+          <li>Teacher can see aggregate use, never individual chats</li>
+        </ul>
+      </div>
+    </div>
+
+    <section class="lib-section">
+      <p class="section-eyebrow">Prompt library</p>
+      <h2>Four prompts, one <em>workflow</em></h2>
+      <p class="sub">Copy the prompt. Paste it into your AI tool. Fill in the [square-bracketed] slots. Keep the conversation in <em>your</em> tool — this site never sees it. That's the whole point.</p>
+
+      <div class="lib">
+        {prompts.map((p, i) => (
+          <article class="prompt-card">
+            <span class="kicker">{p.kicker}</span>
+            <h3>{p.title}</h3>
+            <p>{p.blurb}</p>
+            <div class="prompt-body" data-prompt={p.body} id={`p${i}`}>{p.body}</div>
+            <div class="row">
+              <button class="copybtn" data-target={`p${i}`} data-copied="false" type="button">Copy prompt</button>
+              <span class="quiet">{p.footnote}</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.0; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-weight: 380; font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 56ch; margin: 0; }
+
+  .callout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    margin: clamp(32px, 5vw, 56px) 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+  @media (min-width: 820px) { .callout { grid-template-columns: 1fr 1fr; } }
+  .callout .side { padding: clamp(24px, 4vw, 36px); display: flex; flex-direction: column; gap: 12px; }
+  .callout .side.now { background: var(--paper-2); border-bottom: 1px solid var(--rule); }
+  @media (min-width: 820px) { .callout .side.now { border-bottom: 0; border-right: 1px solid var(--rule); } }
+  .kicker { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+  .callout h2 { font-family: var(--font-display); font-size: 26px; font-weight: 440; margin: 0; }
+  .callout p { font-size: 14.5px; line-height: 1.62; color: var(--ink-2); max-width: 52ch; margin: 0; }
+  .callout ul { margin: 0; padding-left: 20px; }
+  .callout li { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 4px 0; }
+  .badge-soon {
+    display: inline-block;
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 4px 9px;
+    margin-bottom: 4px;
+  }
+
+  .lib-section { padding: clamp(30px, 5vw, 56px) 0 clamp(48px, 8vw, 96px); }
+  .section-eyebrow { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+  .lib-section h2 { font-family: var(--font-display); font-size: var(--text-h2); font-weight: 380; margin: 0 0 12px; letter-spacing: -0.015em; max-width: 22ch; }
+  .lib-section h2 em { color: var(--accent); font-style: italic; font-weight: 380; }
+  .sub { color: var(--ink-2); font-size: 15px; max-width: 60ch; margin: 0 0 32px; }
+  .sub em { font-style: italic; }
+
+  .lib { display: grid; grid-template-columns: 1fr; gap: 22px; }
+  @media (min-width: 900px) { .lib { grid-template-columns: 1fr 1fr; } }
+  .prompt-card {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    background: var(--paper);
+    padding: clamp(20px, 3vw, 28px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .prompt-card h3 { font-family: var(--font-display); font-size: 22px; font-weight: 440; line-height: 1.2; margin: 0; }
+  .prompt-card p { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+  .prompt-body {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--ink);
+    max-height: 260px;
+    overflow: auto;
+    white-space: pre-wrap;
+  }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .copybtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    padding: 9px 14px;
+    cursor: pointer;
+  }
+  .copybtn:hover { border-color: var(--accent); color: var(--accent); }
+  .copybtn[data-copied="true"] { color: var(--accent); border-color: var(--accent); }
+  .copybtn[data-copied="true"]::before { content: "\2713  "; }
+  .quiet { font-size: 12.5px; color: var(--ink-2); }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.ai-tutor-page .copybtn, .copybtn').forEach((btn) => {
+    if (!btn.dataset.target) return;
+    btn.addEventListener('click', async () => {
+      const t = document.getElementById(btn.dataset.target!);
+      const text = t?.dataset.prompt ?? t?.innerText ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.dataset.copied = 'true';
+        const orig = btn.textContent;
+        btn.textContent = 'Copied';
+        setTimeout(() => { btn.dataset.copied = 'false'; btn.textContent = orig; }, 1600);
+      } catch (e) {}
+    });
+  });
+</script>

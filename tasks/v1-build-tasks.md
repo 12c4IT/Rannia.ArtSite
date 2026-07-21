@@ -82,28 +82,29 @@ Each comp must:
 
 ## Task 5 — Build the explainer pages
 
-- [ ] Build `src/pages/index.astro` — home. Hero, intro, four-frame cards, featured case study slot (placeholder until content exists).
-- [ ] **REMOVE** the Task 3 shell-disclosure copy from `index.astro` (the `.shell-note` paragraph + its `TODO(Task 5)` comment) when building the real home.
-- [ ] Build `src/pages/conceptual-framework.astro` reading the `pages` collection entry.
-- [ ] Build `src/pages/frames/index.astro` and `src/pages/frames/[frame].astro`.
-- [ ] Extend each `src/content/pages/frames/[frame].md` (or the equivalent per-frame content entry) with a **worked example** that answers the frame's guiding questions in the format Rannia asked for — question + Band 6 response + marker's note. Client note (2026-07-20): "In the frames section add more information format with a worked example that answers the questions".
-- [ ] Build `src/pages/practice.astro`.
-- [ ] Build `src/pages/about.astro`.
+- [x] Build `src/pages/index.astro` — home. Hero, intro, four-frame cards, featured case study slot (renders when a published case study exists).
+- [x] **REMOVE** the Task 3 shell-disclosure copy from `index.astro`.
+- [x] Build `src/pages/conceptual-framework.astro` reading the `pages` collection entry.
+- [x] Build `src/pages/frames/index.astro` and `src/pages/frames/[frame].astro`. Per-frame content lives at `src/content/pages/frames/[frame].md` — stubs created for all four.
+- [ ] Extend each per-frame content file with a **worked example** — question + Band 6 response + marker's note. Client note (2026-07-20): "In the frames section add more information format with a worked example that answers the questions". *Authoring by Rannia.*
+- [x] Build `src/pages/practice.astro` (as a Coming Soon stub — Task 7b replaces).
+- [x] Build `src/pages/about.astro`.
+- [x] Bonus: `body-of-works.astro`, `command-words.astro`, `lessons.astro`, `questions.astro`, `glossary.astro`, `ai-tutor.astro` all shipped as stubs / functional pages so nav doesn't 404.
 - [ ] Commit: `feat: explainer pages`.
 
 ## Task 6 — Case study template
 
-- [ ] Build component `src/components/case-study/ConceptualFrameworkSummary.astro`.
-- [ ] Build component `src/components/case-study/ArtworkBlock.astro` (image + caption + four-frame tabs/accordion + **annotations panel** with optional x/y hotspots).
-- [ ] Build component `src/components/case-study/FrameBadge.astro`.
-- [ ] Build component `src/components/case-study/ContentAreaBadge.astro`.
-- [ ] Build component `src/components/case-study/ThemesTechniques.astro` — renders artist-page `themes` and `techniques` arrays (Client note ④).
-- [ ] Build component `src/components/case-study/SampleQuestionsAndAnswers.astro` — collapsible per-question worked answer + marker's note (Client note ④).
-- [ ] Build component `src/components/ui/SourceCite.astro` (inline `[^id]` rendered as superscript + popover).
-- [ ] Build component `src/components/ui/LastReviewed.astro`.
-- [ ] Build component `src/components/ui/StatusBadge.astro` (only renders in non-prod).
-- [ ] Build `src/pages/case-studies/index.astro` — filterable index.
-- [ ] Build `src/pages/case-studies/[slug].astro` — the flagship template.
+- [x] Build component `src/components/case-study/ConceptualFrameworkSummary.astro`.
+- [x] Build component `src/components/case-study/ArtworkBlock.astro` (image + caption + four-frame tabs + **annotations panel** with optional x/y hotspots).
+- [x] Build component `src/components/case-study/FrameBadge.astro`.
+- [x] Build component `src/components/case-study/ContentAreaBadge.astro`.
+- [x] Build component `src/components/case-study/ThemesTechniques.astro` — renders artist-page `themes` and `techniques` arrays (Client note ④).
+- [x] Build component `src/components/case-study/SampleQuestionsAndAnswers.astro` — collapsible per-question worked answer + marker's note + variantPrompt copy button (Client note ④).
+- [x] Build component `src/components/ui/SourceCite.astro` (inline `[^id]` rendered as superscript anchor).
+- [x] Build component `src/components/ui/LastReviewed.astro`.
+- [x] Build component `src/components/ui/StatusBadge.astro` (only renders in non-prod builds).
+- [x] Build `src/pages/case-studies/index.astro` — filterable index by primary frame.
+- [x] Build `src/pages/case-studies/[slug].astro` — the flagship template.
 - [ ] Commit: `feat: case study template`.
 
 ## Task 7 — Lesson and question templates

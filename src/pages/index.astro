@@ -1,89 +1,208 @@
 ---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FrameBadge from '../components/case-study/FrameBadge.astro';
 
 const frames = [
-  { slug: 'subjective', label: 'Subjective' },
-  { slug: 'cultural', label: 'Cultural' },
-  { slug: 'structural', label: 'Structural' },
-  { slug: 'postmodern', label: 'Postmodern' },
-];
+  { slug: 'subjective', label: 'Subjective', copy: 'Feeling, intuition, memory, psychology — the personal and biographical reading of a work.' },
+  { slug: 'cultural', label: 'Cultural', copy: 'Class, race, gender, politics, time and place — the work in its social conditions.' },
+  { slug: 'structural', label: 'Structural', copy: 'Signs, symbols, materials, composition and convention — how form makes meaning.' },
+  { slug: 'postmodern', label: 'Postmodern', copy: 'Appropriation, irony, recontextualisation — questioning originality and high/low.' },
+] as const;
+
+// Pick a featured case study — first published entry, if any.
+const all = await getCollection('case-studies');
+const published = all.filter((e) => e.data.status === 'published');
+const featured = published[0] ?? null;
 ---
 
-<BaseLayout title="Visual Arts — study resource">
+<BaseLayout title="Visual Arts — study resource for NSW Stage 6">
+  <!-- Hero -->
   <section class="hero">
-    <p class="eyebrow">Stage 6 · Preliminary &amp; HSC</p>
-    <h1>Study art the way an <em>examiner</em> reads it.</h1>
-    <p class="lede">
-      Verified case studies analysed through the frames and the conceptual framework, with real past
-      HSC questions and lesson scaffolds.
-    </p>
-
-    {/*
-      TODO(Task 5): REMOVE this shell-disclosure note before production.
-      index.astro is a temporary design-system shell; Task 5 replaces it with the
-      real home page. See tasks/v1-build-tasks.md → Task 5.
-    */}
-    <p class="shell-note">Design-system shell preview — the home page proper is built in Task 5.</p>
-
-    <div class="frames" aria-label="The four frames">
-      {frames.map((f) => (
-        <span class="badge" data-frame={f.slug}><i></i>{f.label}</span>
-      ))}
-    </div>
-
-    <p class="body">
-      The site is built around the three stable pillars of the NSW Visual Arts syllabus — the
-      conceptual framework, the frames, and practice. Every case study pairs two artworks with deep
-      formal and contextual analysis, cites its sources, and clears the rights on every image before
-      it is published.
-    </p>
-
-    <div class="actions">
-      <a class="btn" href="/case-studies">Browse case studies</a>
-      <a class="link" href="/frames">Start with the frames →</a>
+    <div class="wrap">
+      <p class="eyebrow">Stage 6 · Preliminary &amp; HSC</p>
+      <h1>Study art the way an <em>examiner</em> reads it.</h1>
+      <p class="lede">Verified case studies analysed through the four frames and the conceptual framework, paired with real past HSC questions and lesson scaffolds. Every claim cited. Every image rights-cleared.</p>
+      <div class="cta-row">
+        <a class="btn" href="/case-studies">Browse case studies</a>
+        <a class="textlink" href="/frames">Start with the frames →</a>
+      </div>
     </div>
   </section>
 
-  <style>
-    .hero { max-width: 760px; margin: 0 auto; padding: clamp(48px, 8vw, 104px) clamp(20px, 4vw, 28px); }
-    .eyebrow {
-      font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--accent); margin: 0 0 22px;
-    }
-    h1 { font-size: var(--text-display); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 24px; font-weight: 360; }
-    h1 em { font-style: italic; color: var(--accent); font-weight: 340; }
-    .lede {
-      font-family: var(--font-display); font-weight: 360; font-size: var(--text-lede);
-      line-height: 1.4; color: var(--ink); margin: 0 0 16px; max-width: 52ch;
-    }
-    .shell-note {
-      font-family: var(--font-mono); font-size: var(--text-small); letter-spacing: 0.02em;
-      color: var(--ink-2); margin: 0 0 36px; padding: 8px 0 8px 12px; border-left: 2px solid var(--rule);
-    }
-    .frames { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 40px; }
-    .badge {
-      --tone: var(--ink-2);
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; line-height: 1;
-      padding: 6px 11px; border: 1px solid var(--tone); color: var(--tone); border-radius: 999px;
-    }
-    .badge i { width: 6px; height: 6px; border-radius: 50%; background: var(--tone); }
-    .badge[data-frame='subjective'] { --tone: var(--f-subj); }
-    .badge[data-frame='cultural'] { --tone: var(--f-cult); }
-    .badge[data-frame='structural'] { --tone: var(--f-struct); }
-    .badge[data-frame='postmodern'] { --tone: var(--f-post); }
-    .body { font-size: var(--text-body); line-height: 1.62; color: var(--ink); max-width: 60ch; margin: 0 0 36px; }
-    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
-    .btn {
-      font-family: var(--font-sans); font-size: 13.5px; font-weight: 500;
-      background: var(--accent); color: var(--on-accent); border-radius: var(--radius-card);
-      padding: 12px 22px; text-decoration: none; transition: background 140ms ease, transform 140ms ease;
-    }
-    .btn:hover { background: color-mix(in oklab, var(--accent), var(--ink) 22%); transform: translateY(-1px); }
-    .link {
-      font-family: var(--font-sans); font-size: 13.5px; font-weight: 500; color: var(--accent);
-      text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 55%); padding-bottom: 1px;
-    }
-    .link:hover { color: var(--ink); border-bottom-color: var(--ink); }
-  </style>
+  <!-- FOUR FRAMES -->
+  <section class="section">
+    <div class="wrap">
+      <p class="section-eyebrow">The four frames</p>
+      <h2>Four ways of <em>reading</em> a work</h2>
+      <div class="frames-grid">
+        {frames.map((f) => (
+          <a class="frame-card" data-frame={f.slug} href={`/frames/${f.slug}`}>
+            <span class="fname">{f.label}</span>
+            <p>{f.copy}</p>
+            <span class="go">Explore →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- HOW TO USE -->
+  <section class="section">
+    <div class="wrap">
+      <p class="section-eyebrow">How to use this site</p>
+      <h2>Read, then <em>practise</em>, then check yourself</h2>
+      <div class="how">
+        <div class="step">
+          <span class="n">01</span>
+          <h3>Read a case study</h3>
+          <p>Two artworks, analysed through all four frames and tied back to the conceptual framework — with sources you can follow.</p>
+        </div>
+        <div class="step">
+          <span class="n">02</span>
+          <h3>Attempt a real question</h3>
+          <p>Each case study links to past HSC questions. Try one before you peek at the scaffold.</p>
+        </div>
+        <div class="step">
+          <span class="n">03</span>
+          <h3>Work the scaffold</h3>
+          <p>Decode the verbs, plan the paragraphs, borrow the sentence stems, and see what a marker rewards.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {featured && (
+    <>
+      <hr class="rule" />
+      <section class="section">
+        <div class="wrap">
+          <p class="section-eyebrow">Featured case study</p>
+          <a class="featured" href={`/case-studies/${featured.id}`}>
+            <div class="fimage">
+              {featured.data.artworks[0].image.src && (
+                <Image
+                  src={featured.data.artworks[0].image.src}
+                  alt={featured.data.artworks[0].image.alt}
+                  widths={[480, 900, 1400]}
+                  sizes="(min-width: 820px) 50vw, 100vw"
+                />
+              )}
+            </div>
+            <div class="fbody">
+              <div class="fbadges">
+                <FrameBadge frame={featured.data.primaryFrame} primary />
+              </div>
+              <h3>{featured.data.artist.name}</h3>
+              <p class="fdates">{featured.data.artist.birthYear}{featured.data.artist.deathYear ? `–${featured.data.artist.deathYear}` : ''} · {featured.data.artist.nationality}</p>
+              <p>{featured.data.shortPitch}</p>
+              <span class="textlink">Read the case study →</span>
+            </div>
+          </a>
+        </div>
+      </section>
+    </>
+  )}
 </BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .rule { height: 1px; background: var(--rule); border: 0; margin: 0; }
+
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+  .section-eyebrow { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 16px; }
+
+  .hero { padding: clamp(56px, 9vw, 120px) 0 clamp(36px, 5vw, 64px); border-bottom: 1px solid var(--rule); }
+  .hero h1 { font-family: var(--font-display); font-size: var(--text-display); line-height: 1.0; font-weight: 360; margin: 0 0 24px; max-width: 14ch; letter-spacing: -0.02em; }
+  .hero h1 em { font-style: italic; color: var(--accent); font-weight: 340; }
+  .hero .lede { font-family: var(--font-display); font-weight: 360; font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 54ch; margin: 0 0 34px; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+
+  .section { padding: clamp(40px, 6vw, 88px) 0; }
+  .section h2 { font-family: var(--font-display); font-size: var(--text-h2); font-weight: 380; margin: 0 0 32px; max-width: 20ch; letter-spacing: -0.015em; }
+  .section h2 em { color: var(--accent); font-style: italic; font-weight: 380; }
+
+  .frames-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  @media (min-width: 560px) { .frames-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1000px) { .frames-grid { grid-template-columns: repeat(4, 1fr); } }
+  .frame-card {
+    background: var(--paper);
+    padding: 28px 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-decoration: none;
+    border-top: 3px solid var(--tone);
+    transition: background 140ms ease;
+  }
+  .frame-card:hover { background: var(--paper-2); }
+  .frame-card[data-frame="subjective"] { --tone: var(--f-subj); }
+  .frame-card[data-frame="cultural"]   { --tone: var(--f-cult); }
+  .frame-card[data-frame="structural"] { --tone: var(--f-struct); }
+  .frame-card[data-frame="postmodern"] { --tone: var(--f-post); }
+  .fname { font-family: var(--font-display); font-size: 23px; color: var(--ink); }
+  .frame-card p { font-size: 14px; line-height: 1.5; color: var(--ink-2); margin: 0; }
+  .go { margin-top: auto; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tone); }
+
+  .how { display: grid; grid-template-columns: 1fr; gap: 28px; }
+  @media (min-width: 760px) { .how { grid-template-columns: repeat(3, 1fr); gap: 40px; } }
+  .step .n { font-family: var(--font-mono); font-size: 12px; color: var(--accent); letter-spacing: 0.1em; }
+  .step h3 { font-family: var(--font-display); font-size: 21px; font-weight: 440; margin: 10px 0 8px; }
+  .step p { font-size: 14.5px; line-height: 1.55; color: var(--ink-2); max-width: 34ch; margin: 0; }
+
+  .featured {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    text-decoration: none;
+    transition: border-color 140ms ease;
+  }
+  .featured:hover { border-color: var(--accent); }
+  @media (min-width: 820px) { .featured { grid-template-columns: 1.1fr 1fr; } }
+  .fimage { aspect-ratio: 4 / 3; overflow: hidden; background: var(--paper-2); border-bottom: 1px solid var(--rule); }
+  @media (min-width: 820px) { .fimage { border-bottom: 0; border-right: 1px solid var(--rule); } }
+  .fimage :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .fbody { padding: clamp(24px, 4vw, 44px); display: flex; flex-direction: column; gap: 14px; }
+  .fbadges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .featured h3 { font-family: var(--font-display); font-size: clamp(26px, 3vw, 34px); font-weight: 380; line-height: 1.1; margin: 0; }
+  .fdates { font-family: var(--font-display); font-style: italic; color: var(--ink-2); font-size: 17px; margin: 0; }
+  .fbody p { font-size: 15.5px; line-height: 1.6; color: var(--ink-2); max-width: 48ch; margin: 0; }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 500;
+    background: var(--accent);
+    color: var(--on-accent);
+    border: 0;
+    border-radius: var(--radius-card);
+    padding: 12px 22px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 140ms ease, transform 140ms ease;
+  }
+  .btn:hover { background: color-mix(in oklab, var(--accent), var(--ink) 22%); transform: translateY(-1px); }
+  .textlink {
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 55%);
+    padding-bottom: 1px;
+  }
+  .textlink:hover { color: var(--ink); border-bottom-color: var(--ink); }
+</style>
