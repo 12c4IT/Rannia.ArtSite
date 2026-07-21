@@ -1,0 +1,39 @@
+---
+// Only renders in non-production builds. Lets Rannia see at a glance
+// which of her entries are still `draft` when previewing on the review
+// URL. In production it renders nothing (draft entries are already
+// filtered out of the build).
+interface Props {
+  status: 'draft' | 'review' | 'published';
+}
+
+const { status } = Astro.props;
+const isProd = import.meta.env.PROD;
+---
+
+{!isProd && (
+  <span class="status" data-status={status}>{status}</span>
+)}
+
+<style>
+  .status {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    z-index: 40;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    color: var(--ink-2);
+    box-shadow: 0 4px 16px color-mix(in oklab, var(--ink), transparent 90%);
+    pointer-events: none;
+  }
+  .status[data-status="draft"] { color: #a04c1a; border-color: color-mix(in oklab, #a04c1a, transparent 60%); }
+  .status[data-status="review"] { color: #4a6438; border-color: color-mix(in oklab, #4a6438, transparent 60%); }
+  .status[data-status="published"] { color: var(--accent); border-color: var(--accent); }
+</style>

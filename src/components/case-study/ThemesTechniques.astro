@@ -1,0 +1,68 @@
+---
+interface Props {
+  themes: string[];
+  techniques: string[];
+}
+
+const { themes, techniques } = Astro.props;
+const anything = themes.length > 0 || techniques.length > 0;
+---
+
+{anything && (
+  <section class="tt">
+    {themes.length > 0 && (
+      <div class="col">
+        <p class="eyebrow">Recurring themes</p>
+        <ul>
+          {themes.map((t) => <li>{t}</li>)}
+        </ul>
+      </div>
+    )}
+    {techniques.length > 0 && (
+      <div class="col">
+        <p class="eyebrow">Techniques</p>
+        <ul>
+          {techniques.map((t) => <li>{t}</li>)}
+        </ul>
+      </div>
+    )}
+  </section>
+)}
+
+<style>
+  .tt {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: clamp(32px, 5vw, 56px) 0;
+    border-top: 1px solid var(--rule);
+  }
+  @media (min-width: 720px) { .tt { grid-template-columns: 1fr 1fr; gap: 48px; } }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  li {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 380;
+    line-height: 1.4;
+    color: var(--ink);
+    padding-left: 18px;
+    position: relative;
+  }
+  li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 8px;
+    height: 1px;
+    background: var(--accent);
+  }
+</style>

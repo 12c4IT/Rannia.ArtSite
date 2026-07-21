@@ -1,0 +1,251 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Annotation {
+  label: string;
+  note: string;
+  x?: number;
+  y?: number;
+}
+
+interface Frames {
+  subjective: string;
+  cultural: string;
+  structural: string;
+  postmodern: string;
+}
+
+interface ImageBlock {
+  src: ImageMetadata;
+  alt: string;
+  caption: string;
+  artist: string;
+  title: string;
+  year: number | string;
+  medium: string;
+  dimensions?: string;
+  collection?: string;
+  photoCredit: string;
+  rightsBasis: string;
+  rightsNotes?: string;
+  sourceUrl: string;
+}
+
+interface Props {
+  image: ImageBlock;
+  annotations: Annotation[];
+  frames: Frames;
+  notes?: string;
+  number: 1 | 2;
+}
+
+const { image, annotations, frames, notes, number } = Astro.props;
+
+const withCoords = annotations
+  .map((a, i) => ({ ...a, index: i + 1 }))
+  .filter((a) => a.x != null && a.y != null);
+---
+
+<article class="artwork">
+  <header class="art-head">
+    <p class="eyebrow">Artwork {number}</p>
+    <h2>
+      <em>{image.title}</em>
+      <span class="year">({image.year})</span>
+    </h2>
+    <p class="mediumline">{image.medium}{image.dimensions ? ` · ${image.dimensions}` : ''}{image.collection ? ` · ${image.collection}` : ''}</p>
+  </header>
+
+  <figure class="figure">
+    <div class="image-wrap">
+      <Image src={image.src} alt={image.alt} widths={[480, 800, 1200, 1600]} sizes="(min-width: 900px) 60vw, 100vw" />
+      {withCoords.map((a) => (
+        <span
+          class="hotspot"
+          style={`left:${a.x}%;top:${a.y}%`}
+          aria-label={`Annotation ${a.index}: ${a.label}`}
+        >{a.index}</span>
+      ))}
+    </div>
+    <figcaption>
+      {image.caption}
+      <span class="rights">Rights: {image.rightsBasis.replace(/-/g, ' ')} · <a href={image.sourceUrl}>source</a></span>
+    </figcaption>
+  </figure>
+
+  {annotations.length > 0 && (
+    <aside class="annotations">
+      <p class="eyebrow small">Look closely</p>
+      <ol>
+        {annotations.map((a, i) => (
+          <li>
+            <span class="n">{i + 1}</span>
+            <div>
+              <b>{a.label}</b>
+              <span>{a.note}</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </aside>
+  )}
+
+  <div class="readings">
+    <p class="eyebrow small">Read through the frames</p>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-frame="subjective">Subjective</button>
+      <button class="tab" role="tab" aria-selected="false" data-frame="cultural">Cultural</button>
+      <button class="tab" role="tab" aria-selected="false" data-frame="structural">Structural</button>
+      <button class="tab" role="tab" aria-selected="false" data-frame="postmodern">Postmodern</button>
+    </div>
+    <div class="panels">
+      <div class="panel" data-frame="subjective" data-active="true"><p>{frames.subjective}</p></div>
+      <div class="panel" data-frame="cultural"><p>{frames.cultural}</p></div>
+      <div class="panel" data-frame="structural"><p>{frames.structural}</p></div>
+      <div class="panel" data-frame="postmodern"><p>{frames.postmodern}</p></div>
+    </div>
+  </div>
+
+  {notes && (
+    <p class="notes">{notes}</p>
+  )}
+</article>
+
+<style>
+  .artwork { padding: clamp(40px, 6vw, 72px) 0; border-top: 1px solid var(--rule); }
+  .art-head { margin-bottom: 24px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 12px;
+  }
+  .eyebrow.small { font-size: 10.5px; margin-bottom: 10px; color: var(--ink-2); }
+  h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+    font-weight: 380;
+    line-height: 1.1;
+    margin: 0 0 6px;
+  }
+  h2 em { color: var(--accent); font-style: italic; font-weight: 380; }
+  .year { font-family: var(--font-display); font-style: italic; color: var(--ink-2); font-size: 0.75em; font-weight: 380; }
+  .mediumline { font-size: 14.5px; color: var(--ink-2); margin: 0; }
+
+  .figure { margin: 0 0 24px; }
+  .image-wrap { position: relative; border: 1px solid var(--rule); border-radius: var(--radius-card); overflow: hidden; background: var(--paper-2); }
+  .image-wrap :global(img) { display: block; width: 100%; height: auto; }
+  .hotspot {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 10px color-mix(in oklab, var(--ink), transparent 60%);
+  }
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 0 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .rights {
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .rights a { color: var(--ink-2); border-bottom: 1px solid var(--rule); text-decoration: none; }
+  .rights a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .annotations { padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: var(--radius-card); margin: 24px 0; }
+  .annotations ol { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  .annotations li { display: flex; gap: 12px; align-items: baseline; }
+  .annotations .n {
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .annotations li div { display: flex; flex-direction: column; gap: 2px; }
+  .annotations b { color: var(--ink); font-size: 14.5px; font-weight: 500; }
+  .annotations span:not(.n) { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+
+  .readings { margin: 32px 0 0; }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 20px;
+  }
+  .tab {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--ink-2);
+    border: 0;
+    padding: 12px 14px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .tab:hover { color: var(--accent); }
+  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .tab[data-frame="subjective"][aria-selected="true"] { border-bottom-color: var(--f-subj); }
+  .tab[data-frame="cultural"][aria-selected="true"]   { border-bottom-color: var(--f-cult); }
+  .tab[data-frame="structural"][aria-selected="true"] { border-bottom-color: var(--f-struct); }
+  .tab[data-frame="postmodern"][aria-selected="true"] { border-bottom-color: var(--f-post); }
+
+  .panels { max-width: 68ch; }
+  .panel { display: none; }
+  .panel[data-active="true"] { display: block; }
+  .panel p { font-size: 16px; line-height: 1.7; color: var(--ink); white-space: pre-line; margin: 0; }
+
+  .notes { margin: 24px 0 0; font-style: italic; color: var(--ink-2); font-size: 14.5px; line-height: 1.6; max-width: 60ch; }
+</style>
+
+<script>
+  // Wire up the four-frame tabs per artwork block. Scoped by nearest .artwork.
+  document.querySelectorAll<HTMLElement>('.artwork').forEach((art) => {
+    const tabs = art.querySelectorAll<HTMLButtonElement>('.tab');
+    const panels = art.querySelectorAll<HTMLElement>('.panel');
+    tabs.forEach((t) => {
+      t.addEventListener('click', () => {
+        const target = t.dataset.frame;
+        tabs.forEach((x) => x.setAttribute('aria-selected', x === t ? 'true' : 'false'));
+        panels.forEach((p) => {
+          p.dataset.active = p.dataset.frame === target ? 'true' : 'false';
+        });
+      });
+    });
+  });
+</script>

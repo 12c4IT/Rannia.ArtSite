@@ -1,0 +1,182 @@
+---
+import FrameBadge from './FrameBadge.astro';
+
+interface SampleQA {
+  question: string;
+  markValue?: number;
+  frames: Array<'subjective' | 'cultural' | 'structural' | 'postmodern'>;
+  workedAnswer: string;
+  markersNote?: string;
+  variantPrompt?: string;
+}
+
+interface Props {
+  items: SampleQA[];
+}
+
+const { items } = Astro.props;
+---
+
+{items.length > 0 && (
+  <section class="sqa">
+    <p class="eyebrow">Sample questions &amp; worked answers</p>
+    <h2>Try one, then peek</h2>
+    <p class="lede">Teacher-authored practice tied to this case study — with a Band 6 model answer and a marker's note.</p>
+
+    <div class="stack">
+      {items.map((item, i) => (
+        <details class="qa">
+          <summary>
+            <span class="q-index">{String(i + 1).padStart(2, '0')}</span>
+            <span class="q-text">{item.question}</span>
+            <span class="q-meta">
+              {item.markValue && <span class="marks">{item.markValue} marks</span>}
+              {item.frames.map((f) => <FrameBadge frame={f} />)}
+            </span>
+          </summary>
+
+          <div class="body">
+            <div class="section">
+              <p class="lab">Band 6 response</p>
+              <p class="response">{item.workedAnswer}</p>
+            </div>
+            {item.markersNote && (
+              <div class="markersnote">
+                <p class="lab">Marker's note</p>
+                <p>{item.markersNote}</p>
+              </div>
+            )}
+            {item.variantPrompt && (
+              <div class="variant">
+                <p class="lab">Drill a variant in your own AI tool</p>
+                <div class="prompt-body" data-prompt={item.variantPrompt}>{item.variantPrompt}</div>
+                <button class="copybtn" type="button" data-copied="false">Copy prompt</button>
+              </div>
+            )}
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .sqa { padding: clamp(40px, 6vw, 72px) 0; border-top: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+  h2 { font-family: var(--font-display); font-size: var(--text-h2); font-weight: 380; margin: 0 0 12px; letter-spacing: -0.015em; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink-2); margin: 0 0 32px; max-width: 56ch; }
+
+  .stack { display: flex; flex-direction: column; gap: 12px; }
+  .qa { border: 1px solid var(--rule); border-radius: var(--radius-card); background: var(--paper); overflow: hidden; }
+  .qa summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    grid-column-gap: 16px;
+    grid-row-gap: 10px;
+    align-items: baseline;
+  }
+  .qa summary::-webkit-details-marker { display: none; }
+  .qa[open] summary { border-bottom: 1px solid var(--rule); background: var(--paper-2); }
+  .q-index {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    grid-column: 1;
+    grid-row: 1;
+    padding-top: 4px;
+  }
+  .q-text {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--ink);
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .q-meta { grid-column: 2; grid-row: 2; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .marks {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 4px 9px;
+  }
+
+  .body { padding: 22px 24px; display: flex; flex-direction: column; gap: 20px; }
+  .section .lab, .markersnote .lab, .variant .lab {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  .response { font-size: 15.5px; line-height: 1.7; color: var(--ink); margin: 0; white-space: pre-line; max-width: 68ch; }
+  .markersnote {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
+  }
+  .markersnote .lab { color: var(--accent); margin-bottom: 6px; }
+  .markersnote p:not(.lab) { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 0; }
+
+  .variant { border-top: 1px solid var(--rule); padding-top: 18px; }
+  .prompt-body {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    max-height: 220px;
+    overflow: auto;
+    margin-bottom: 12px;
+    white-space: pre-line;
+  }
+  .copybtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    padding: 9px 14px;
+    cursor: pointer;
+  }
+  .copybtn:hover { border-color: var(--accent); color: var(--accent); }
+  .copybtn[data-copied="true"] { color: var(--accent); border-color: var(--accent); }
+  .copybtn[data-copied="true"]::before { content: "\2713  "; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.sqa .copybtn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const holder = btn.previousElementSibling as HTMLElement | null;
+      const text = holder?.dataset.prompt ?? holder?.innerText ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.dataset.copied = 'true';
+        const orig = btn.textContent;
+        btn.textContent = 'Copied';
+        setTimeout(() => { btn.dataset.copied = 'false'; btn.textContent = orig; }, 1600);
+      } catch (e) {}
+    });
+  });
+</script>

@@ -1,0 +1,50 @@
+---
+interface Props {
+  frame: 'subjective' | 'cultural' | 'structural' | 'postmodern';
+  primary?: boolean;
+  href?: string;
+}
+
+const FRAME_LABEL: Record<Props['frame'], string> = {
+  subjective: 'Subjective',
+  cultural: 'Cultural',
+  structural: 'Structural',
+  postmodern: 'Postmodern',
+};
+
+const { frame, primary = false, href } = Astro.props;
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag class:list={['badge', { primary }]} data-frame={frame} href={href}>
+  {!primary && <i></i>}
+  {FRAME_LABEL[frame]}
+</Tag>
+
+<style>
+  .badge {
+    --tone: var(--f-subj);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 6px 11px;
+    border: 1px solid var(--tone);
+    color: var(--tone);
+    border-radius: 999px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .badge i { width: 6px; height: 6px; border-radius: 50%; background: var(--tone); }
+  .badge.primary { background: var(--tone); color: var(--paper); }
+  .badge[data-frame="subjective"] { --tone: var(--f-subj); }
+  .badge[data-frame="cultural"]   { --tone: var(--f-cult); }
+  .badge[data-frame="structural"] { --tone: var(--f-struct); }
+  .badge[data-frame="postmodern"] { --tone: var(--f-post); }
+  a.badge:hover { filter: brightness(1.05); }
+</style>

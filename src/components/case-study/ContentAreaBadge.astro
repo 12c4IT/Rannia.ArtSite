@@ -1,0 +1,34 @@
+---
+interface Props {
+  area: string;
+  href?: string;
+}
+
+const { area, href } = Astro.props;
+const label = area
+  .split('-')
+  .map((w) => (w === 'the' ? 'The' : w.charAt(0).toUpperCase() + w.slice(1)))
+  .join(' ');
+
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag class="chip" href={href}>{label}</Tag>
+
+<style>
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 5px 10px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  a.chip:hover { color: var(--accent); border-color: var(--accent); }
+</style>

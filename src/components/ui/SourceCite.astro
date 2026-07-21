@@ -1,0 +1,31 @@
+---
+// Renders a numeric superscript citation marker keyed to a source in
+// the entry's `sources` array. Matches the sample-preview.html pattern:
+// [n] as superscript, on click jumps to the sources list below.
+//
+// Usage in MDX: <SourceCite id="bourgeois-taterosian-2003" n={1} />
+// where `n` is derived from the source's index in the sources array by
+// the caller. Simple by design — no popover in v1, just an anchor.
+interface Props {
+  id: string;
+  n: number;
+}
+
+const { id, n } = Astro.props;
+---
+
+<a class="cite" href={`#source-${id}`} aria-describedby={`source-${id}`}>{n}</a>
+
+<style>
+  .cite {
+    color: var(--accent);
+    font-size: 0.72em;
+    vertical-align: super;
+    text-decoration: none;
+    font-family: var(--font-mono);
+    padding: 0 1px;
+  }
+  .cite::before { content: "["; }
+  .cite::after { content: "]"; }
+  .cite:hover { text-decoration: underline; }
+</style>

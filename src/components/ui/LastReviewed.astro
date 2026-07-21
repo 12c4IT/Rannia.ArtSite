@@ -1,0 +1,45 @@
+---
+interface Props {
+  date: Date;
+  reviewedBy: string;
+}
+
+const { date, reviewedBy } = Astro.props;
+const formatted = date.toLocaleDateString('en-AU', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<aside class="last-reviewed">
+  <span class="row">
+    <span class="lab">Last reviewed</span>
+    <b>{formatted}</b>
+  </span>
+  <span class="row">
+    <span class="lab">Reviewer</span>
+    <b>{reviewedBy}</b>
+  </span>
+</aside>
+
+<style>
+  .last-reviewed {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 24px;
+    align-items: baseline;
+    padding: 26px 0;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .row { display: inline-flex; align-items: baseline; gap: 8px; }
+  .lab {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  b { color: var(--ink); font-weight: 500; }
+</style>
