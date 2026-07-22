@@ -55,16 +55,17 @@ const BowMedium = z.enum([
   'collection-of-works',
 ]);
 
-// ALARMS matrix rungs (Delany College taxonomy — Client note ③). Terms cluster
-// by cognitive demand; the exact rung for each term is set per-entry once Joe
-// supplies the Delany source.
+// Delany College ALARM matrix rungs — five levels of cognitive demand,
+// transcribed from the source in docs/ClientReview/DelanyMatrix.jpeg
+// (2026-07-20). Task words escalate from "name & identify" through to
+// "evaluate", with each higher rung inheriting the demands of the ones
+// below it.
 const AlarmsRung = z.enum([
-  'a-analyse',
-  'l-locate',
-  'a-apply',
-  'r-relate',
-  'm-monitor',
-  's-synthesise',
+  'name-and-identify',
+  'describe',
+  'explain',
+  'analyse',
+  'evaluate',
 ]);
 
 // Practice question source — kept separate from real past-HSC questions so the

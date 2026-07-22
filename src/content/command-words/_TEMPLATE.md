@@ -13,8 +13,9 @@
 term: "Analyse"
 slug: analyse
 
-# a-analyse | l-locate | a-apply | r-relate | m-monitor | s-synthesise
-alarmsRung: a-analyse
+# name-and-identify | describe | explain | analyse | evaluate
+# (Delany College ALARM matrix — five rungs of cognitive demand.)
+alarmsRung: analyse
 
 definition: |
   [Verbatim NESA / Delany definition. Cite the source in `sources`.]
