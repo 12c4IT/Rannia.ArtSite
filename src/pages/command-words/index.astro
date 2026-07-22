@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const all = await getCollection('command-words');
+
+// Delany matrix rung order — bottom of the ladder to top.
+const RUNG_ORDER = ['name-and-identify', 'describe', 'explain', 'analyse', 'evaluate'] as const;
+const RUNG_LABEL: Record<(typeof RUNG_ORDER)[number], string> = {
+  'name-and-identify': 'Name & Identify',
+  describe: 'Describe',
+  explain: 'Explain',
+  analyse: 'Analyse',
+  evaluate: 'Evaluate',
+};
+
+// Group entries by rung.
+const byRung = new Map<string, typeof all>();
+for (const rung of RUNG_ORDER) byRung.set(rung, [] as any);
+for (const entry of all) {
+  const rung = entry.data.alarmsRung ?? 'analyse';
+  byRung.get(rung)!.push(entry);
+}
+for (const [, list] of byRung) list.sort((a, b) => a.data.term.localeCompare(b.data.term));
+---
+
+<BaseLayout title="Command Words — Visual Arts" description="The Delany College ALARM matrix — command-verb reference for HSC Visual Arts responses.">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Delany College · ALARM matrix</p>
+      <h1>Read the <em>verb</em>. It tells you what to do.</h1>
+      <p class="lede">NESA marking is verb-driven. "Analyse" is not "describe". "Evaluate" is not "explain". Each command word below has a Delany-aligned definition, a plain-English gloss, and a worked example paragraph so you can see the verb in action.</p>
+    </div>
+
+    <div class="ladder">
+      {RUNG_ORDER.map((rung) => {
+        const entries = byRung.get(rung) ?? [];
+        if (entries.length === 0) return null;
+        return (
+          <section class="rung" data-rung={rung}>
+            <header>
+              <p class="rlabel">Rung · {RUNG_ORDER.indexOf(rung) + 1}</p>
+              <h2>{RUNG_LABEL[rung]}</h2>
+            </header>
+            <div class="verbs">
+              {entries.map((e) => (
+                <a class="verb" href={`/command-words/${e.data.slug}`}>
+                  <h3>{e.data.term}</h3>
+                  <p>{e.data.studentGloss}</p>
+                  <span class="go">Worked example →</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.0; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 20ch; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 62ch; margin: 0; }
+
+  .ladder { display: flex; flex-direction: column; gap: clamp(28px, 5vw, 56px); padding: clamp(32px, 5vw, 56px) 0; }
+  .rung { border-left: 3px solid var(--tone); padding: 8px 0 8px 22px; }
+  .rung[data-rung="name-and-identify"] { --tone: var(--f-subj); }
+  .rung[data-rung="describe"]          { --tone: var(--f-struct); }
+  .rung[data-rung="explain"]           { --tone: var(--f-cult); }
+  .rung[data-rung="analyse"]           { --tone: var(--f-post); }
+  .rung[data-rung="evaluate"]          { --tone: var(--accent); }
+  .rung header { display: flex; align-items: baseline; gap: 18px; margin-bottom: 16px; flex-wrap: wrap; }
+  .rlabel { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tone); margin: 0; }
+  .rung h2 { font-family: var(--font-display); font-size: 32px; font-weight: 400; margin: 0; letter-spacing: -0.015em; }
+
+  .verbs { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 620px) { .verbs { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 980px) { .verbs { grid-template-columns: repeat(3, 1fr); } }
+  .verb {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-decoration: none;
+    background: var(--paper);
+    transition: border-color 140ms ease;
+  }
+  .verb:hover { border-color: var(--accent); }
+  .verb h3 { font-family: var(--font-display); font-size: 24px; font-weight: 420; color: var(--ink); margin: 0; }
+  .verb p { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+  .verb .go { margin-top: auto; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 6px; }
+</style>

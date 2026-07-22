@@ -1,0 +1,138 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LastReviewed from '../../components/ui/LastReviewed.astro';
+import StatusBadge from '../../components/ui/StatusBadge.astro';
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('command-words');
+  return entries.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { data } = entry;
+
+const RUNG_LABEL: Record<string, string> = {
+  'name-and-identify': 'Name & Identify · Rung 1',
+  describe: 'Describe · Rung 2',
+  explain: 'Explain · Rung 3',
+  analyse: 'Analyse · Rung 4',
+  evaluate: 'Evaluate · Rung 5',
+};
+---
+
+<BaseLayout title={`${data.term} — Command Words`} description={data.definition}>
+  <article>
+    <header class="head" data-rung={data.alarmsRung}>
+      <div class="wrap">
+        <p class="eyebrow">
+          <a href="/command-words">Command Words</a>
+          <span class="sep">·</span>
+          {data.alarmsRung && RUNG_LABEL[data.alarmsRung]}
+        </p>
+        <h1><em>{data.term}</em></h1>
+      </div>
+    </header>
+
+    <div class="wrap body">
+      <div class="two-col">
+        <aside class="def">
+          <p class="label">Definition</p>
+          <p class="def-text">{data.definition}</p>
+
+          <p class="label">In plain English</p>
+          <p class="gloss">{data.studentGloss}</p>
+
+          {data.relatedTerms.length > 0 && (
+            <div class="related">
+              <p class="label">Related terms</p>
+              <ul>
+                {data.relatedTerms.map((slug) => (
+                  <li><a href={`/command-words/${slug}`}>{slug.replace(/-/g, ' ')}</a></li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </aside>
+
+        <section class="worked">
+          <p class="label">Worked example</p>
+          <div class="q">
+            <p class="q-text">{data.workedExample.question}</p>
+            {data.workedExample.markValue && (
+              <span class="marks">{data.workedExample.markValue} marks</span>
+            )}
+          </div>
+
+          <p class="label">Band 6 response</p>
+          <div class="response">{data.workedExample.response}</div>
+
+          <div class="markersnote">
+            <p class="label">Marker's note</p>
+            <p>{data.workedExample.markersNote}</p>
+          </div>
+        </section>
+      </div>
+
+      <LastReviewed date={data.lastReviewed} reviewedBy={data.reviewedBy} />
+    </div>
+  </article>
+
+  <StatusBadge status={data.status} />
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-top: 4px solid var(--tone); border-bottom: 1px solid var(--rule); }
+  .head[data-rung="name-and-identify"] { --tone: var(--f-subj); }
+  .head[data-rung="describe"]          { --tone: var(--f-struct); }
+  .head[data-rung="explain"]           { --tone: var(--f-cult); }
+  .head[data-rung="analyse"]           { --tone: var(--f-post); }
+  .head[data-rung="evaluate"]          { --tone: var(--accent); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--tone); margin: 0 0 22px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .eyebrow a { color: var(--tone); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--tone), transparent 60%); }
+  .sep { opacity: 0.4; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.0; letter-spacing: -0.02em; margin: 0; }
+  h1 em { color: var(--tone); font-style: italic; font-weight: 340; }
+
+  .body { padding: clamp(40px, 6vw, 72px) 0; }
+  .two-col { display: grid; grid-template-columns: 1fr; gap: 40px; }
+  @media (min-width: 900px) { .two-col { grid-template-columns: 1fr 1.6fr; gap: 64px; } }
+
+  .label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+  .def-text { font-family: var(--font-display); font-size: 18px; line-height: 1.55; color: var(--ink); margin: 0 0 24px; }
+  .gloss { font-size: 15px; line-height: 1.65; color: var(--ink); border-left: 2px solid var(--accent); padding-left: 14px; margin: 0 0 24px; }
+  .related ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .related li a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    text-decoration: none;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 5px 10px;
+  }
+  .related li a:hover { color: var(--accent); border-color: var(--accent); }
+
+  .q { display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline; margin: 0 0 24px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); }
+  .q-text { font-family: var(--font-display); font-size: 22px; line-height: 1.35; color: var(--ink); margin: 0; flex: 1 1 20ch; }
+  .marks { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 5px 10px; }
+
+  .response { font-size: 15.5px; line-height: 1.7; color: var(--ink); margin: 0 0 24px; max-width: 68ch; white-space: pre-line; }
+
+  .markersnote {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-card);
+    padding: 18px 20px;
+  }
+  .markersnote p:not(.label) { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 0; }
+</style>
