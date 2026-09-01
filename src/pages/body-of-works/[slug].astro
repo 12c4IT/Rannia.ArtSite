@@ -1,0 +1,152 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BowMediumBadge from '../../components/bow/BowMediumBadge.astro';
+import FrameBadge from '../../components/case-study/FrameBadge.astro';
+import LastReviewed from '../../components/ui/LastReviewed.astro';
+import StatusBadge from '../../components/ui/StatusBadge.astro';
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('body-of-works');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={`${data.title} — Body of Works`} description={data.shortPitch}>
+  <article>
+    <header class="hero">
+      <div class="wrap">
+        <p class="eyebrow">
+          <a href="/body-of-works">Body of Works</a>
+          <span class="sep">·</span>
+          <BowMediumBadge medium={data.medium} />
+          {data.band && <span class="band">Band {data.band}</span>}
+        </p>
+        <h1>{data.title}</h1>
+        <p class="meta">{data.studentDisplayName} · Graduated {data.yearGraduated}</p>
+        <p class="pitch">{data.shortPitch}</p>
+        <div class="badges">
+          {data.frames.map((f) => <FrameBadge frame={f as any} />)}
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap body">
+      <figure class="figure">
+        <Image src={data.heroImage.src} alt={data.heroImage.alt} widths={[640, 960, 1400]} sizes="(min-width: 900px) 70vw, 100vw" />
+        <figcaption>{data.heroImage.caption}</figcaption>
+      </figure>
+
+      <section class="grid">
+        <div>
+          <p class="lab">Concept</p>
+          <p class="txt">{data.concept}</p>
+        </div>
+        <div>
+          <p class="lab">Materials</p>
+          <ul class="chips">
+            {data.materials.map((m) => <li>{m}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section class="block">
+        <p class="section-eyebrow">Practice narrative</p>
+        <p class="txt">{data.practice}</p>
+      </section>
+
+      <section class="block">
+        <p class="section-eyebrow">Why it scored highly</p>
+        <p class="txt">{data.whyScoredHighly}</p>
+      </section>
+
+      {data.thingsToLearn.length > 0 && (
+        <section class="block">
+          <p class="section-eyebrow">What you can take from this</p>
+          <ul class="dash">
+            {data.thingsToLearn.map((t) => <li>{t}</li>)}
+          </ul>
+        </section>
+      )}
+
+      {data.additionalImages.length > 0 && (
+        <section class="block">
+          <p class="section-eyebrow">Additional plates</p>
+          <div class="plates">
+            {data.additionalImages.map((img) => (
+              <figure class="plate">
+                <Image src={img.src} alt={img.alt} widths={[480, 800]} sizes="(min-width: 900px) 45vw, 100vw" />
+                <figcaption>{img.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section class="prose">
+        <Content />
+      </section>
+
+      <LastReviewed date={data.lastReviewed} reviewedBy={data.reviewedBy} />
+    </div>
+  </article>
+
+  <StatusBadge status={data.status} />
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .hero { padding: clamp(48px, 8vw, 96px) 0 clamp(28px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 22px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .eyebrow a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 60%); }
+  .sep { opacity: 0.4; }
+  .band { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 5px 10px; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 12px; max-width: 22ch; }
+  .meta { font-family: var(--font-display); font-style: italic; font-size: 18px; color: var(--ink-2); margin: 0 0 20px; }
+  .pitch { font-family: var(--font-display); font-weight: 380; font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 54ch; margin: 0 0 22px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .body { padding: clamp(28px, 5vw, 48px) 0; }
+  .section-eyebrow { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+  .lab { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+  .txt { font-size: 15.5px; line-height: 1.7; color: var(--ink); margin: 0; max-width: 68ch; white-space: pre-line; }
+
+  .figure { margin: 0 0 clamp(28px, 4vw, 44px); }
+  .figure :global(img) { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: var(--radius-card); background: var(--paper-2); }
+  figcaption { padding: 12px 0 0; font-family: var(--font-display); font-style: italic; font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
+
+  .grid { display: grid; grid-template-columns: 1fr; gap: 28px; padding: clamp(24px, 4vw, 40px) 0; border-top: 1px solid var(--rule); }
+  @media (min-width: 780px) { .grid { grid-template-columns: 1.5fr 1fr; gap: 44px; } }
+  .chips { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips li {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 5px 10px;
+  }
+
+  .block { padding: clamp(24px, 4vw, 40px) 0; border-top: 1px solid var(--rule); }
+  .dash { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .dash li { font-size: 15px; line-height: 1.6; color: var(--ink); padding-left: 20px; position: relative; }
+  .dash li::before { content: "–"; position: absolute; left: 0; color: var(--accent); }
+
+  .plates { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  @media (min-width: 780px) { .plates { grid-template-columns: 1fr 1fr; } }
+  .plate { margin: 0; }
+  .plate :global(img) { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: var(--radius-card); }
+  .plate figcaption { padding-top: 8px; }
+
+  .prose { padding: clamp(24px, 4vw, 40px) 0; border-top: 1px solid var(--rule); max-width: 68ch; }
+  .prose :global(h2) { font-family: var(--font-display); font-size: 24px; font-weight: 440; margin: 24px 0 10px; }
+  .prose :global(p) { font-size: 16px; line-height: 1.7; color: var(--ink); margin: 0 0 16px; }
+</style>

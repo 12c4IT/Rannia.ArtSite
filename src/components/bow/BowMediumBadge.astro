@@ -1,0 +1,43 @@
+---
+interface Props {
+  medium: string;
+  href?: string;
+}
+
+const { medium, href } = Astro.props;
+const label = medium
+  .split('-')
+  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+  .join(' ');
+
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag class="bow-medium" data-medium={medium} href={href}>{label}</Tag>
+
+<style>
+  .bow-medium {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tone);
+    border: 1px solid var(--tone);
+    border-radius: 999px;
+    padding: 5px 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    --tone: var(--f-subj);
+  }
+  a.bow-medium:hover { background: var(--tone); color: var(--paper); }
+  .bow-medium[data-medium="painting"]            { --tone: var(--f-subj); }
+  .bow-medium[data-medium="drawing"]             { --tone: var(--f-struct); }
+  .bow-medium[data-medium="sculpture"]           { --tone: var(--f-cult); }
+  .bow-medium[data-medium="ceramics"]            { --tone: var(--f-post); }
+  .bow-medium[data-medium="photography"]         { --tone: var(--accent); }
+  .bow-medium[data-medium="time-based"]          { --tone: var(--f-cult); }
+  .bow-medium[data-medium="digital"]             { --tone: var(--f-post); }
+  .bow-medium[data-medium="collection-of-works"] { --tone: var(--ink-2); }
+</style>

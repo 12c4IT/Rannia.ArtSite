@@ -1,0 +1,131 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BowCard from '../../components/bow/BowCard.astro';
+
+const MEDIA = [
+  'painting', 'drawing', 'sculpture', 'ceramics',
+  'photography', 'time-based', 'digital', 'collection-of-works',
+] as const;
+
+const label = (m: string) => m.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+
+const all = await getCollection('body-of-works');
+// Consent gate: only entries with consent on file are shown in listings.
+// Draft status still renders in this review environment (StatusBadge flags it).
+const entries = all.filter((e) => e.data.consent.onFile);
+
+const byMedium = new Map<string, typeof entries>();
+for (const m of MEDIA) byMedium.set(m, [] as any);
+for (const e of entries) byMedium.get(e.data.medium)!.push(e);
+for (const [, list] of byMedium) list.sort((a, b) => b.data.yearGraduated - a.data.yearGraduated);
+---
+
+<BaseLayout title="Body of Works — Visual Arts" description="Student BOW examples from graduates who agreed to share, indexed by medium.">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Student body of works</p>
+      <h1>What a <em>Band 6</em> BOW looks like</h1>
+      <p class="lede">Selected examples from graduates who agreed to share their work. Each entry breaks down concept, materials, frames engaged, practice narrative, why it scored highly, and things you could take into your own BOW.</p>
+    </div>
+
+    <nav class="jump">
+      <span class="lab">Browse by medium</span>
+      <ul>
+        {MEDIA.map((m) => {
+          const n = byMedium.get(m)!.length;
+          return (
+            <li>
+              <a href={`/body-of-works/by-medium/${m}`} data-medium={m} class={n === 0 ? 'muted' : ''}>
+                {label(m)} <span class="n">({n})</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+
+    {entries.length === 0 && (
+      <div class="empty">
+        <p class="lab">No BOW examples yet</p>
+        <p>The gallery populates as students sign consent forms and Rannia authors their entries. Every entry is publication-gated: no BOW appears without a signed consent record.</p>
+      </div>
+    )}
+
+    {entries.length > 0 && (
+      <div class="stacks">
+        {MEDIA.map((m) => {
+          const list = byMedium.get(m)!;
+          if (list.length === 0) return null;
+          return (
+            <section class="stack" id={m}>
+              <header>
+                <p class="rlabel" data-medium={m}>Medium</p>
+                <h2>{label(m)}</h2>
+                <a class="all-link" href={`/body-of-works/by-medium/${m}`}>See all →</a>
+              </header>
+              <div class="grid">
+                {list.slice(0, 6).map((e) => (
+                  <BowCard
+                    href={`/body-of-works/${e.id}`}
+                    title={e.data.title}
+                    studentDisplayName={e.data.studentDisplayName}
+                    yearGraduated={e.data.yearGraduated}
+                    medium={e.data.medium}
+                    band={e.data.band}
+                    shortPitch={e.data.shortPitch}
+                    heroImage={{ src: e.data.heroImage.src, alt: e.data.heroImage.alt }}
+                    frames={e.data.frames}
+                  />
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+    )}
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 20ch; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 60ch; margin: 0; }
+
+  .jump { padding: 24px 0; border-bottom: 1px solid var(--rule); display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px 20px; }
+  .jump .lab { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); margin: 0; }
+  .jump ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .jump a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 6px 12px;
+    text-decoration: none;
+  }
+  .jump a:hover { color: var(--accent); border-color: var(--accent); }
+  .jump a.muted { opacity: 0.5; }
+  .jump .n { color: var(--ink-2); }
+
+  .empty { padding: clamp(48px, 8vw, 96px) 0; max-width: 60ch; }
+  .empty .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+  .empty p:not(.lab) { color: var(--ink-2); margin: 0; }
+
+  .stacks { padding: 20px 0; display: flex; flex-direction: column; gap: clamp(32px, 5vw, 56px); }
+  .stack { scroll-margin-top: 24px; }
+  .stack header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 14px; margin-bottom: 20px; }
+  .rlabel { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .stack h2 { font-family: var(--font-display); font-size: 30px; font-weight: 400; margin: 0; letter-spacing: -0.015em; }
+  .all-link { margin-left: auto; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+
+  .grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
+  @media (min-width: 620px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+</style>
