@@ -1,0 +1,201 @@
+---
+interface Scaffold {
+  decode: string;
+  plan: string;
+  sentenceStems: string[];
+  markersView: string;
+  exemplarStructure?: string;
+}
+
+interface Props {
+  questionText: string;
+  marks: number;
+  questionHref?: string;
+  scaffold: Scaffold;
+  additionalScaffold?: string;
+  collapsible?: boolean;
+}
+
+const {
+  questionText,
+  marks,
+  questionHref,
+  scaffold,
+  additionalScaffold,
+  collapsible = false,
+} = Astro.props;
+---
+
+<article class="scaffold">
+  <header class="q">
+    <div class="q-row">
+      <p class="q-text">{questionText}</p>
+      <span class="marks">{marks} marks</span>
+    </div>
+    {questionHref && (
+      <p class="q-link"><a href={questionHref}>See the question page →</a></p>
+    )}
+  </header>
+
+  {collapsible ? (
+    <details class="peek">
+      <summary>Reveal the scaffold — try the question first</summary>
+      <div class="body">
+        <slot name="decode-block">
+          <div class="block">
+            <p class="lab">Decode</p>
+            <p class="txt">{scaffold.decode}</p>
+          </div>
+        </slot>
+        <div class="block">
+          <p class="lab">Plan</p>
+          <p class="txt">{scaffold.plan}</p>
+        </div>
+        {scaffold.sentenceStems.length > 0 && (
+          <div class="block">
+            <p class="lab">Sentence stems</p>
+            <ul>
+              {scaffold.sentenceStems.map((s) => <li><em>"{s}"</em></li>)}
+            </ul>
+          </div>
+        )}
+        <div class="block">
+          <p class="lab">Marker's view</p>
+          <p class="txt">{scaffold.markersView}</p>
+        </div>
+        {scaffold.exemplarStructure && (
+          <div class="block">
+            <p class="lab">Exemplar structure</p>
+            <p class="txt">{scaffold.exemplarStructure}</p>
+          </div>
+        )}
+        {additionalScaffold && (
+          <div class="block additional">
+            <p class="lab">Lesson-specific note</p>
+            <p class="txt">{additionalScaffold}</p>
+          </div>
+        )}
+      </div>
+    </details>
+  ) : (
+    <div class="body open">
+      <div class="block">
+        <p class="lab">Decode</p>
+        <p class="txt">{scaffold.decode}</p>
+      </div>
+      <div class="block">
+        <p class="lab">Plan</p>
+        <p class="txt">{scaffold.plan}</p>
+      </div>
+      {scaffold.sentenceStems.length > 0 && (
+        <div class="block">
+          <p class="lab">Sentence stems</p>
+          <ul>
+            {scaffold.sentenceStems.map((s) => <li><em>"{s}"</em></li>)}
+          </ul>
+        </div>
+      )}
+      <div class="block">
+        <p class="lab">Marker's view</p>
+        <p class="txt">{scaffold.markersView}</p>
+      </div>
+      {scaffold.exemplarStructure && (
+        <div class="block">
+          <p class="lab">Exemplar structure</p>
+          <p class="txt">{scaffold.exemplarStructure}</p>
+        </div>
+      )}
+      {additionalScaffold && (
+        <div class="block additional">
+          <p class="lab">Lesson-specific note</p>
+          <p class="txt">{additionalScaffold}</p>
+        </div>
+      )}
+    </div>
+  )}
+</article>
+
+<style>
+  .scaffold {
+    padding: clamp(24px, 4vw, 36px) 0;
+    border-top: 1px solid var(--rule);
+  }
+  .q { margin-bottom: 22px; }
+  .q-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline; }
+  .q-text {
+    font-family: var(--font-display);
+    font-size: 22px;
+    line-height: 1.35;
+    color: var(--ink);
+    margin: 0;
+    flex: 1 1 20ch;
+    max-width: 60ch;
+  }
+  .marks {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 5px 10px;
+  }
+  .q-link { margin: 8px 0 0; font-size: 13.5px; }
+  .q-link a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 55%); }
+
+  .peek summary {
+    cursor: pointer;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 10px 14px;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+  }
+  .peek summary::-webkit-details-marker { display: none; }
+  .peek summary::before { content: "↓"; }
+  .peek[open] summary::before { content: "↑"; }
+  .peek[open] summary { margin-bottom: 20px; }
+
+  .body { display: flex; flex-direction: column; gap: 20px; }
+  .body.open { padding-top: 4px; }
+  .block { display: flex; flex-direction: column; gap: 8px; }
+  .block.additional {
+    background: var(--paper-2);
+    border-left: 3px solid var(--accent);
+    padding: 14px 16px;
+    border-radius: var(--radius-card);
+  }
+  .lab {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+  .txt {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink);
+    margin: 0;
+    max-width: 68ch;
+    white-space: pre-line;
+  }
+  ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  li {
+    font-family: var(--font-display);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink);
+    padding-left: 14px;
+    border-left: 2px solid var(--rule);
+  }
+</style>

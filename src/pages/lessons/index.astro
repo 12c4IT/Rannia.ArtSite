@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const entries = await getCollection('lessons');
+
+// Group by year level; sort within by title.
+const byYear = new Map<number, typeof entries>([[11, [] as any], [12, [] as any]]);
+for (const e of entries) byYear.get(e.data.yearLevel)!.push(e);
+for (const [, list] of byYear) list.sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<BaseLayout title="Lessons — Visual Arts" description="Lessons for each case study with WALT, WILF, and question scaffolds.">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Lessons</p>
+      <h1>Learn it, <em>then teach yourself</em></h1>
+      <p class="lede">Each lesson pairs a case study with Learning Intentions (WALT), Success Criteria (WILF), prior knowledge, and question scaffolds that walk you from decoding the verbs to Band 6 sentence stems.</p>
+    </div>
+
+    {entries.length === 0 && (
+      <div class="empty">
+        <p class="lab">No lessons yet</p>
+        <p>Rannia is authoring the first lessons now. Once she flips one from draft to published, it appears here.</p>
+        <p class="row">
+          <a class="textlink" href="/case-studies">Browse case studies →</a>
+          <a class="textlink" href="/frames">Read about the frames →</a>
+        </p>
+      </div>
+    )}
+
+    {entries.length > 0 && (
+      <div class="years">
+        {[12, 11].map((yr) => {
+          const list = byYear.get(yr) ?? [];
+          if (list.length === 0) return null;
+          return (
+            <section class="year-block">
+              <header>
+                <p class="rlabel">Year {yr}</p>
+                <h2>{yr === 12 ? 'HSC' : 'Preliminary'}</h2>
+              </header>
+              <div class="grid">
+                {list.map((e) => (
+                  <a class="card" href={`/lessons/${e.id}`}>
+                    <span class="chip">{e.data.durationMinutes} min</span>
+                    <h3>{e.data.title}</h3>
+                    <ul class="walt">
+                      {e.data.walt.slice(0, 2).map((w) => <li>{w}</li>)}
+                    </ul>
+                    <span class="go">Open lesson →</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+    )}
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.0; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 20ch; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 60ch; margin: 0; }
+
+  .empty { padding: clamp(48px, 8vw, 96px) 0; display: flex; flex-direction: column; gap: 12px; max-width: 60ch; }
+  .empty .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .empty p:not(.lab) { color: var(--ink-2); margin: 0; }
+  .row { display: flex; flex-wrap: wrap; gap: 20px; padding-top: 4px; }
+  .textlink { font-family: var(--font-sans); font-size: 13.5px; font-weight: 500; color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 55%); padding-bottom: 1px; }
+
+  .years { padding: clamp(32px, 5vw, 56px) 0; display: flex; flex-direction: column; gap: clamp(28px, 5vw, 48px); }
+  .year-block header { display: flex; align-items: baseline; gap: 18px; margin-bottom: 20px; }
+  .rlabel { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .year-block h2 { font-family: var(--font-display); font-size: 30px; font-weight: 400; margin: 0; letter-spacing: -0.015em; }
+
+  .grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+  @media (min-width: 620px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 22px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    background: var(--paper);
+    text-decoration: none;
+    transition: border-color 140ms ease, transform 140ms ease;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .chip {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 4px 9px;
+  }
+  .card h3 { font-family: var(--font-display); font-size: 22px; font-weight: 420; line-height: 1.2; margin: 0; color: var(--ink); }
+  .walt { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .walt li { font-size: 14px; line-height: 1.55; color: var(--ink-2); padding-left: 14px; border-left: 2px solid var(--rule); }
+  .go { margin-top: auto; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 6px; }
+</style>

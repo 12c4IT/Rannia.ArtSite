@@ -1,0 +1,148 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FrameBadge from '../../components/case-study/FrameBadge.astro';
+import ContentAreaBadge from '../../components/case-study/ContentAreaBadge.astro';
+import QuestionScaffold from '../../components/lesson/QuestionScaffold.astro';
+import LastReviewed from '../../components/ui/LastReviewed.astro';
+import StatusBadge from '../../components/ui/StatusBadge.astro';
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('questions');
+  return entries.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { data } = entry;
+
+const TYPE_LABEL: Record<string, string> = {
+  'short-answer': 'Short answer',
+  'extended-response': 'Extended response',
+  'plate-based-short': 'Plate-based short',
+  'plate-based-extended': 'Plate-based extended',
+};
+
+const linkedCaseStudies = await getCollection('case-studies', (e) =>
+  data.linkedCaseStudySlugs.includes(e.id)
+);
+---
+
+<BaseLayout title={`HSC ${data.year} Q${data.questionNumber} — Visual Arts`} description={data.text.slice(0, 160)}>
+  <article>
+    <header class="hero">
+      <div class="wrap">
+        <p class="eyebrow">
+          <a href="/questions">HSC questions</a>
+          <span class="sep">·</span>
+          {data.year} · Section {data.section} · Q{data.questionNumber}
+          <span class="sep">·</span>
+          <span class="marks">{data.marks} marks</span>
+        </p>
+        <div class="qtext">
+          <p>{data.text}</p>
+        </div>
+        <div class="badges">
+          {data.frames.map((f) => <FrameBadge frame={f as any} href={`/questions/by-frame/${f}`} />)}
+          {data.contentAreas.map((a) => <ContentAreaBadge area={a} href={`/questions/by-content-area/${a}`} />)}
+          <span class="chip"><a href={`/questions/by-type/${data.questionType}`}>{TYPE_LABEL[data.questionType] ?? data.questionType}</a></span>
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap body">
+      {data.stimulus?.hasPlate && data.stimulus.plateDescription && (
+        <section class="stim">
+          <p class="section-eyebrow">Stimulus</p>
+          <p class="stim-desc">{data.stimulus.plateDescription}</p>
+        </section>
+      )}
+
+      <QuestionScaffold
+        questionText={data.text}
+        marks={data.marks}
+        scaffold={data.scaffold}
+        collapsible={true}
+      />
+
+      {linkedCaseStudies.length > 0 && (
+        <section class="linked">
+          <p class="section-eyebrow">Case studies that could anchor a response</p>
+          <div class="linked-grid">
+            {linkedCaseStudies.map((cs) => (
+              <a class="linked-card" href={`/case-studies/${cs.id}`}>
+                <h3>{cs.data.artist.name}</h3>
+                <p>{cs.data.shortPitch}</p>
+                <span class="go">Open case study →</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section class="source">
+        <p class="section-eyebrow">Source</p>
+        <p><a href={data.source.url}>NESA {data.year} Visual Arts paper</a></p>
+      </section>
+
+      <LastReviewed date={data.lastReviewed} reviewedBy={data.reviewedBy} />
+    </div>
+  </article>
+
+  <StatusBadge status={data.status} />
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .hero { padding: clamp(48px, 8vw, 96px) 0 clamp(28px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 24px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .eyebrow a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 60%); }
+  .sep { opacity: 0.4; }
+  .marks { color: var(--ink); }
+
+  .qtext { max-width: 68ch; margin-bottom: 24px; }
+  .qtext p {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2rem);
+    line-height: 1.35;
+    color: var(--ink);
+    margin: 0;
+    white-space: pre-line;
+  }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 5px 10px;
+  }
+  .chip a { color: inherit; text-decoration: none; }
+  .chip:hover { color: var(--accent); border-color: var(--accent); }
+
+  .body { padding: clamp(24px, 4vw, 48px) 0; }
+  .section-eyebrow { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+
+  .stim { padding: clamp(24px, 4vw, 40px) 0; border-bottom: 1px solid var(--rule); }
+  .stim-desc { font-family: var(--font-display); font-size: 17px; line-height: 1.55; color: var(--ink); font-style: italic; margin: 0; max-width: 68ch; }
+
+  .linked { padding: clamp(28px, 5vw, 48px) 0; border-top: 1px solid var(--rule); }
+  .linked-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 780px) { .linked-grid { grid-template-columns: 1fr 1fr; } }
+  .linked-card { display: flex; flex-direction: column; gap: 8px; padding: 20px 22px; border: 1px solid var(--rule); border-radius: var(--radius-card); text-decoration: none; background: var(--paper); transition: border-color 140ms ease; }
+  .linked-card:hover { border-color: var(--accent); }
+  .linked-card h3 { font-family: var(--font-display); font-size: 22px; font-weight: 420; margin: 0; color: var(--ink); }
+  .linked-card p { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+  .go { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 6px; }
+
+  .source { padding: clamp(24px, 4vw, 40px) 0; border-top: 1px solid var(--rule); }
+  .source p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+  .source a { color: var(--accent); }
+</style>

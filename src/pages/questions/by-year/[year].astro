@@ -1,0 +1,89 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import FrameBadge from '../../../components/case-study/FrameBadge.astro';
+import ContentAreaBadge from '../../../components/case-study/ContentAreaBadge.astro';
+
+export const getStaticPaths = (async () => {
+  const all = await getCollection('questions');
+  const years = [...new Set(all.map((e) => e.data.year))];
+  return years.map((year) => ({ params: { year: String(year) } }));
+}) satisfies GetStaticPaths;
+
+const { year } = Astro.params;
+const yr = Number(year);
+
+const all = await getCollection('questions');
+const entries = all.filter((e) => e.data.year === yr);
+entries.sort((a, b) => a.data.section.localeCompare(b.data.section) || a.data.questionNumber.localeCompare(b.data.questionNumber));
+---
+
+<BaseLayout title={`HSC ${yr} — Visual Arts questions`} description={`All Visual Arts questions from the ${yr} HSC paper, verbatim from NESA.`}>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">
+        <a href="/questions">HSC questions</a>
+        <span class="sep">·</span>
+        By year
+      </p>
+      <h1><em>{yr}</em> · Visual Arts</h1>
+      <p class="lede">Every question from the {yr} NESA Visual Arts paper, transcribed verbatim. In section order.</p>
+    </div>
+
+    {entries.length === 0 && (
+      <div class="empty">
+        <p class="lab">No questions for {yr} yet</p>
+        <p>The {yr} paper hasn't been transcribed yet.</p>
+      </div>
+    )}
+
+    <div class="qlist">
+      {entries.map((e) => (
+        <a class="qrow" href={`/questions/${e.id}`}>
+          <div class="left">
+            <span class="tag">Section {e.data.section} · Q{e.data.questionNumber}</span>
+            <span class="marks">{e.data.marks} marks</span>
+          </div>
+          <div class="body">
+            <p class="text">{e.data.text.split('\n')[0]}</p>
+            <div class="badges">
+              {e.data.frames.map((f) => <FrameBadge frame={f as any} />)}
+              {e.data.contentAreas.slice(0, 2).map((a) => <ContentAreaBadge area={a} />)}
+            </div>
+          </div>
+          <span class="go">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 22px; display: flex; gap: 10px; align-items: center; }
+  .eyebrow a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 60%); }
+  .sep { opacity: 0.4; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 20px; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 60ch; margin: 0; }
+
+  .empty { padding: clamp(48px, 8vw, 96px) 0; }
+  .empty .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+  .empty p:not(.lab) { color: var(--ink-2); margin: 0; }
+
+  .qlist { padding: 20px 0 0; display: flex; flex-direction: column; }
+  .qrow { display: grid; grid-template-columns: 180px 1fr 24px; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--rule); text-decoration: none; align-items: center; }
+  .qrow:hover { background: var(--paper-2); }
+  @media (max-width: 720px) { .qrow { grid-template-columns: 1fr; gap: 10px; } }
+  .left { display: flex; flex-direction: column; gap: 6px; }
+  .tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+  .marks { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .body { display: flex; flex-direction: column; gap: 10px; }
+  .text { font-family: var(--font-display); font-size: 18px; line-height: 1.4; color: var(--ink); margin: 0; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .go { font-family: var(--font-mono); font-size: 18px; color: var(--accent); text-align: right; }
+  @media (max-width: 720px) { .go { display: none; } }
+</style>

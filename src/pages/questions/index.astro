@@ -1,0 +1,211 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FrameBadge from '../../components/case-study/FrameBadge.astro';
+import ContentAreaBadge from '../../components/case-study/ContentAreaBadge.astro';
+
+const entries = await getCollection('questions');
+entries.sort((a, b) => b.data.year - a.data.year || a.data.questionNumber.localeCompare(b.data.questionNumber));
+
+const framesInUse = new Set<string>();
+const areasInUse = new Set<string>();
+const yearsInUse = new Set<number>();
+const typesInUse = new Set<string>();
+entries.forEach((e) => {
+  e.data.frames.forEach((f) => framesInUse.add(f));
+  e.data.contentAreas.forEach((a) => areasInUse.add(a));
+  yearsInUse.add(e.data.year);
+  typesInUse.add(e.data.questionType);
+});
+
+const TYPE_LABEL: Record<string, string> = {
+  'short-answer': 'Short answer',
+  'extended-response': 'Extended response',
+  'plate-based-short': 'Plate-based short',
+  'plate-based-extended': 'Plate-based extended',
+};
+---
+
+<BaseLayout title="HSC questions — Visual Arts" description="A library of real past HSC questions transcribed verbatim from NESA papers, with scaffolds and case-study links.">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">HSC questions</p>
+      <h1>Every question, <em>verbatim</em> from NESA</h1>
+      <p class="lede">Real past questions from the NESA Visual Arts papers, transcribed exactly. Each carries a scaffold you can peek at, plus links to the case studies that could anchor a Band 6 response.</p>
+    </div>
+
+    <nav class="cross-cuts">
+      <p class="lab">Cross-cuts</p>
+      <div class="cross-links">
+        <a href="/questions/by-topic">By topic</a>
+        <a href="/questions/by-frame/cultural">By frame</a>
+        <a href="/questions/by-year/2023">By year</a>
+        <a href="/questions/by-type/extended-response">By type</a>
+      </div>
+    </nav>
+
+    {entries.length === 0 && (
+      <div class="empty">
+        <p class="lab">No questions yet</p>
+        <p>The library is being transcribed from the NESA back-catalogue. Once questions are added, they'll appear here, filterable by frame, year, type and content area.</p>
+      </div>
+    )}
+
+    {entries.length > 0 && (
+      <>
+        <div class="filters">
+          <div class="filter-group">
+            <span class="lab">Frame</span>
+            <div class="pillset" data-facet="frame">
+              <button class="fpill" data-val="all" aria-pressed="true">All</button>
+              {['subjective', 'cultural', 'structural', 'postmodern'].filter((f) => framesInUse.has(f)).map((f) => (
+                <button class="fpill" data-val={f}>{f.charAt(0).toUpperCase() + f.slice(1)}</button>
+              ))}
+            </div>
+          </div>
+          <div class="filter-group">
+            <span class="lab">Type</span>
+            <div class="pillset" data-facet="type">
+              <button class="fpill" data-val="all" aria-pressed="true">All</button>
+              {[...typesInUse].sort().map((t) => (
+                <button class="fpill" data-val={t}>{TYPE_LABEL[t] ?? t}</button>
+              ))}
+            </div>
+          </div>
+          <span class="count" id="count">Showing {entries.length} of {entries.length}</span>
+        </div>
+
+        <div class="qlist" id="qlist">
+          {entries.map((e) => (
+            <a class="qrow" href={`/questions/${e.id}`} data-frame={e.data.frames[0] ?? 'none'} data-type={e.data.questionType}>
+              <div class="left">
+                <span class="tag">{e.data.year} · Section {e.data.section} · Q{e.data.questionNumber}</span>
+                <span class="marks">{e.data.marks} marks</span>
+              </div>
+              <div class="body">
+                <p class="text">{e.data.text.split('\n')[0]}</p>
+                <div class="badges">
+                  {e.data.frames.map((f) => <FrameBadge frame={f as any} />)}
+                  {e.data.contentAreas.slice(0, 2).map((a) => <ContentAreaBadge area={a} />)}
+                </div>
+              </div>
+              <span class="go">→</span>
+            </a>
+          ))}
+        </div>
+      </>
+    )}
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 60ch; margin: 0; }
+
+  .cross-cuts { padding: 26px 0; border-bottom: 1px solid var(--rule); display: flex; flex-wrap: wrap; align-items: baseline; gap: 20px; }
+  .cross-cuts .lab { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); margin: 0; }
+  .cross-links { display: flex; flex-wrap: wrap; gap: 6px; }
+  .cross-links a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 6px 12px;
+    text-decoration: none;
+  }
+  .cross-links a:hover { color: var(--accent); border-color: var(--accent); }
+
+  .empty { padding: clamp(48px, 8vw, 96px) 0; display: flex; flex-direction: column; gap: 12px; max-width: 60ch; }
+  .empty .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .empty p:not(.lab) { color: var(--ink-2); margin: 0; }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 28px;
+    align-items: flex-end;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule);
+    margin-top: 8px;
+  }
+  .filter-group { display: flex; flex-direction: column; gap: 8px; }
+  .lab { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+  .pillset { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fpill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 7px 12px;
+    cursor: pointer;
+  }
+  .fpill[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  .count { margin-left: auto; font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-2); align-self: center; }
+
+  .qlist { padding: 12px 0 0; display: flex; flex-direction: column; }
+  .qrow {
+    display: grid;
+    grid-template-columns: 180px 1fr 24px;
+    gap: 20px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    align-items: center;
+    transition: background 140ms ease;
+  }
+  .qrow:hover { background: var(--paper-2); }
+  @media (max-width: 720px) { .qrow { grid-template-columns: 1fr; gap: 10px; padding: 18px 0; } }
+  .left { display: flex; flex-direction: column; gap: 6px; }
+  .tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+  .marks { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .body { display: flex; flex-direction: column; gap: 10px; }
+  .text { font-family: var(--font-display); font-size: 18px; line-height: 1.4; color: var(--ink); margin: 0; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .go { font-family: var(--font-mono); font-size: 18px; color: var(--accent); text-align: right; }
+  @media (max-width: 720px) { .go { display: none; } }
+  .hidden { display: none !important; }
+</style>
+
+<script>
+  const state = { frame: 'all', type: 'all' };
+  const rows = Array.from(document.querySelectorAll<HTMLElement>('#qlist .qrow'));
+  const countEl = document.getElementById('count');
+  const pillsets = document.querySelectorAll<HTMLElement>('.pillset');
+
+  function apply() {
+    let shown = 0;
+    rows.forEach((r) => {
+      const okFrame = state.frame === 'all' || r.dataset.frame === state.frame;
+      const okType = state.type === 'all' || r.dataset.type === state.type;
+      const show = okFrame && okType;
+      r.classList.toggle('hidden', !show);
+      if (show) shown++;
+    });
+    if (countEl) countEl.textContent = `Showing ${shown} of ${rows.length}`;
+  }
+
+  pillsets.forEach((ps) => {
+    const facet = ps.dataset.facet as 'frame' | 'type';
+    const pills = ps.querySelectorAll<HTMLButtonElement>('.fpill');
+    pills.forEach((p) => {
+      p.addEventListener('click', () => {
+        pills.forEach((x) => x.setAttribute('aria-pressed', 'false'));
+        p.setAttribute('aria-pressed', 'true');
+        state[facet] = p.dataset.val ?? 'all';
+        apply();
+      });
+    });
+  });
+</script>

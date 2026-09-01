@@ -1,0 +1,168 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WaltWilf from '../../components/lesson/WaltWilf.astro';
+import QuestionScaffold from '../../components/lesson/QuestionScaffold.astro';
+import LastReviewed from '../../components/ui/LastReviewed.astro';
+import StatusBadge from '../../components/ui/StatusBadge.astro';
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('lessons');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+// Resolve linked questions by their frontmatter id.
+const allQuestions = await getCollection('questions');
+const questionById = new Map(allQuestions.map((q) => [q.data.id, q]));
+
+const scaffolds = data.questionScaffolds
+  .map((s) => ({ scaffold: s, question: questionById.get(s.questionId) }))
+  .filter((s) => s.question != null);
+
+const linkedCaseStudies = await getCollection('case-studies', (e) =>
+  data.linkedCaseStudySlugs.includes(e.id)
+);
+---
+
+<BaseLayout title={`${data.title} — Lesson`} description={data.walt[0] ?? data.title}>
+  <article>
+    <header class="hero">
+      <div class="wrap">
+        <p class="eyebrow">Lesson · Year {data.yearLevel}</p>
+        <h1>{data.title}</h1>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <WaltWilf
+        walt={data.walt}
+        wilf={data.wilf}
+        yearLevel={data.yearLevel}
+        durationMinutes={data.durationMinutes}
+      />
+
+      {(data.priorKnowledge.length > 0 || data.vocabulary.length > 0) && (
+        <section class="prior">
+          <div class="cols">
+            {data.priorKnowledge.length > 0 && (
+              <div>
+                <p class="lab">Prior knowledge</p>
+                <ul class="dash">
+                  {data.priorKnowledge.map((p) => <li>{p}</li>)}
+                </ul>
+              </div>
+            )}
+            {data.vocabulary.length > 0 && (
+              <div>
+                <p class="lab">Vocabulary</p>
+                <div class="chips">
+                  {data.vocabulary.map((v) => (
+                    <a class="chip" href={`/glossary#${v}`}>{v.replace(/-/g, ' ')}</a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      <section class="prose">
+        <p class="section-eyebrow">Lesson body</p>
+        <Content />
+      </section>
+
+      {scaffolds.length > 0 && (
+        <section class="scaffolds">
+          <p class="section-eyebrow">Question scaffolds</p>
+          <p class="section-lede">Work through the linked HSC questions. Each carries a scaffold you can peek at after your first attempt.</p>
+          {scaffolds.map(({ scaffold, question }) => (
+            <QuestionScaffold
+              questionText={question!.data.text}
+              marks={question!.data.marks}
+              questionHref={`/questions/${question!.id}`}
+              scaffold={question!.data.scaffold}
+              additionalScaffold={scaffold.additionalScaffold}
+              collapsible={true}
+            />
+          ))}
+        </section>
+      )}
+
+      {linkedCaseStudies.length > 0 && (
+        <section class="linked">
+          <p class="section-eyebrow">Anchor case studies</p>
+          <div class="linked-grid">
+            {linkedCaseStudies.map((cs) => (
+              <a class="linked-card" href={`/case-studies/${cs.id}`}>
+                <h3>{cs.data.artist.name}</h3>
+                <p>{cs.data.shortPitch}</p>
+                <span class="go">Open case study →</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <LastReviewed date={data.lastReviewed} reviewedBy={data.reviewedBy} />
+    </div>
+  </article>
+
+  <StatusBadge status={data.status} />
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .hero { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 22px; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0; max-width: 24ch; }
+
+  .section-eyebrow { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+  .section-lede { color: var(--ink-2); font-size: 15px; max-width: 60ch; margin: 0 0 20px; }
+
+  .prior { padding: clamp(28px, 4vw, 44px) 0; border-bottom: 1px solid var(--rule); }
+  .cols { display: grid; grid-template-columns: 1fr; gap: 28px; }
+  @media (min-width: 780px) { .cols { grid-template-columns: 1fr 1fr; gap: 44px; } }
+  .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+  .dash { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .dash li { font-size: 15px; line-height: 1.55; color: var(--ink); padding-left: 18px; position: relative; }
+  .dash li::before { content: "–"; position: absolute; left: 0; color: var(--accent); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 5px 10px;
+    text-decoration: none;
+  }
+  .chip:hover { color: var(--accent); border-color: var(--accent); }
+
+  .prose { padding: clamp(32px, 5vw, 56px) 0; border-bottom: 1px solid var(--rule); max-width: 68ch; }
+  .prose :global(h2) { font-family: var(--font-display); font-size: 26px; font-weight: 440; margin: 32px 0 12px; }
+  .prose :global(h3) { font-family: var(--font-display); font-size: 21px; font-weight: 440; margin: 28px 0 10px; }
+  .prose :global(p) { font-size: 16px; line-height: 1.7; color: var(--ink); margin: 0 0 16px; }
+  .prose :global(blockquote) { border-left: 3px solid var(--accent); padding: 6px 0 6px 18px; margin: 20px 0; color: var(--ink-2); font-style: italic; }
+  .prose :global(a) { color: var(--accent); }
+
+  .scaffolds { padding: clamp(32px, 5vw, 56px) 0; }
+
+  .linked { padding: clamp(32px, 5vw, 56px) 0; border-top: 1px solid var(--rule); }
+  .linked-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 780px) { .linked-grid { grid-template-columns: 1fr 1fr; } }
+  .linked-card { display: flex; flex-direction: column; gap: 8px; padding: 20px 22px; border: 1px solid var(--rule); border-radius: var(--radius-card); text-decoration: none; background: var(--paper); transition: border-color 140ms ease; }
+  .linked-card:hover { border-color: var(--accent); }
+  .linked-card h3 { font-family: var(--font-display); font-size: 22px; font-weight: 420; margin: 0; color: var(--ink); }
+  .linked-card p { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0; }
+  .go { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 6px; }
+</style>

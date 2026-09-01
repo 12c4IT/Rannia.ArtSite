@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import FrameBadge from '../../../components/case-study/FrameBadge.astro';
+import ContentAreaBadge from '../../../components/case-study/ContentAreaBadge.astro';
+
+const FRAME_LABEL = {
+  subjective: 'the Subjective frame',
+  cultural: 'the Cultural frame',
+  structural: 'the Structural frame',
+  postmodern: 'the Postmodern frame',
+} as const;
+
+type FrameKey = keyof typeof FRAME_LABEL;
+
+export const getStaticPaths = (async () => {
+  const frames: FrameKey[] = ['subjective', 'cultural', 'structural', 'postmodern'];
+  return frames.map((frame) => ({ params: { frame } }));
+}) satisfies GetStaticPaths;
+
+const { frame } = Astro.params;
+const key = frame as FrameKey;
+
+const all = await getCollection('questions');
+const entries = all.filter((e) => e.data.frames.includes(key));
+entries.sort((a, b) => b.data.year - a.data.year);
+---
+
+<BaseLayout title={`HSC questions — ${FRAME_LABEL[key]}`} description={`Past HSC Visual Arts questions that reward ${FRAME_LABEL[key]}.`}>
+  <div class="wrap">
+    <div class="head" data-frame={key}>
+      <p class="eyebrow">
+        <a href="/questions">HSC questions</a>
+        <span class="sep">·</span>
+        <FrameBadge frame={key} />
+      </p>
+      <h1>Questions that reward <em>{FRAME_LABEL[key].replace('the ', '')}</em></h1>
+      <p class="lede">Real past HSC questions where the strongest responses lean on {FRAME_LABEL[key]}. Each carries a scaffold and a link to the case studies that could anchor a Band 6 response.</p>
+    </div>
+
+    {entries.length === 0 && (
+      <div class="empty">
+        <p class="lab">No questions tagged yet</p>
+        <p>Once questions are added to the library with this frame tagged, they'll appear here.</p>
+      </div>
+    )}
+
+    <div class="qlist">
+      {entries.map((e) => (
+        <a class="qrow" href={`/questions/${e.id}`}>
+          <div class="left">
+            <span class="tag">{e.data.year} · Section {e.data.section} · Q{e.data.questionNumber}</span>
+            <span class="marks">{e.data.marks} marks</span>
+          </div>
+          <div class="body">
+            <p class="text">{e.data.text.split('\n')[0]}</p>
+            <div class="badges">
+              {e.data.contentAreas.slice(0, 3).map((a) => <ContentAreaBadge area={a} />)}
+            </div>
+          </div>
+          <span class="go">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-top: 4px solid var(--tone); border-bottom: 1px solid var(--rule); }
+  .head[data-frame="subjective"] { --tone: var(--f-subj); }
+  .head[data-frame="cultural"]   { --tone: var(--f-cult); }
+  .head[data-frame="structural"] { --tone: var(--f-struct); }
+  .head[data-frame="postmodern"] { --tone: var(--f-post); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--tone); margin: 0 0 22px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .eyebrow a { color: var(--tone); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--tone), transparent 60%); }
+  .sep { opacity: 0.4; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch; }
+  h1 em { color: var(--tone); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 60ch; margin: 0; }
+
+  .empty { padding: clamp(48px, 8vw, 96px) 0; }
+  .empty .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+  .empty p:not(.lab) { color: var(--ink-2); margin: 0; max-width: 60ch; }
+
+  .qlist { padding: 20px 0 0; display: flex; flex-direction: column; }
+  .qrow { display: grid; grid-template-columns: 180px 1fr 24px; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--rule); text-decoration: none; align-items: center; }
+  .qrow:hover { background: var(--paper-2); }
+  @media (max-width: 720px) { .qrow { grid-template-columns: 1fr; gap: 10px; padding: 18px 0; } }
+  .left { display: flex; flex-direction: column; gap: 6px; }
+  .tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+  .marks { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tone); }
+  .body { display: flex; flex-direction: column; gap: 10px; }
+  .text { font-family: var(--font-display); font-size: 18px; line-height: 1.4; color: var(--ink); margin: 0; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .go { font-family: var(--font-mono); font-size: 18px; color: var(--tone); text-align: right; }
+  @media (max-width: 720px) { .go { display: none; } }
+</style>
