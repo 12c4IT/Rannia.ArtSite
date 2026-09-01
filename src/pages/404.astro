@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Not found — Visual Arts" description="This page couldn't be found.">
+  <div class="wrap">
+    <p class="eyebrow">404 · Not found</p>
+    <h1>Nothing <em>here</em>.</h1>
+    <p class="lede">This URL doesn't match any page on the site. The link may be old, or the case study may still be in draft.</p>
+
+    <nav class="paths">
+      <p class="lab">Try one of these</p>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/case-studies">Case studies</a></li>
+        <li><a href="/frames">The frames</a></li>
+        <li><a href="/questions">HSC questions</a></li>
+        <li><a href="/practice">Practice</a></li>
+        <li><a href="/command-words">Command words</a></li>
+        <li><a href="/glossary">Glossary</a></li>
+        <li><a href="/references">References</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 900px; margin: 0 auto; padding: clamp(48px, 8vw, 96px) clamp(16px, 4vw, 28px) 0; }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 20px; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.0; letter-spacing: -0.02em; margin: 0 0 22px; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 54ch; margin: 0; }
+
+  .paths { margin-top: clamp(36px, 5vw, 60px); padding-top: 28px; border-top: 1px solid var(--rule); }
+  .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 12px; }
+  .paths ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .paths a {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 8px 14px;
+    text-decoration: none;
+  }
+  .paths a:hover { color: var(--accent); border-color: var(--accent); }
+</style>

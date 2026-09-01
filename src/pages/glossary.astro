@@ -1,13 +1,143 @@
 ---
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ComingSoon from '../components/ui/ComingSoon.astro';
+import FrameBadge from '../components/case-study/FrameBadge.astro';
+
+const all = await getCollection('glossary');
+all.sort((a, b) => a.data.term.localeCompare(b.data.term));
+
+const rendered = await Promise.all(
+  all.map(async (e) => ({ entry: e, Content: (await render(e)).Content }))
+);
+
+// Group by first letter for the A–Z index.
+const byLetter = new Map<string, typeof rendered>();
+for (const r of rendered) {
+  const letter = r.entry.data.term.charAt(0).toUpperCase();
+  if (!byLetter.has(letter)) byLetter.set(letter, [] as any);
+  byLetter.get(letter)!.push(r);
+}
+const letters = [...byLetter.keys()].sort();
 ---
 
-<BaseLayout title="Glossary — Visual Arts" description="Art terminology, linked from the MDX content across the site.">
-  <ComingSoon
-    eyebrow="Glossary"
-    title="The words the exam uses"
-    blurb="An alphabetised list of art terminology used across the site, with plain-English definitions and links to the frames they belong to. Cross-referenced from every case study."
-    waitingOn="Rannia authoring the first pass of terms."
-  />
+<BaseLayout title="Glossary — Visual Arts" description="Art terminology used across the site, cross-referenced with the frames and related terms.">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Glossary</p>
+      <h1>The words the <em>exam</em> uses</h1>
+      <p class="lede">Art terminology used across the site, in plain English, cross-referenced with the frames each term belongs to. Cite them precisely in your responses — markers reward the correct vocabulary.</p>
+    </div>
+
+    {rendered.length === 0 && (
+      <div class="empty">
+        <p class="lab">No terms yet</p>
+        <p>Once entries are added to the glossary, they'll appear here.</p>
+      </div>
+    )}
+
+    {rendered.length > 0 && (
+      <>
+        <nav class="jump">
+          <span class="lab">Jump to</span>
+          <ul>
+            {letters.map((l) => <li><a href={`#letter-${l}`}>{l}</a></li>)}
+          </ul>
+        </nav>
+
+        <div class="letters">
+          {letters.map((l) => (
+            <section class="letter" id={`letter-${l}`}>
+              <div class="letter-head">{l}</div>
+              <div class="terms">
+                {byLetter.get(l)!.map(({ entry, Content }) => (
+                  <article class="term" id={entry.data.slug}>
+                    <div class="term-head">
+                      <h2>{entry.data.term}</h2>
+                      <div class="badges">
+                        {entry.data.relatedFrames.map((f) => <FrameBadge frame={f as any} />)}
+                      </div>
+                    </div>
+                    <p class="short">{entry.data.shortDefinition}</p>
+                    <div class="body">
+                      <Content />
+                    </div>
+                    {entry.data.relatedTerms.length > 0 && (
+                      <div class="related">
+                        <span class="rlab">Related</span>
+                        <ul>
+                          {entry.data.relatedTerms.map((rt) => (
+                            <li><a href={`#${rt}`}>{rt.replace(/-/g, ' ')}</a></li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </>
+    )}
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
 </BaseLayout>
+
+<style>
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 18ch; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 62ch; margin: 0; }
+
+  .empty { padding: clamp(48px, 8vw, 96px) 0; }
+  .empty .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+  .empty p:not(.lab) { color: var(--ink-2); margin: 0; }
+
+  .jump { padding: 24px 0; border-bottom: 1px solid var(--rule); display: flex; flex-wrap: wrap; align-items: baseline; gap: 14px 16px; }
+  .jump .lab { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); margin: 0; }
+  .jump ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 4px; }
+  .jump a {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    color: var(--ink-2); border: 1px solid var(--rule); border-radius: 50%;
+    text-decoration: none;
+  }
+  .jump a:hover { color: var(--accent); border-color: var(--accent); }
+
+  .letters { padding: 20px 0; display: flex; flex-direction: column; gap: clamp(28px, 4vw, 48px); }
+  .letter { display: grid; grid-template-columns: 60px 1fr; gap: 20px; scroll-margin-top: 24px; }
+  @media (max-width: 720px) { .letter { grid-template-columns: 1fr; gap: 8px; } }
+  .letter-head {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 340;
+    color: var(--accent);
+    line-height: 1;
+    position: sticky;
+    top: 20px;
+    align-self: start;
+    font-style: italic;
+  }
+  .terms { display: flex; flex-direction: column; gap: 24px; }
+
+  .term { padding: 22px 24px; border: 1px solid var(--rule); border-radius: var(--radius-card); background: var(--paper); scroll-margin-top: 24px; }
+  .term-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+  .term h2 { font-family: var(--font-display); font-size: 24px; font-weight: 440; margin: 0; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .short { font-family: var(--font-display); font-size: 16px; line-height: 1.55; color: var(--ink); margin: 0; white-space: pre-line; }
+  .body { padding-top: 4px; }
+  .body :global(p) { font-size: 15px; line-height: 1.65; color: var(--ink-2); margin: 0 0 10px; }
+
+  .related { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .rlab { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+  .related ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .related a {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-2); border: 1px solid var(--rule); border-radius: 999px; padding: 4px 10px;
+    text-decoration: none;
+  }
+  .related a:hover { color: var(--accent); border-color: var(--accent); }
+</style>
