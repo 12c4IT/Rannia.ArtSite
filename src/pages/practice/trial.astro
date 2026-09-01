@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FrameBadge from '../../components/case-study/FrameBadge.astro';
+import ContentAreaBadge from '../../components/case-study/ContentAreaBadge.astro';
+
+const all = await getCollection('practice-questions');
+const entries = all
+  .filter((e) => e.data.source === 'trial-paper')
+  .sort((a, b) => a.data.marks - b.data.marks || a.data.id.localeCompare(b.data.id));
+---
+
+<BaseLayout title="Trial-paper practice — Visual Arts" description="Trial-paper questions for HSC Visual Arts practice under exam conditions.">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">
+        <a href="/practice">Practice</a>
+        <span class="sep">·</span>
+        Trial paper
+      </p>
+      <h1>Trial-paper <em>practice</em></h1>
+      <p class="lede">Whole-paper practice at trial length. Sit them under exam conditions — timing, no notes, no scaffold on first pass — then come back and peek.</p>
+    </div>
+
+    {entries.length === 0 && (
+      <div class="empty">
+        <p class="lab">No trial-paper questions yet</p>
+        <p>Once trial-paper entries are seeded, they'll appear here.</p>
+      </div>
+    )}
+
+    <div class="list">
+      {entries.map((e) => (
+        <article class="row">
+          <div class="left">
+            <span class="marks">{e.data.marks} marks</span>
+          </div>
+          <div class="body">
+            <p class="qtext">{e.data.text}</p>
+            <div class="badges">
+              {e.data.frames.map((f) => <FrameBadge frame={f as any} />)}
+              {e.data.contentAreas.map((a) => <ContentAreaBadge area={a} />)}
+            </div>
+            {e.data.scaffold && (
+              <details class="peek">
+                <summary>Reveal scaffold</summary>
+                <div class="scaffold">
+                  <div><p class="lab">Decode</p><p class="txt">{e.data.scaffold.decode}</p></div>
+                  <div><p class="lab">Plan</p><p class="txt">{e.data.scaffold.plan}</p></div>
+                  <div><p class="lab">Marker's view</p><p class="txt">{e.data.scaffold.markersView}</p></div>
+                </div>
+              </details>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 22px; display: flex; gap: 10px; align-items: center; }
+  .eyebrow a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 60%); }
+  .sep { opacity: 0.4; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 20px; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 60ch; margin: 0; }
+
+  .empty { padding: clamp(48px, 8vw, 96px) 0; }
+  .empty .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+  .empty p:not(.lab) { color: var(--ink-2); margin: 0; max-width: 60ch; }
+
+  .list { padding: 20px 0; display: flex; flex-direction: column; gap: 20px; }
+  .row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  @media (max-width: 720px) { .row { grid-template-columns: 1fr; gap: 10px; } }
+  .marks { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 5px 10px; display: inline-block; }
+  .body { display: flex; flex-direction: column; gap: 12px; }
+  .qtext { font-family: var(--font-display); font-size: 19px; line-height: 1.4; color: var(--ink); margin: 0; white-space: pre-line; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .peek summary {
+    cursor: pointer; list-style: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent);
+    padding: 6px 12px; border: 1px solid var(--accent); border-radius: 999px;
+    align-self: flex-start;
+  }
+  .peek summary::-webkit-details-marker { display: none; }
+  .peek summary::before { content: "↓"; }
+  .peek[open] summary::before { content: "↑"; }
+  .peek[open] summary { margin-bottom: 16px; }
+  .scaffold { display: flex; flex-direction: column; gap: 16px; padding-top: 4px; max-width: 68ch; }
+  .lab { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  .txt { font-size: 15px; line-height: 1.65; color: var(--ink); margin: 0; white-space: pre-line; }
+</style>

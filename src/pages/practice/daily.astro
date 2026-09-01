@@ -1,0 +1,163 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FrameBadge from '../../components/case-study/FrameBadge.astro';
+import ContentAreaBadge from '../../components/case-study/ContentAreaBadge.astro';
+import CopyPromptButton from '../../components/practice/CopyPromptButton.astro';
+
+const all = await getCollection('practice-questions');
+const pool = all.filter((e) => e.data.source === 'daily-short-answer');
+pool.sort((a, b) => a.data.id.localeCompare(b.data.id));
+
+// Deterministic pick: the daily index rotates by day-of-year at build time.
+// Regenerated at every deploy; students see the same question all day.
+const now = new Date();
+const start = new Date(now.getFullYear(), 0, 0);
+const dayOfYear = Math.floor((now.getTime() - start.getTime()) / 86_400_000);
+const picked = pool.length > 0 ? pool[dayOfYear % pool.length] : null;
+
+const dateString = now.toLocaleDateString('en-AU', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+});
+---
+
+<BaseLayout title="Daily practice — Visual Arts" description="Today's daily short-answer warm-up for HSC Visual Arts.">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">
+        <a href="/practice">Practice</a>
+        <span class="sep">·</span>
+        Daily
+      </p>
+      <h1>Today's <em>warm-up</em></h1>
+      <p class="date">{dateString}</p>
+    </div>
+
+    {picked === null && (
+      <div class="empty">
+        <p class="lab">No daily bank yet</p>
+        <p>Once daily short-answer entries are seeded, one rotates in each day at build time.</p>
+      </div>
+    )}
+
+    {picked !== null && (
+      <>
+        <section class="qcard">
+          <div class="qrow">
+            <p class="qtext">{picked.data.text}</p>
+            <span class="marks">{picked.data.marks} marks</span>
+          </div>
+          <div class="badges">
+            {picked.data.frames.map((f) => <FrameBadge frame={f as any} />)}
+            {picked.data.contentAreas.map((a) => <ContentAreaBadge area={a} />)}
+          </div>
+        </section>
+
+        {picked.data.scaffold && (
+          <details class="peek">
+            <summary>Reveal the scaffold — try it first</summary>
+            <div class="scaffold">
+              <div class="block">
+                <p class="lab">Decode</p>
+                <p class="txt">{picked.data.scaffold.decode}</p>
+              </div>
+              <div class="block">
+                <p class="lab">Plan</p>
+                <p class="txt">{picked.data.scaffold.plan}</p>
+              </div>
+              {picked.data.scaffold.sentenceStems.length > 0 && (
+                <div class="block">
+                  <p class="lab">Sentence stems</p>
+                  <ul>
+                    {picked.data.scaffold.sentenceStems.map((s) => <li><em>"{s}"</em></li>)}
+                  </ul>
+                </div>
+              )}
+              <div class="block">
+                <p class="lab">Marker's view</p>
+                <p class="txt">{picked.data.scaffold.markersView}</p>
+              </div>
+            </div>
+          </details>
+        )}
+
+        {picked.data.variantPrompt && (
+          <section class="variant">
+            <p class="lab">Want a fresh variant? Drill it in your own AI tool.</p>
+            <CopyPromptButton prompt={picked.data.variantPrompt} label="Copy variant prompt" />
+          </section>
+        )}
+
+        <div class="foot-nav">
+          <a href="/practice/generator/5">Try a 5-mark →</a>
+          <a href="/practice">Back to practice hub</a>
+        </div>
+      </>
+    )}
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 22px; display: flex; gap: 10px; align-items: center; }
+  .eyebrow a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 60%); }
+  .sep { opacity: 0.4; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 12px; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .date { font-family: var(--font-display); font-style: italic; font-size: 18px; color: var(--ink-2); margin: 0; }
+
+  .empty { padding: clamp(48px, 8vw, 96px) 0; }
+  .empty .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+  .empty p:not(.lab) { color: var(--ink-2); margin: 0; max-width: 60ch; }
+
+  .qcard {
+    padding: clamp(28px, 4vw, 40px);
+    margin: clamp(28px, 4vw, 40px) 0;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-card);
+  }
+  .qrow { display: flex; flex-wrap: wrap; gap: 14px; align-items: baseline; margin-bottom: 16px; }
+  .qtext { font-family: var(--font-display); font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem); line-height: 1.35; color: var(--ink); margin: 0; flex: 1 1 20ch; white-space: pre-line; }
+  .marks { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 5px 10px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .peek { margin: 20px 0; }
+  .peek summary {
+    cursor: pointer;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 10px 14px;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+  }
+  .peek summary::-webkit-details-marker { display: none; }
+  .peek summary::before { content: "↓"; }
+  .peek[open] summary::before { content: "↑"; }
+  .peek[open] summary { margin-bottom: 20px; }
+
+  .scaffold { display: flex; flex-direction: column; gap: 20px; padding-top: 4px; }
+  .block { display: flex; flex-direction: column; gap: 8px; }
+  .lab { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .txt { font-size: 15px; line-height: 1.65; color: var(--ink); margin: 0; max-width: 68ch; white-space: pre-line; }
+  ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  li { font-family: var(--font-display); font-size: 15px; line-height: 1.5; color: var(--ink); padding-left: 14px; border-left: 2px solid var(--rule); }
+
+  .variant { padding: clamp(24px, 4vw, 40px) 0; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .variant .lab { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); margin: 0; }
+
+  .foot-nav { padding: clamp(24px, 4vw, 40px) 0 0; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 20px; }
+  .foot-nav a { font-family: var(--font-sans); font-size: 13.5px; font-weight: 500; color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 55%); padding-bottom: 1px; }
+</style>

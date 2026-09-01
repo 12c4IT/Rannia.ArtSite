@@ -1,0 +1,182 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import FrameBadge from '../../../components/case-study/FrameBadge.astro';
+import ContentAreaBadge from '../../../components/case-study/ContentAreaBadge.astro';
+import CopyPromptButton from '../../../components/practice/CopyPromptButton.astro';
+
+export const getStaticPaths = (async () => {
+  return [5, 8, 10].map((m) => ({ params: { marks: String(m) } }));
+}) satisfies GetStaticPaths;
+
+const { marks } = Astro.params;
+const marksN = Number(marks);
+const source = `practice-generator-${marks}`;
+
+const all = await getCollection('practice-questions');
+const pool = all
+  .filter((e) => e.data.source === source)
+  .sort((a, b) => a.data.id.localeCompare(b.data.id));
+---
+
+<BaseLayout title={`${marks}-mark practice — Visual Arts`} description={`Random ${marks}-mark practice questions with scaffolds and copy-to-clipboard variant prompts.`}>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">
+        <a href="/practice">Practice</a>
+        <span class="sep">·</span>
+        Generator · {marks} marks
+      </p>
+      <h1><em>{marks}-mark</em> practice</h1>
+      <p class="lede">One {marks}-mark practice question at a time. Reroll for another. Copy the variant prompt to drill fresh variants in your own AI tool.</p>
+    </div>
+
+    {pool.length === 0 && (
+      <div class="empty">
+        <p class="lab">No {marks}-mark questions yet</p>
+        <p>The bank is seeded from Rannia's practice authoring. Once a few land here, the generator draws from them randomly.</p>
+      </div>
+    )}
+
+    {pool.length > 0 && (
+      <>
+        <div class="controls">
+          <button id="reroll" class="reroll-btn" type="button">
+            <span aria-hidden="true">↻</span> Reroll
+          </button>
+          <span class="count"><span id="idx">1</span> of {pool.length}</span>
+        </div>
+
+        <div id="deck" class="deck">
+          {pool.map((e, i) => (
+            <article class="qcard" data-idx={i} hidden={i !== 0}>
+              <div class="qrow">
+                <p class="qtext">{e.data.text}</p>
+                <span class="marks">{marksN} marks</span>
+              </div>
+              <div class="badges">
+                {e.data.frames.map((f) => <FrameBadge frame={f as any} />)}
+                {e.data.contentAreas.map((a) => <ContentAreaBadge area={a} />)}
+              </div>
+
+              {e.data.scaffold && (
+                <details class="peek">
+                  <summary>Reveal the scaffold — try it first</summary>
+                  <div class="scaffold">
+                    <div class="block">
+                      <p class="lab">Decode</p>
+                      <p class="txt">{e.data.scaffold.decode}</p>
+                    </div>
+                    <div class="block">
+                      <p class="lab">Plan</p>
+                      <p class="txt">{e.data.scaffold.plan}</p>
+                    </div>
+                    {e.data.scaffold.sentenceStems.length > 0 && (
+                      <div class="block">
+                        <p class="lab">Sentence stems</p>
+                        <ul>
+                          {e.data.scaffold.sentenceStems.map((s) => <li><em>"{s}"</em></li>)}
+                        </ul>
+                      </div>
+                    )}
+                    <div class="block">
+                      <p class="lab">Marker's view</p>
+                      <p class="txt">{e.data.scaffold.markersView}</p>
+                    </div>
+                  </div>
+                </details>
+              )}
+
+              {e.data.variantPrompt && (
+                <div class="variant">
+                  <span class="lab">Fresh variant in your own AI</span>
+                  <CopyPromptButton prompt={e.data.variantPrompt} label="Copy variant prompt" />
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      </>
+    )}
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 22px; display: flex; gap: 10px; align-items: center; }
+  .eyebrow a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--accent), transparent 60%); }
+  .sep { opacity: 0.4; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 20px; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 60ch; margin: 0; }
+
+  .empty { padding: clamp(48px, 8vw, 96px) 0; }
+  .empty .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+  .empty p:not(.lab) { color: var(--ink-2); margin: 0; max-width: 60ch; }
+
+  .controls {
+    display: flex; align-items: center; gap: 16px; padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .reroll-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 13.5px; font-weight: 500;
+    color: var(--on-accent); background: var(--accent);
+    border: 1px solid var(--accent); border-radius: var(--radius-card);
+    padding: 10px 16px; cursor: pointer;
+  }
+  .reroll-btn:hover { filter: brightness(1.05); }
+  .count { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-2); }
+
+  .deck { padding: clamp(28px, 4vw, 40px) 0; }
+  .qcard { display: flex; flex-direction: column; gap: 16px; padding: clamp(24px, 4vw, 36px); background: var(--paper-2); border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: var(--radius-card); }
+  .qrow { display: flex; flex-wrap: wrap; gap: 14px; align-items: baseline; }
+  .qtext { font-family: var(--font-display); font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem); line-height: 1.35; color: var(--ink); margin: 0; flex: 1 1 20ch; white-space: pre-line; }
+  .marks { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 5px 10px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .peek summary {
+    cursor: pointer; list-style: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent);
+    padding: 10px 14px; border: 1px solid var(--accent); border-radius: 999px;
+  }
+  .peek summary::-webkit-details-marker { display: none; }
+  .peek summary::before { content: "↓"; }
+  .peek[open] summary::before { content: "↑"; }
+  .peek[open] summary { margin-bottom: 20px; }
+  .scaffold { display: flex; flex-direction: column; gap: 20px; padding-top: 4px; }
+  .block { display: flex; flex-direction: column; gap: 8px; }
+  .lab { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .txt { font-size: 15px; line-height: 1.65; color: var(--ink); margin: 0; max-width: 68ch; white-space: pre-line; }
+  ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  li { font-family: var(--font-display); font-size: 15px; line-height: 1.5; color: var(--ink); padding-left: 14px; border-left: 2px solid var(--rule); }
+
+  .variant { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding-top: 6px; }
+  .variant .lab { color: var(--ink-2); }
+</style>
+
+<script>
+  const btn = document.getElementById('reroll') as HTMLButtonElement | null;
+  const idxLabel = document.getElementById('idx');
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('.qcard'));
+  if (btn && cards.length > 0) {
+    let current = 0;
+    btn.addEventListener('click', () => {
+      let next = current;
+      if (cards.length > 1) {
+        while (next === current) next = Math.floor(Math.random() * cards.length);
+      }
+      cards[current].hidden = true;
+      cards[next].hidden = false;
+      const details = cards[next].querySelector<HTMLDetailsElement>('details.peek');
+      if (details) details.open = false;
+      current = next;
+      if (idxLabel) idxLabel.textContent = String(current + 1);
+    });
+  }
+</script>

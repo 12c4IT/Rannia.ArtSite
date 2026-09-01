@@ -1,0 +1,128 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const all = await getCollection('practice-questions');
+
+const count = (src: string) => all.filter((e) => e.data.source === src).length;
+
+const cards = [
+  {
+    href: '/practice/daily',
+    kicker: 'Daily · 2 marks',
+    title: 'Daily short answer',
+    blurb: 'A single, deterministic two-mark warm-up. Same question all day; changes at midnight.',
+    n: count('daily-short-answer'),
+    tone: 'subj',
+  },
+  {
+    href: '/practice/generator/5',
+    kicker: 'Generator · 5 marks',
+    title: '5-mark practice',
+    blurb: 'One five-mark question at a time from the bank. Reroll for another. Copy-prompt to run variants in your own AI tool.',
+    n: count('practice-generator-5'),
+    tone: 'struct',
+  },
+  {
+    href: '/practice/generator/8',
+    kicker: 'Generator · 8 marks',
+    title: '8-mark practice',
+    blurb: 'Eight-mark responses tighten your paragraph shape. Reroll and drill.',
+    n: count('practice-generator-8'),
+    tone: 'cult',
+  },
+  {
+    href: '/practice/generator/10',
+    kicker: 'Generator · 10 marks',
+    title: '10-mark practice',
+    blurb: 'Ten-mark work is where extended reasoning starts. Reroll to keep it fresh.',
+    n: count('practice-generator-10'),
+    tone: 'post',
+  },
+  {
+    href: '/practice/trial',
+    kicker: 'Trial paper',
+    title: 'Trial-paper questions',
+    blurb: 'Whole-paper practice at trial length. Sit them under exam conditions.',
+    n: count('trial-paper'),
+    tone: 'accent',
+  },
+  {
+    href: '/questions/by-topic',
+    kicker: 'HSC · by topic',
+    title: 'Real past questions, by topic',
+    blurb: 'Every past HSC Visual Arts question, grouped by content area. Verbatim from NESA.',
+    n: null,
+    tone: 'accent',
+  },
+];
+---
+
+<BaseLayout title="Practice — Visual Arts" description="Daily short answers, mark-value generators, trial questions, and HSC questions sorted by topic.">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Practice</p>
+      <h1>Practise the way <em>you'll be examined</em></h1>
+      <p class="lede">Daily short-answer warm-ups, generators for the 5-, 8- and 10-mark responses, trial paper questions, and every past HSC question sorted by topic. Every question ships with a copy-prompt button so you can drill variants in your own AI tool.</p>
+    </div>
+
+    <div class="grid">
+      {cards.map((c) => (
+        <a class="card" href={c.href} data-tone={c.tone}>
+          <span class="kicker">{c.kicker}</span>
+          <h2>{c.title}</h2>
+          <p>{c.blurb}</p>
+          <div class="foot">
+            {c.n !== null && <span class="n">{c.n} in the bank</span>}
+            <span class="go">Open →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+  <div style="height: clamp(48px, 8vw, 96px)"></div>
+</BaseLayout>
+
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+  .head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 48px); border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch; }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
+  .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 62ch; margin: 0; }
+
+  .grid {
+    padding: clamp(32px, 5vw, 56px) 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  @media (min-width: 620px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .card {
+    --tone: var(--accent);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 26px;
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--tone);
+    border-radius: var(--radius-card);
+    background: var(--paper);
+    text-decoration: none;
+    transition: border-color 140ms ease, transform 140ms ease;
+  }
+  .card[data-tone="subj"]   { --tone: var(--f-subj); }
+  .card[data-tone="struct"] { --tone: var(--f-struct); }
+  .card[data-tone="cult"]   { --tone: var(--f-cult); }
+  .card[data-tone="post"]   { --tone: var(--f-post); }
+  .card[data-tone="accent"] { --tone: var(--accent); }
+  .card:hover { border-color: var(--tone); transform: translateY(-2px); }
+  .kicker { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tone); }
+  .card h2 { font-family: var(--font-display); font-size: 26px; font-weight: 400; margin: 0; color: var(--ink); letter-spacing: -0.01em; }
+  .card p { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); margin: 0; }
+  .foot { margin-top: auto; padding-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .n { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
+  .go { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tone); }
+</style>
