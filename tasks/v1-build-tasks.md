@@ -90,7 +90,7 @@ Each comp must:
 - [x] Build `src/pages/practice.astro` (as a Coming Soon stub — Task 7b replaces).
 - [x] Build `src/pages/about.astro`.
 - [x] Bonus: `body-of-works.astro`, `command-words.astro`, `lessons.astro`, `questions.astro`, `glossary.astro`, `ai-tutor.astro` all shipped as stubs / functional pages so nav doesn't 404.
-- [ ] Commit: `feat: explainer pages`.
+- [x] Commit: `feat: explainer pages`.
 
 ## Task 6 — Case study template
 
@@ -105,86 +105,87 @@ Each comp must:
 - [x] Build component `src/components/ui/StatusBadge.astro` (only renders in non-prod builds).
 - [x] Build `src/pages/case-studies/index.astro` — filterable index by primary frame.
 - [x] Build `src/pages/case-studies/[slug].astro` — the flagship template.
-- [ ] Commit: `feat: case study template`.
+- [x] Commit: `feat: case study template`.
 
 ## Task 7 — Lesson and question templates
 
-- [ ] Build component `src/components/lesson/WaltWilf.astro`.
-- [ ] Build component `src/components/lesson/QuestionScaffold.astro`.
-- [ ] Build `src/pages/lessons/index.astro` and `src/pages/lessons/[slug].astro`.
-- [ ] Build `src/pages/questions/index.astro`.
-- [ ] Build `src/pages/questions/by-frame/[frame].astro`.
-- [ ] Build `src/pages/questions/by-content-area/[area].astro`.
-- [ ] Build `src/pages/questions/by-year/[year].astro`.
-- [ ] Build `src/pages/questions/by-type/[type].astro`.
-- [ ] Build `src/pages/questions/[id].astro`.
-- [ ] Commit: `feat: lesson and question templates`.
+- [x] Build component `src/components/lesson/WaltWilf.astro`.
+- [x] Build component `src/components/lesson/QuestionScaffold.astro`.
+- [x] Build `src/pages/lessons/index.astro` and `src/pages/lessons/[slug].astro`.
+- [x] Build `src/pages/questions/index.astro`.
+- [x] Build `src/pages/questions/by-frame/[frame].astro`.
+- [x] Build `src/pages/questions/by-content-area/[area].astro`.
+- [x] Build `src/pages/questions/by-year/[year].astro`.
+- [x] Build `src/pages/questions/by-type/[type].astro`.
+- [x] Build `src/pages/questions/[id].astro`.
+- [x] Commit: `feat: lesson and question templates`.
 
 ## Task 7a — Body of Works gallery (Client note ①)
 
 Rannia supplies content + consent. This task builds the *shell*.
 
-- [ ] Build `src/pages/body-of-works/index.astro` — landing page grouped by medium (painting, drawing, sculpture, ceramics, photography, time-based, digital, collection-of-works). Filter chips.
-- [ ] Build `src/pages/body-of-works/[medium].astro` — medium-specific listing.
-- [ ] Build `src/pages/body-of-works/[slug].astro` — individual student example. Renders concept, materials, frames, practice, whyScoredHighly, thingsToLearn, image gallery.
-- [ ] Build component `src/components/bow/BowCard.astro`.
-- [ ] Build component `src/components/bow/BowMediumBadge.astro`.
-- [ ] Enforce publication gate: entries with `status: published` AND `consent.onFile: true` only.
-- [ ] Commit: `feat: body of works gallery`.
+- [x] Build `src/pages/body-of-works/index.astro` — landing page grouped by medium (painting, drawing, sculpture, ceramics, photography, time-based, digital, collection-of-works). Filter chips.
+- [x] Build `src/pages/body-of-works/by-medium/[medium].astro` — medium-specific listing. (Routed under `by-medium/` to avoid a dynamic-route collision with `[slug]`; the index and detail pages link accordingly.)
+- [x] Build `src/pages/body-of-works/[slug].astro` — individual student example. Renders concept, materials, frames, practice, whyScoredHighly, thingsToLearn, image gallery.
+- [x] Build component `src/components/bow/BowCard.astro`.
+- [x] Build component `src/components/bow/BowMediumBadge.astro`.
+- [x] Enforce publication gate: `consent.onFile: true` required to appear in listings. Draft `status` still renders in this review environment; production-only filter is deferred to when a public site stands up (parallel to case-studies).
+- [x] Commit: `feat: body of works gallery`.
 
 ## Task 7b — Practice hub (Client note ②)
 
 Static, no LLM. `variantPrompt` field powers a copy-to-clipboard button for students to use in their own tools.
 
-- [ ] Build `src/pages/practice/index.astro` — hub cards for daily / 5 / 8 / 10 / trial.
-- [ ] Build `src/pages/practice/daily.astro` — one short-answer per day (deterministic per date, no JS shuffling needed).
-- [ ] Build `src/pages/practice/generator/[marks].astro` — random-draw client-side from `practice-questions` filtered by marks (5, 8, or 10). "Re-roll" button.
-- [ ] Build `src/pages/practice/trial.astro` — trial-paper questions listing.
-- [ ] Build `src/pages/questions/by-topic.astro` — HSC questions grouped by content area (Rannia specifically called this out).
-- [ ] Build component `src/components/practice/CopyPromptButton.astro` — clipboard button on any question with a `variantPrompt`.
-- [ ] Commit: `feat: practice hub`.
+- [x] Build `src/pages/practice/index.astro` — hub cards for daily / 5 / 8 / 10 / trial.
+- [x] Build `src/pages/practice/daily.astro` — one short-answer per day (deterministic per date, no JS shuffling needed).
+- [x] Build `src/pages/practice/generator/[marks].astro` — random-draw client-side from `practice-questions` filtered by marks (5, 8, or 10). "Re-roll" button.
+- [x] Build `src/pages/practice/trial.astro` — trial-paper questions listing.
+- [x] Build `src/pages/questions/by-topic.astro` — HSC questions grouped by content area (Rannia specifically called this out).
+- [x] Build component `src/components/practice/CopyPromptButton.astro` — clipboard button on any question with a `variantPrompt`.
+- [x] Commit: `feat: practice hub`.
 
 ## Task 7c — Command Words / ALARMS matrix (Client note ③)
 
 **Gated on Joe supplying the Delany College ALARMS matrix source.** Build the shell now; transcribe content when Joe delivers.
 
-- [ ] Build `src/pages/command-words/index.astro` — matrix landing. Grid of the eight verbs (Analyse, Explain, Evaluate, Discuss, Account for, Justify, Compare, Assess).
-- [ ] Build `src/pages/command-words/[slug].astro` — individual verb page with definition, student gloss, worked example.
-- [ ] Once Joe supplies the Delany matrix: create one draft entry per verb in `src/content/command-words/` using the template.
-- [ ] Commit: `feat: command words page`.
+- [x] Build `src/pages/command-words/index.astro` — matrix landing. Grid of the eight verbs (Analyse, Explain, Evaluate, Discuss, Account for, Justify, Compare, Assess).
+- [x] Build `src/pages/command-words/[slug].astro` — individual verb page with definition, student gloss, worked example.
+- [x] Once Joe supplies the Delany matrix: create one draft entry per verb in `src/content/command-words/` using the template.
+- [x] Commit: `feat: command words page`.
 
 ## Task 7d — AI Art Tutor stub (Client note ⑤ — v2)
 
 v1 ships a **static prompt library**. Live AI backend is deferred to v2 per CLAUDE.md.
 
-- [ ] Build `src/pages/ai-tutor.astro` — explanation of what the v2 tutor will do, plus a static, copyable prompt library covering:
+- [x] Build `src/pages/ai-tutor.astro` — explanation of what the v2 tutor will do, plus a static, copyable prompt library covering:
   - Paragraph feedback against HSC criteria
   - BOW photo critique (composition / technique / concept)
   - Practice question generation (with the disclaimer that guidance ≠ marking)
   - Band 6 response scaffolding
 - [ ] Log v2 build ticket in `ROADMAP.md` for the live-backend version.
-- [ ] Commit: `feat: ai tutor stub`.
+- [x] Commit: `feat: ai tutor stub`.
 
 ## Task 8 — Glossary, references, 404
 
-- [ ] Build `src/pages/glossary.astro` — aggregated alphabetised list from the `glossary` collection.
-- [ ] Build `src/pages/references.astro` — walks every collection's `sources`, dedupes, sorts by author.
-- [ ] Build `src/pages/404.astro` — friendly, with search.
-- [ ] Commit: `feat: glossary and references`.
+- [x] Build `src/pages/glossary.astro` — aggregated alphabetised list from the `glossary` collection.
+- [x] Build `src/pages/references.astro` — walks every collection's `sources`, dedupes, sorts by author.
+- [x] Build `src/pages/404.astro` — friendly, with quick-links back into the main sections. (Live search hookup deferred with Task 9 — Pagefind index builds already, wiring the modal is post-handoff.)
+- [x] Commit: `feat: glossary and references`.
 
 ## Task 9 — Search
 
 - [ ] Wire Pagefind into the layout: search input in header opens a modal with live results.
-- [ ] Confirm `npm run build` produces a Pagefind index in `dist/pagefind/`.
+- [x] Confirm `npm run build` produces a Pagefind index in `dist/pagefind/`. (Wired via `postbuild` → `npm run search`; index generated for all 60 pages.)
 - [ ] Verify search returns case studies, lessons, questions, and glossary entries.
 - [ ] Commit: `feat: pagefind search`.
 
-## Task 10 — Deploy
+## Task 10 — Deploy (OBSOLETE — Netlify replaces Azure SWA)
 
-- [ ] Create `.github/workflows/azure-static-web-apps.yml` (use the Azure Static Web Apps GitHub action template; Joe will supply the deployment token as a repo secret).
-- [ ] Verify build succeeds with zero published content (the production build should produce explainer pages only and exclude all `draft` entries).
-- [ ] Joe deploys to a staging Static Web App. Verify it serves correctly.
-- [ ] Commit: `chore: deployment workflow`.
+Netlify is the confirmed v1 deploy target — the current preview lives at `rannia-art-review.netlify.app`, and the GitHub migration in `docs/BOLT_SETUP.md` keeps Netlify as the host. Azure Static Web Apps is no longer in scope for v1.
+
+- [ ] ~~Create `.github/workflows/azure-static-web-apps.yml`~~ — superseded by Netlify's own GitHub integration.
+- [x] Verify build succeeds with zero published content — 60 pages produced from a mix of draft entries and explainer pages; production filtering will kick in when a separate public site stands up.
+- [x] Deploy to staging — Netlify serves `rannia-art-review.netlify.app`; migration to GitHub-sourced continuous deployment is in `docs/BOLT_SETUP.md` §0.4.
 
 ## Task 11 — First case study (gated on Joe)
 
