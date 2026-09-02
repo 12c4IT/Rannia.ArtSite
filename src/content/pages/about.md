@@ -26,3 +26,5 @@ If you're an artist, gallery, or rights-holder and something on this site needs 
 ## AI disclosure
 
 Content on this site is authored by Rannia with editorial assistance from AI tooling. Every claim is verified against the cited sources before publication. Nothing is published without her review.
+
+Test entry — please delete
