@@ -1,0 +1,147 @@
+---
+// Renders old_str / new_str pairs from the AI editor's tool_use output.
+//
+// The component is server-rendered as an empty shell; the client-side script
+// in edit.astro populates it as SSE events arrive. Kept as an Astro component
+// so the styles co-locate with the markup and Tailwind's utilities are still
+// available if we want them later.
+//
+// Data contract (populated by JS at runtime, see edit.astro):
+//   [data-diff-file] contains one child per file
+//   [data-diff-edit] contains one child per edit
+//   Text nodes are set via textContent, never innerHTML — old_str / new_str
+//   are model output and MUST NOT be interpreted as HTML.
+---
+
+<section id="diff-viewer" hidden>
+  <p class="lab">Proposed changes</p>
+  <p class="explanation" id="diff-explanation"></p>
+  <div id="diff-files"></div>
+  <template id="diff-file-template">
+    <article class="file" data-diff-file>
+      <header>
+        <span class="action" data-action-badge></span>
+        <code class="path" data-path></code>
+      </header>
+      <div class="edits" data-edits></div>
+      <div class="create-preview" data-create-preview hidden>
+        <p class="lab">Preview of new file</p>
+        <pre data-preview-body></pre>
+      </div>
+    </article>
+  </template>
+  <template id="diff-edit-template">
+    <details class="edit" data-diff-edit open>
+      <summary>Edit <span data-edit-index></span></summary>
+      <div class="pair">
+        <div>
+          <p class="lab">Was</p>
+          <pre data-old></pre>
+        </div>
+        <div>
+          <p class="lab">Now</p>
+          <pre data-new></pre>
+        </div>
+      </div>
+    </details>
+  </template>
+</section>
+
+<style>
+  #diff-viewer {
+    padding: clamp(24px, 4vw, 40px) 0;
+    border-top: 1px solid var(--rule);
+  }
+  .lab {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 8px;
+  }
+  .explanation {
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0 0 24px;
+    max-width: 68ch;
+  }
+  #diff-files { display: flex; flex-direction: column; gap: 20px; }
+  .file {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    background: var(--paper);
+    padding: 18px 20px;
+  }
+  .file header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 14px;
+  }
+  .action {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--rule);
+    color: var(--ink-2);
+  }
+  .action[data-value="create"] { color: var(--f-struct); border-color: var(--f-struct); }
+  .action[data-value="update"] { color: var(--accent); border-color: var(--accent); }
+  .path { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink); }
+  .edits { display: flex; flex-direction: column; gap: 12px; }
+  .edit {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    padding: 12px 14px;
+  }
+  .edit summary {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+  .edit[open] summary { margin-bottom: 12px; }
+  .pair { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 780px) { .pair { grid-template-columns: 1fr 1fr; gap: 18px; } }
+  .pair pre {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    padding: 10px 12px;
+    max-height: 260px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .pair div > .lab { color: var(--ink-2); }
+  .pair div:first-child .lab::before { content: "− "; color: color-mix(in oklab, #a04c1a, transparent 20%); }
+  .pair div:last-child .lab::before { content: "+ "; color: color-mix(in oklab, var(--f-struct), transparent 20%); }
+  .create-preview { margin-top: 10px; }
+  .create-preview pre {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.55;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    padding: 10px 12px;
+    max-height: 320px;
+    overflow: auto;
+    white-space: pre-wrap;
+  }
+</style>
