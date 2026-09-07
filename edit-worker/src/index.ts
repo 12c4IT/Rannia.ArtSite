@@ -105,7 +105,9 @@ async function writeSseEvent(
 // ─── CORS ──────────────────────────────────────────────────────────────
 
 const ALLOWED_ORIGINS = new Set([
-  'https://rannia-art-review.netlify.app',
+  'https://hscvisualarts.com.au',
+  'https://www.hscvisualarts.com.au',
+  'https://rannia-art-review.netlify.app', // keep during transition; drop later
   'http://localhost:4321', // Astro dev default
   'http://localhost:3000',
 ]);
