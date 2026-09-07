@@ -7,7 +7,7 @@ compatibility_flags = ["nodejs_compat"]
 # are set with `wrangler secret put NAME` — never committed here.
 [vars]
 CF_ACCESS_TEAM   = "intellihq.cloudflareaccess.com"
-CF_ACCESS_AUD    = "cdb84caa59b15903e527a3ddaf27022f1791ae22df08405b02b43306d62ea440"
+CF_ACCESS_AUD    = "cdb84caa59b15903e527a3ddaf27022f1791ae22df08405b02b43306d62ea440,dee121ea272d56c65aef2c2652e7f4e6f8578044344511edc474293b5fc4ee75"
 ALLOWED_EMAILS   = "joe@intelli.com.au,joe.kazzi@candasurveyors.com.au,r.katrib90@gmail.com"
 NETLIFY_SITE_ID  = "e8b2234a-4e94-42b1-a559-4c5d16080ad9"
 

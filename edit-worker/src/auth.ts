@@ -101,8 +101,18 @@ export async function verifyAccessJwt(
   if (claims.iss !== expectedIss) {
     return { ok: false, status: 401, reason: 'wrong-issuer' };
   }
+  // Accept any AUD that matches an application in our team. The JWT can be
+  // issued by either the Access application protecting the /edit page
+  // (hscvisualarts.com.au/edit) or the Access application protecting the
+  // Worker's own URL — both sit in the same team, both are valid callers.
+  // Config is comma-separated in CF_ACCESS_AUD to keep the env-var contract
+  // simple; parsed once here.
+  const acceptedAuds = new Set(
+    env.CF_ACCESS_AUD.split(',').map((s) => s.trim()).filter(Boolean),
+  );
   const auds = Array.isArray(claims.aud) ? claims.aud : [claims.aud];
-  if (!auds.includes(env.CF_ACCESS_AUD)) {
+  const audMatch = auds.some((a) => acceptedAuds.has(a));
+  if (!audMatch) {
     return { ok: false, status: 401, reason: 'wrong-aud' };
   }
 
