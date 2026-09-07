@@ -11,13 +11,13 @@ A static educational website for NSW Stage 6 Visual Arts students (Preliminary +
 Two roles, cleanly split:
 
 - **Joe** — the developer. Senior .NET dev (20 years). Owns the schema, the site infrastructure, deploy config, and any code changes. Explicitly knows nothing about art content and should not be the reviewer on pedagogical claims. Speak technically; don't over-explain web basics. Australian English. Default to clarifying questions before large changes per his stated preference.
-- **Rannia** — the teacher and pedagogical author. She owns the content — every case study, question, lesson, BOW entry, and command-word definition is hers to approve. She authors in-browser via a Bolt/Claude editing surface (see workflow below), not in a local IDE.
+- **Rannia** — the teacher and pedagogical author. She owns the content — every case study, question, lesson, BOW entry, and command-word definition is hers to approve. She authors in-browser via the site's own `/edit` page (an AI editor backed by a Cloudflare Worker + Anthropic), not in a local IDE. See `docs/RANNIA_AUTHORING.md` for her guide, `docs/ai-editor/PLAN.md` for the architecture.
 
 Content decisions (accuracy, syllabus interpretation, which sources to trust, when a case study is ready) belong to Rannia. Scope and infrastructure decisions (what features to build, what stack to use, deploy targets) belong to Joe.
 
 ## Hard rules
 
-1. **Never publish AI-drafted content as fact.** Every case study entry has `status: draft | review | published` in its frontmatter. Default is `draft`. **Only Rannia sets `published`** — not Joe, not Claude, not Bolt. The site build excludes `draft` content from production output.
+1. **Never publish AI-drafted content as fact.** Every case study entry has `status: draft | review | published` in its frontmatter. Default is `draft` and is enforced on create by the AI editor's LOCKED-field rule. Under the current v5 direct-to-main model, `status` is an editorial signal rather than a visibility gate — every commit to `main` is live. The safety net is Rannia's own DiffViewer review at submit time in the `/edit` page; content she doesn't approve never gets clicked through.
 2. **Every factual claim must cite a source.** When drafting case study content, include a `sources:` array in frontmatter and inline reference markers `[^1]` in MDX where claims are made. If you can't find a real source, say so — do not invent one.
 3. **No fabricated quotes.** If you can't find a real quote with a citable source, don't include one.
 4. **Images.** Never embed an image without recording its rights basis in the artwork's frontmatter (`rightsBasis: public-domain | cc-by | cc-by-sa | educational-fair-dealing | licensed`) and source URL.
@@ -74,7 +74,7 @@ public/
 
 ## Working with content
 
-Content requests will normally come from **Rannia**, either directly (if she's authoring via Bolt/Claude in-browser) or via Joe forwarding her ask.
+Content requests will normally come from **Rannia**, either directly (via the site's `/edit` page) or via Joe forwarding her ask.
 
 When asked to draft a case study:
 1. Ask which sources to work from. **Do not start drafting from your training data alone** — that's exactly the failure mode this project is built to avoid.

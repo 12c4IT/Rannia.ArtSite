@@ -181,11 +181,11 @@ v1 ships a **static prompt library**. Live AI backend is deferred to v2 per CLAU
 
 ## Task 10 — Deploy (OBSOLETE — Netlify replaces Azure SWA)
 
-Netlify is the confirmed v1 deploy target — the current preview lives at `rannia-art-review.netlify.app`, and the GitHub migration in `docs/BOLT_SETUP.md` keeps Netlify as the host. Azure Static Web Apps is no longer in scope for v1.
+Netlify is the confirmed v1 deploy target. Production is at `hscvisualarts.com.au` (Netlify, DNS via Cloudflare); the review-era name `rannia-art-review.netlify.app` still resolves during the transition. Azure Static Web Apps is no longer in scope for v1.
 
 - [ ] ~~Create `.github/workflows/azure-static-web-apps.yml`~~ — superseded by Netlify's own GitHub integration.
 - [x] Verify build succeeds with zero published content — 60 pages produced from a mix of draft entries and explainer pages; production filtering will kick in when a separate public site stands up.
-- [x] Deploy to staging — Netlify serves `rannia-art-review.netlify.app`; migration to GitHub-sourced continuous deployment is in `docs/BOLT_SETUP.md` §0.4.
+- [x] Deploy to production — Netlify serves `hscvisualarts.com.au` from GitHub `main`; the Cloudflare Worker at `edit-worker/` powers `/edit`.
 
 ## Task 11 — First case study (gated on Joe)
 

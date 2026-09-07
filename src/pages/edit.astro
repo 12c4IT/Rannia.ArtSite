@@ -27,6 +27,67 @@ const NETLIFY_SITE_ID = import.meta.env.PUBLIC_NETLIFY_SITE_ID ?? '';
       <p class="lede">Type a plain-English request. I'll draft the change and show you what I'm proposing — you approve before anything goes live.</p>
     </header>
 
+    <details class="guide">
+      <summary>
+        <span class="guide-label">How this works</span>
+        <span class="guide-hint">open me first time</span>
+      </summary>
+      <div class="guide-body">
+        <div class="guide-cols">
+          <section>
+            <h3>The loop, in three steps</h3>
+            <ol>
+              <li>Type what you want changed in the box below. Plain English is fine.</li>
+              <li>Click <b>Draft the change</b>. In about a minute you'll see a diff — exactly which text will change, and to what.</li>
+              <li>The change goes live at <code>hscvisualarts.com.au</code> in about 90 seconds. A link appears when it's ready.</li>
+            </ol>
+          </section>
+
+          <section>
+            <h3>Prompts that work well</h3>
+            <ul>
+              <li><em>"On the About page, change the tagline from 'a study resource' to 'a study &amp; practice resource'."</em></li>
+              <li><em>"Add a new glossary term for 'appropriation'. Definition: the deliberate re-use of a pre-existing image or work inside a new one. Related frames: postmodern, cultural."</em></li>
+              <li><em>"In the Bourgeois case study, in the third paragraph of the Cultural frame reading, replace the sentence about second-wave feminism with this one: [paste your version]."</em></li>
+            </ul>
+            <p class="q">Vague prompts ("make the site better", "change all the case studies") work less well — the AI needs to know what specifically.</p>
+          </section>
+
+          <section>
+            <h3>What the DiffViewer shows</h3>
+            <p>Every change is a <b>Was → Now</b> pair. Nothing outside the named spans changes; the AI is byte-constrained to just what it shows you. <b>Read the diff carefully</b> — that's your review moment. If it's wrong, don't submit; type a corrective prompt and try again.</p>
+          </section>
+
+          <section>
+            <h3>If you make a mistake</h3>
+            <p>Don't panic. The change goes live in ~90s, but the whole edit is one commit — Joe can undo it in about 30 seconds with a single git command. Or you can follow up with a corrective prompt (<em>"undo the last change to the Bourgeois file"</em>) and the AI will roll it back for you as a fresh commit.</p>
+          </section>
+
+          <section>
+            <h3>Things the AI can't do</h3>
+            <ul>
+              <li>Create a new case study from scratch (image sourcing + rights need you and Joe together).</li>
+              <li>Delete files or entries.</li>
+              <li>Change locked fields: <code>status</code>, <code>sources</code>, image rights records, artist biographical facts.</li>
+              <li>Touch code, config, or the site's schema.</li>
+              <li>Edit real HSC past questions (verbatim-from-NESA rule) or Body-of-Works entries (consent-gated).</li>
+            </ul>
+            <p class="q">Ask it anyway if you're not sure — it'll refuse politely and tell you why.</p>
+          </section>
+
+          <section>
+            <h3>When to ping Joe</h3>
+            <ul>
+              <li>The email PIN isn't arriving (check spam first, then wait 5 min).</li>
+              <li>The editor shows an error you can't read past.</li>
+              <li>You need one of the "can't do" items above.</li>
+              <li>You want to see a full history of your edits — for now, Joe can pull it from GitHub for you.</li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </details>
+
     <form id="edit-form" class="form" enctype="multipart/form-data">
       <label class="field">
         <span class="lab">Your request</span>
@@ -90,6 +151,72 @@ const NETLIFY_SITE_ID = import.meta.env.PUBLIC_NETLIFY_SITE_ID ?? '';
   h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 360; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 22ch; }
   h1 em { color: var(--accent); font-style: italic; font-weight: 340; }
   .lede { font-family: var(--font-display); font-size: var(--text-lede); line-height: 1.4; color: var(--ink); max-width: 60ch; margin: 0; }
+
+  /* Inline guide — collapsible so it's out of the way after Rannia's first read. */
+  .guide {
+    margin: clamp(24px, 4vw, 36px) 0 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+    background: var(--paper-2);
+    overflow: hidden;
+  }
+  .guide summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 14px 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    user-select: none;
+  }
+  .guide summary::-webkit-details-marker { display: none; }
+  .guide summary::before {
+    content: "▶";
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent);
+    transition: transform 140ms ease;
+    display: inline-block;
+  }
+  .guide[open] summary::before { transform: rotate(90deg); }
+  .guide-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .guide-hint {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .guide[open] .guide-hint { display: none; }
+  .guide-body {
+    padding: 4px 20px 22px;
+    border-top: 1px solid var(--rule);
+  }
+  .guide-cols { display: grid; grid-template-columns: 1fr; gap: 20px; padding-top: 16px; }
+  @media (min-width: 720px) { .guide-cols { grid-template-columns: 1fr 1fr; gap: 28px 40px; } }
+  .guide-cols h3 {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  .guide-cols p, .guide-cols li {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+  .guide-cols ul, .guide-cols ol { padding-left: 20px; margin: 0 0 8px; }
+  .guide-cols li { margin-bottom: 4px; }
+  .guide-cols em { font-style: italic; color: var(--ink); }
+  .guide-cols code { font-family: var(--font-mono); font-size: 12.5px; background: var(--paper); padding: 1px 5px; border-radius: 3px; }
+  .guide-cols .q { color: var(--ink-2); font-style: italic; font-size: 13px; }
 
   .form { padding: clamp(28px, 4vw, 40px) 0; display: flex; flex-direction: column; gap: 24px; }
   .field { display: flex; flex-direction: column; gap: 8px; }

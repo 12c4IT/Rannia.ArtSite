@@ -1,151 +1,129 @@
-# Authoring guide for Rannia
+# AI Editor — Guide for Rannia
 
-You are the pedagogical author of this site. Joe built the site; you write it.
+You edit the site through one browser page: **`https://hscvisualarts.com.au/edit`**. Bookmark it.
 
-This document has two audiences:
-1. **You**, when you sit down to add or edit content.
-2. **Claude in Bolt**, when it helps you draft. Paste the "System prompt for Bolt" section below into Bolt's project instructions so it behaves properly on every conversation.
+You type what you'd like changed, in plain English. An AI drafts the change and shows you exactly what it's proposing. You approve or start over. Approved changes go live within about 90 seconds.
+
+There's no software to install. There's no GitHub account to manage. There's no separate app to open.
 
 ---
 
-## Where things live
+## Signing in
 
-Everything you author lives under `src/content/`. There's a folder for each type of thing:
+Visit `hscvisualarts.com.au/edit`. First time each day (roughly — sessions last 24 hours), you'll see a Cloudflare login page:
 
-| Folder | What goes here | Template file |
-|---|---|---|
-| `src/content/case-studies/` | Full case studies (an artist + two artworks + all four frames) | `_TEMPLATE.mdx` |
-| `src/content/questions/` | Real past HSC questions (verbatim from NESA papers) | `_TEMPLATE.md` |
-| `src/content/practice-questions/` | Teacher-authored practice questions (5/8/10 mark, trial, daily) | `_TEMPLATE.md` |
-| `src/content/lessons/` | Lessons tied to case studies (WALT/WILF/scaffolds) | `_TEMPLATE.mdx` |
-| `src/content/body-of-works/` | Student BOW examples (with signed consent) | `_TEMPLATE.mdx` |
-| `src/content/command-words/` | ALARMS matrix directive verbs (Analyse, Explain, etc.) | `_TEMPLATE.md` |
-| `src/content/glossary/` | Art terminology | `_TEMPLATE.md` |
-| `src/content/pages/` | Explainer pages (frames, conceptual framework, practice) | *(no template — plain markdown)* |
+1. Enter your email (`r.katrib90@gmail.com` — the address you gave Joe).
+2. A **6-digit PIN** arrives in your inbox within a minute. Check spam if it's slow — Cloudflare's sender is `no-reply@notify.cloudflare.com`.
+3. Type the PIN → you're in.
 
-**How to add something new:** copy the template file (never edit it directly — it starts with `_`), rename it to your entry's slug, fill it in. Claude in Bolt can do the copy-and-fill for you if you ask.
+Only you and Joe are on the allowlist. Anyone else who finds the URL bounces off the login without getting in.
 
-## The publish gate — this matters
+---
 
-Every content entry has a `status:` field in its frontmatter, with three values:
+## Making an edit
 
-- `draft` — the default. **Not visible on the live site.** Safe to iterate on.
-- `review` — you've drafted it and want a second pair of eyes before it goes live. Also not visible.
-- `published` — live. Anyone with the URL can see it.
+The `/edit` page has three things: a prompt box, an optional image drop area, and a "Draft the change" button.
 
-**Only you set `status: published`.** Not Claude, not Joe, not Bolt. This is the safety net that keeps unreviewed AI drafts off the live site.
+**The prompt is plain English.** Describe what you want. Examples of prompts that work well:
 
-The build process automatically excludes anything not `published` from the production output. So as long as things stay `draft`, nothing goes live.
+- *"On the About page, change the tagline from 'a study resource' to 'a study & practice resource'."*
+- *"Add a new glossary term for 'appropriation'. Definition: the deliberate re-use of a pre-existing image or work inside a new one. Related frames: postmodern, cultural."*
+- *"In the Bourgeois case study, in the third paragraph of the Cultural frame reading, rewrite the sentence about second-wave feminism — it's too generalising. Make it more specific: name the specific movements and dates."*
+- *"In the Moffatt case study, the frame readings are all marked as AI drafts. Rewrite the Cultural frame reading for Something More #1 — here's the version I want: [paste your paragraph]."*
 
-## The workflow
+**Prompts that don't work as well:**
 
-1. Open the project in Bolt (Joe will send you the link).
-2. Chat with Claude to draft something — see the prompts below.
-3. Claude edits the files. You can see the diff in Bolt before saving.
-4. When you're happy with a draft, tell Claude to save + commit.
-5. Netlify picks up the commit and rebuilds the site within ~90 seconds.
-6. Draft entries are still hidden from the live site. Only `published` ones show up.
-7. To publish: change `status: draft` to `status: published` in the file's frontmatter, save + commit.
+- *"Make the site better."* — too vague; the AI needs to know what specifically.
+- *"Change all the case studies."* — too broad; it'll reject on batch-size limits. Do them one at a time.
+- *"Publish the Bourgeois case study."* — the AI can't change `status` fields (that's locked to prevent AI-drafted content from being published without human review). Under the current model this doesn't matter — see "How publishing actually works" below.
 
-## Prompts you can use
+**Image uploads:** drop up to 4 images at a time, 5 MB each, PNG/JPEG/WebP only. Mention them in your prompt ("use the file `bourgeois-cell.jpg` I uploaded as the new hero image for Bourgeois") and the AI will reference them in the markdown. All uploaded images go to `public/uploads/` on the site — accessible at `hscvisualarts.com.au/uploads/<filename>`.
 
-Copy-paste these into Bolt. Fill in the [square-bracketed] bits.
+---
 
-### Draft a new case study
+## What happens after you click "Draft the change"
 
-```
-Draft a case study on [artist name]. Sources I want you to work from:
+Live progress fills a panel below the button:
 
-- [paste URL, PDF link, or "here's an excerpt: …"]
-- [more sources]
+1. **Drafting…** — a stream of stages appears (loading context, calling the AI, validating). This can take 15–60 seconds depending on how much reading the AI has to do.
+2. **Proposed changes** — a DiffViewer shows exactly which file(s) will change, and for each file, exactly which characters. Every edit is a `Was → Now` pair. **Read these carefully — this is your review moment.** Nothing outside these named spans changes; the AI is byte-constrained to just what it shows you.
+3. **Going live** — the AI commits the change to the site's main branch. Netlify starts a rebuild.
+4. **Your change is live** — a link appears. Click it to see the change on the site.
 
-Follow src/content/case-studies/_TEMPLATE.mdx exactly. Create a folder
-src/content/case-studies/[surname-firstname]/ with index.mdx inside.
-Every factual claim needs a [^source-id] citation matching the sources
-block. If you can't find a source for something, mark it {/* TODO:
-source needed */} — do not invent citations.
+The whole loop is usually 2–3 minutes end-to-end.
 
-Leave status: draft. Do not touch any file outside src/content/.
-```
+---
 
-### Add a past HSC question
+## How publishing actually works
 
-```
-Add an HSC question. Details:
+**Every edit goes live automatically.** There is no separate "publish" button. The site's `main` branch IS the live site.
 
-- Year: [YYYY]
-- Section: [I or II]
-- Question number: [e.g. 5, 9(a), etc.]
-- Marks: [n]
-- NESA PDF URL: [paste]
-- Text of the question (I've pasted it below verbatim — do not paraphrase):
+That means the review moment is when you're looking at the DiffViewer — the moment you click "Draft the change" a second time (or type a corrective prompt), you're committing to what you see. If it's wrong, don't submit; retype your prompt.
 
-[paste the exact question text]
+**Why there's no publish gate:** you're the only editor, and the URL isn't shared with students yet. Once you're ready to share `hscvisualarts.com.au` with students, we may add a separate publish gate — for now, this model is simpler.
 
-Follow src/content/questions/_TEMPLATE.md. Draft the scaffold (decode /
-plan / sentence stems / marker's view / exemplar structure) at Band 6
-level. Leave status: draft.
-```
+**Rollback if something goes wrong:**
 
-### Add a student BOW example
+- Ask Joe to `git revert` the specific commit — takes him 30 seconds. Every AI edit is one commit with a full timestamp and prompt trail.
+- Or Netlify has a "Deploys" tab that lists every prior build. Any of them can be republished with one click. Joe knows how.
 
-```
-Add a BOW gallery entry for [student pseudonym or first name].
-Consent details:
-- Signed by: [full name — for the record, not for display]
-- Date signed: [YYYY-MM-DD]
-- Allow full name display? [yes/no]
+---
 
-Medium: [painting / drawing / sculpture / ceramics / photography /
-time-based / digital / collection-of-works]
-Band: [1–6, optional]
+## Fixing your own mistakes
 
-Follow src/content/body-of-works/_TEMPLATE.mdx. I'll upload images
-separately. Leave status: draft and consent.onFile: false until I
-confirm the paperwork is filed.
-```
+If you look at the DiffViewer and realise it changed something you didn't mean, don't click anything to "revert" — the change is on its way live. Instead:
 
-### Publish a draft
+1. Follow up with a corrective prompt: *"Undo the last change to the Bourgeois file — restore the old wording of the paragraph you just changed."*
+2. The AI reads the current file, undoes the specific edit, commits again.
 
-```
-Set status: published on src/content/[type]/[slug]/index.mdx. Update
-lastReviewed to today's date. Then commit with message:
-"content: publish [slug]".
-```
+Two commits total. Both preserved in the history. No panic needed.
 
-### Fix a small thing
+---
 
-```
-In [filename], change [what] to [what]. Commit with message:
-"content: [short summary]".
-```
+## When to hand off to Joe
 
-## Rules for Claude in Bolt (system prompt)
+For anything the `/edit` page can't do:
 
-> **Paste this block into Bolt's project instructions.**
+- **New case study from scratch** — the AI is locked out of `create` on case studies (they need image sourcing and rights clearance you and Joe do together).
+- **Deleting an entry** — the AI has no delete action. Ask Joe.
+- **Changing site structure or design** — code, not content. Joe.
+- **A published case study you want to un-publish** — the AI can't change `status` fields. Ask Joe.
 
-> You are helping Rannia author content for a static educational site for NSW Stage 6 Visual Arts students. The tech stack is Astro with content collections; every piece of content is markdown/MDX with typed frontmatter.
->
-> **Your job is to draft. Rannia's job is to review and publish.**
->
-> Rules you must follow:
->
-> 1. **Never set `status: published`** on any content entry. New entries and drafts stay `status: draft`. Only Rannia flips to `published`, in her own commits.
-> 2. **Never invent citations, quotes, or sources.** If Rannia hasn't supplied a source for a claim, either ask her for one or mark the claim with `{/* TODO: source needed */}` and leave the citation empty. This is non-negotiable — the whole point of the site is that every claim is verified.
-> 3. **Never touch files outside `src/content/`** without Rannia's explicit permission. In particular, do not modify `src/content.config.ts` (the schema), any file under `src/components/`, `src/pages/`, `src/layouts/`, or `astro.config.mjs`. Schema and code changes belong to Joe. If Rannia asks for a new content field, tell her Joe needs to add it to the schema first.
-> 4. **Follow the templates.** The `_TEMPLATE.mdx` / `_TEMPLATE.md` file in each content folder shows the exact frontmatter shape. Copy from it. Do not omit required fields (the build will fail).
-> 5. **Australian English.** "Colour", "centre", "analyse", "practise" (verb) / "practice" (noun).
-> 6. **HSC questions are verbatim from NESA.** Never paraphrase question text. If Rannia hasn't supplied the exact text, ask her for it.
-> 7. **Image rights.** Never embed an image without recording its `rightsBasis` (public-domain, cc-by, cc-by-sa, educational-fair-dealing, licensed) and `sourceUrl` in the frontmatter. If Rannia hasn't confirmed rights, do not include the image — insert a `{/* TODO: image + rights */}` placeholder instead.
-> 8. **Commit messages** use conventional commit prefixes: `content:` for new/edited content, `fix:` for corrections. Keep messages short and specific.
-> 9. **When you're unsure, ask Rannia.** Especially about syllabus interpretation, source reliability, or whether a claim is defensible. Guessing produces exactly the failure mode this site is built to avoid.
+For anything that fails inside `/edit`:
 
-## What to do when something goes wrong
+- **"Your change is being drafted…" runs forever** — Anthropic call is slow. Give it 90 seconds. If nothing after that, refresh and retry.
+- **"Something went wrong" with an error message** — copy the exact text and send to Joe.
+- **The email PIN never arrives** — check spam, click Resend. If still nothing after 5 minutes, tell Joe (probably a Cloudflare Access config issue).
 
-**"The site won't build."** — Bolt will show a red error. Most likely a required frontmatter field is missing. Tell Claude "the build is failing, here's the error: [paste]" and it'll fix it.
+---
 
-**"I published something and it's wrong."** — Change `status: published` back to `status: draft`, commit, wait ~90 seconds. It's off the live site.
+## What the AI is not allowed to touch
 
-**"I want to change the site structure / add a new type of content."** — Joe. This is code territory, not content.
+You can't accidentally break the site from `/edit`. The AI is blocked at the server side from writing to:
 
-**"Claude wants to touch code."** — Say no. Tell Claude to stay in `src/content/`. If a genuine schema change is needed, message Joe.
+- Any code files (page templates, components, layouts, styles)
+- Any config files (Astro config, package.json, deploy config, environment secrets)
+- The schema definitions
+- Real HSC past questions (verbatim-from-NESA rule — Rannia transcribes those manually)
+- Body-of-Works entries (consent-gated — Rannia authors those manually)
+- Locked frontmatter fields: `status`, `sources`, image `rightsBasis`/`sourceUrl`, artist biographical facts
+
+If a prompt asks the AI to change one of these, the AI will either refuse or the server will reject the write. Either way, nothing bad happens.
+
+---
+
+## Seeing what you've done
+
+Every edit becomes a Git commit. Joe can show you the full history at `github.com/12c4IT/Rannia.ArtSite/commits/main` — filtered by your email, it's a running log of every change you've made through `/edit`, with the diff visible per commit.
+
+We may add a "recent edits" panel inside `/edit` itself in a future update — for now, ask Joe if you want to see the log.
+
+---
+
+## Costs — for reference
+
+Each edit costs about 1–5¢ in AI tokens (Joe's Anthropic account). A month of active use is roughly $2–5. There's a hard monthly cap set on the Anthropic side, so runaway costs aren't possible.
+
+Cloudflare hosts the editor backend at $5/month flat. Netlify hosts the site at $0/month.
+
+Nothing you do on `/edit` costs you anything or requires you to manage any subscriptions.
