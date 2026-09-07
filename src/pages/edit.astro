@@ -64,13 +64,13 @@ const NETLIFY_SITE_ID = import.meta.env.PUBLIC_NETLIFY_SITE_ID ?? '';
     <DiffViewer />
 
     <section id="preview-block" hidden class="preview-block">
-      <p class="lab">Deploy preview</p>
-      <p id="preview-status" class="preview-status">Building on Netlify — usually about 90 seconds.</p>
-      <a id="preview-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Open preview →</a>
+      <p class="lab">Going live</p>
+      <p id="preview-status" class="preview-status">Netlify is rebuilding the site — usually about 90 seconds.</p>
+      <a id="preview-link" href="#" target="_blank" rel="noopener noreferrer" hidden>View on the site →</a>
       <p class="next-steps">
-        When it looks right, ask Joe to merge the branch. Nothing goes to the live site until he does.
+        Your change is on <code>main</code> and going live automatically.
         <br />
-        Branch: <code id="branch-name"></code>
+        Commits: <code id="commit-shas"></code>
       </p>
     </section>
 
@@ -225,7 +225,7 @@ const NETLIFY_SITE_ID = import.meta.env.PUBLIC_NETLIFY_SITE_ID ?? '';
   const previewBlock = document.getElementById('preview-block');
   const previewStatus = document.getElementById('preview-status');
   const previewLink = document.getElementById('preview-link');
-  const branchNameEl = document.getElementById('branch-name');
+  const commitShasEl = document.getElementById('commit-shas');
   const errorBlock = document.getElementById('error-block');
   const errorDetail = document.getElementById('error-detail');
 
@@ -413,29 +413,36 @@ const NETLIFY_SITE_ID = import.meta.env.PUBLIC_NETLIFY_SITE_ID ?? '';
     }
 
     previewBlock.hidden = false;
-    branchNameEl.textContent = evt.branch;
-    pollNetlifyPreview(evt.branch);
+    commitShasEl.textContent = (evt.commits ?? []).map((s) => s.slice(0, 7)).join(', ');
+    pollNetlifyDeploy(evt.commits ?? []);
   }
 
-  async function pollNetlifyPreview(branchName) {
+  // Poll the site's own deploys (production branch, main) for a 'ready'
+  // build whose commit_ref matches one of the SHAs we just wrote. When it
+  // lands, surface the site URL so Rannia can jump straight to it.
+  async function pollNetlifyDeploy(newShas) {
     if (!NETLIFY_SITE_ID) {
-      previewStatus.textContent = 'Preview URL polling not configured (set PUBLIC_NETLIFY_SITE_ID).';
+      previewStatus.textContent = 'Deploy polling not configured (set PUBLIC_NETLIFY_SITE_ID).';
       return;
     }
+    const targets = new Set(newShas);
     const started = Date.now();
     const cap = 240_000; // 4 min
     while (Date.now() - started < cap) {
       try {
         const res = await fetch(
-          `https://api.netlify.com/api/v1/sites/${NETLIFY_SITE_ID}/deploys?branch=${encodeURIComponent(branchName)}`,
+          `https://api.netlify.com/api/v1/sites/${NETLIFY_SITE_ID}/deploys?per_page=10`,
           { headers: { Accept: 'application/json' } },
         );
         if (res.ok) {
           const deploys = await res.json();
-          const ready = Array.isArray(deploys) && deploys.find((d) => d.state === 'ready');
-          if (ready?.deploy_ssl_url ?? ready?.deploy_url) {
-            previewStatus.textContent = 'Preview ready.';
-            previewLink.href = ready.deploy_ssl_url ?? ready.deploy_url;
+          const match = Array.isArray(deploys)
+            ? deploys.find((d) => d.state === 'ready' && targets.has(d.commit_ref))
+            : null;
+          if (match) {
+            previewStatus.textContent = 'Your change is live.';
+            previewLink.href = match.deploy_ssl_url ?? match.deploy_url ?? '/';
+            previewLink.textContent = 'View on the site →';
             previewLink.hidden = false;
             return;
           }
@@ -443,7 +450,7 @@ const NETLIFY_SITE_ID = import.meta.env.PUBLIC_NETLIFY_SITE_ID ?? '';
       } catch { /* transient — keep polling */ }
       await new Promise((r) => setTimeout(r, 6000));
     }
-    previewStatus.textContent = 'Preview taking longer than usual. Check Netlify manually.';
+    previewStatus.textContent = 'Build is taking longer than usual. Try refreshing the site in a minute — it should be there.';
   }
 
   function showError(msg) {

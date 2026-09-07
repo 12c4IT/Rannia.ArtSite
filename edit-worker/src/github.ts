@@ -88,67 +88,106 @@ export interface CommitPayload {
   authorEmail: string;
 }
 
-/** Create a branch from the base ref, then apply commits in sequence. */
-export async function createBranchWithCommits(
+/**
+ * Append commits directly to the base branch (main).
+ *
+ * v5 model: no edit-branches, no live-branch, no publish gate. Rannia's edit
+ * lands on main immediately and Netlify rebuilds within ~90s. Rollback lives
+ * in two places, both automatic: `git revert <sha>` on the commit trailer's
+ * request-id, or Netlify's Deploys → "Publish this deploy" on any prior
+ * successful build.
+ *
+ * Concurrency: between the initial getBaseRef() and the ref-update at the
+ * end, another commit could land (Joe pushing from local, another editor
+ * session). GitHub's ref update rejects non-fast-forward pushes. On that
+ * specific failure we retry: refetch main HEAD, re-parent our commits onto
+ * the new tip, try again. Cap at 2 retries — at one editor this is
+ * effectively unreachable, but the code path exists.
+ */
+export async function commitToMain(
   cfg: GitHubConfig,
-  branchName: string,
-  parentSha: string,
   commits: CommitPayload[],
-): Promise<{ branch: string; commits: string[] }> {
-  let parent = parentSha;
-  const commitShas: string[] = [];
+): Promise<{ commits: string[] }> {
+  const maxAttempts = 3;
 
-  for (const c of commits) {
-    // 1. Create blobs for each file.
-    const treeEntries: TreeEntry[] = [];
-    for (const f of c.textFiles) {
-      const blob = await postJson<{ sha: string }>(cfg, '/git/blobs', {
-        content: f.content,
-        encoding: 'utf-8',
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const base = await getBaseRef(cfg);
+    let parent = base.sha;
+    const commitShas: string[] = [];
+
+    for (const c of commits) {
+      // 1. Create blobs for each file.
+      const treeEntries: TreeEntry[] = [];
+      for (const f of c.textFiles) {
+        const blob = await postJson<{ sha: string }>(cfg, '/git/blobs', {
+          content: f.content,
+          encoding: 'utf-8',
+        });
+        treeEntries.push({ path: f.path, mode: '100644', type: 'blob', sha: blob.sha });
+      }
+      for (const f of c.binaryFiles) {
+        const blob = await postJson<{ sha: string }>(cfg, '/git/blobs', {
+          content: f.base64,
+          encoding: 'base64',
+        });
+        treeEntries.push({ path: f.path, mode: '100644', type: 'blob', sha: blob.sha });
+      }
+
+      // 2. Get the parent tree so our new tree layers on top of it.
+      const parentCommit = await getJson<{ tree: { sha: string } }>(cfg, `/git/commits/${parent}`);
+
+      // 3. Create the tree.
+      const tree = await postJson<{ sha: string }>(cfg, '/git/trees', {
+        base_tree: parentCommit.tree.sha,
+        tree: treeEntries,
       });
-      treeEntries.push({ path: f.path, mode: '100644', type: 'blob', sha: blob.sha });
-    }
-    for (const f of c.binaryFiles) {
-      const blob = await postJson<{ sha: string }>(cfg, '/git/blobs', {
-        content: f.base64,
-        encoding: 'base64',
+
+      // 4. Create the commit.
+      const messageWithTrailer = `${c.message}\n\n${formatTrailer(c.trailer)}`;
+      const commit = await postJson<{ sha: string }>(cfg, '/git/commits', {
+        message: messageWithTrailer,
+        tree: tree.sha,
+        parents: [parent],
+        author: {
+          name: c.authorName,
+          email: c.authorEmail,
+          date: new Date().toISOString(),
+        },
       });
-      treeEntries.push({ path: f.path, mode: '100644', type: 'blob', sha: blob.sha });
+
+      commitShas.push(commit.sha);
+      parent = commit.sha;
     }
 
-    // 2. Get the parent tree so our new tree layers on top of it.
-    const parentCommit = await getJson<{ tree: { sha: string } }>(cfg, `/git/commits/${parent}`);
-
-    // 3. Create the tree.
-    const tree = await postJson<{ sha: string }>(cfg, '/git/trees', {
-      base_tree: parentCommit.tree.sha,
-      tree: treeEntries,
-    });
-
-    // 4. Create the commit.
-    const messageWithTrailer = `${c.message}\n\n${formatTrailer(c.trailer)}`;
-    const commit = await postJson<{ sha: string }>(cfg, '/git/commits', {
-      message: messageWithTrailer,
-      tree: tree.sha,
-      parents: [parent],
-      author: {
-        name: c.authorName,
-        email: c.authorEmail,
-        date: new Date().toISOString(),
-      },
-    });
-
-    commitShas.push(commit.sha);
-    parent = commit.sha;
+    // 5. Fast-forward the base branch ref to our new tip.
+    try {
+      await patchJson(cfg, `/git/refs/heads/${cfg.baseBranch}`, {
+        sha: parent,
+        // force:false is the default — we WANT a non-ff attempt to fail here
+        // so we can retry with a fresh base. Never force-push main.
+      });
+      return { commits: commitShas };
+    } catch (err) {
+      if (attempt < maxAttempts - 1 && isNonFastForward(err)) {
+        // Someone else pushed to main between our getBaseRef and now. Loop
+        // and re-parent our commits onto the new tip. Blobs already created
+        // stay referenced by the retry's commits — GitHub garbage-collects
+        // unreachable blobs eventually.
+        continue;
+      }
+      throw err;
+    }
   }
 
-  // 5. Create the branch ref pointing at the last commit.
-  await postJson(cfg, '/git/refs', {
-    ref: `refs/heads/${branchName}`,
-    sha: parent,
-  });
+  throw new Error('commitToMain: exhausted retry attempts');
+}
 
-  return { branch: branchName, commits: commitShas };
+function isNonFastForward(err: unknown): boolean {
+  if (!(err instanceof Error)) return false;
+  const msg = err.message.toLowerCase();
+  // GitHub returns 422 with a message including "not a fast forward" on
+  // stale-parent ref updates.
+  return msg.includes('not a fast forward') || msg.includes('422');
 }
 
 interface TreeEntry {
@@ -236,6 +275,22 @@ async function postJson<T>(cfg: GitHubConfig, path: string, body: unknown): Prom
     body: JSON.stringify(body),
   });
   if (!res.ok) throw new Error(`POST ${path}: ${res.status} ${await res.text()}`);
+  return (await res.json()) as T;
+}
+
+async function patchJson<T>(cfg: GitHubConfig, path: string, body: unknown): Promise<T> {
+  const res = await fetch(ghUrl(cfg, path), {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${cfg.token}`,
+      'User-Agent': 'rannia-artsite-edit-worker',
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`PATCH ${path}: ${res.status} ${await res.text()}`);
   return (await res.json()) as T;
 }
 

@@ -25,10 +25,14 @@ export interface FieldRules {
 export interface EditorConfig {
   /** Repo the Worker writes to. */
   repo: string;
-  /** Base branch for reads. Edits branch from here. */
+  /**
+   * Base branch. In the v5 direct-to-main model this is also THE branch —
+   * commits from the Worker append here, Netlify rebuilds within ~90s,
+   * changes are live. Rollback is via `git revert <sha>` or Netlify's
+   * Deploys → "Publish this deploy" on a prior successful build. No
+   * publish gate.
+   */
   baseBranch: string;
-  /** Publish branch. Reviewed edits merge here (v1: manual). */
-  liveBranch: string;
 
   allow: readonly AllowRule[];
   deny: readonly DenyPattern[];
@@ -57,7 +61,6 @@ export interface EditorConfig {
 export const CONFIG: EditorConfig = {
   repo: '12c4IT/Rannia.ArtSite',
   baseBranch: 'main',
-  liveBranch: 'live',
 
   allow: [
     { pattern: 'src/content/pages/**/*.md',                                actions: ['create', 'update'] },

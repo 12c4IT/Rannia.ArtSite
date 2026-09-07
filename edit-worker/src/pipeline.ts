@@ -18,13 +18,13 @@ import type { AnthropicMessage, AnthropicResponse, ProgressEvent } from './anthr
 import { callAnthropic } from './anthropic';
 import type { WriteFilesInput, WrittenFile } from './tool-schema';
 import type { CommitPayload, GitHubConfig } from './github';
-import { createBranchWithCommits, getBaseRef, getFiles, groupByEntry } from './github';
+import { commitToMain, getBaseRef, getFiles, groupByEntry } from './github';
 
 export type PipelineEvent =
   | ProgressEvent
   | { type: 'stage'; stage: string; detail?: string }
   | { type: 'validation-failure'; issues: readonly unknown[]; retryable: boolean }
-  | { type: 'success'; branch: string; commits: string[]; explanation: string; diff: DiffSummary[] }
+  | { type: 'success'; commits: string[]; explanation: string; diff: DiffSummary[] }
   | { type: 'fatal'; code: string; detail?: string };
 
 export interface DiffSummary {
@@ -499,7 +499,10 @@ async function* commitAndFinalise(inputs: {
   yield { type: 'stage', stage: 'compose-commits' };
 
   // Group by entry (folder-per-entry collections) so each entry gets its
-  // own commit — makes per-entry cherry-pick to `live` possible.
+  // own commit. Under the v5 direct-to-main model this doesn't buy the
+  // cherry-pick-to-live granularity the v4 design assumed — but the clean
+  // per-entry `git log` audit trail is worth keeping for rollback with
+  // `git revert <sha>`.
   const groups = groupByEntry(inputs.files.files);
   const resolvedByPath = new Map(inputs.resolved.map((r) => [r.path, r]));
 
@@ -540,11 +543,10 @@ async function* commitAndFinalise(inputs: {
     });
   }
 
-  const branchName = `edit/${timestampSlug()}-${randomSlug(5)}`;
-  yield { type: 'stage', stage: 'commit', detail: `${commits.length} commit(s) on ${branchName}` };
+  yield { type: 'stage', stage: 'commit', detail: `${commits.length} commit(s) to ${inputs.gh.baseBranch}` };
 
   try {
-    const commitResult = await createBranchWithCommits(inputs.gh, branchName, inputs.baseRef.sha, commits);
+    const commitResult = await commitToMain(inputs.gh, commits);
     const diff: DiffSummary[] = inputs.files.files.map((f) => {
       if (f.action === 'update') {
         return { path: f.path, action: 'update', edits: f.edits };
@@ -557,7 +559,6 @@ async function* commitAndFinalise(inputs: {
     });
     yield {
       type: 'success',
-      branch: commitResult.branch,
       commits: commitResult.commits,
       explanation: inputs.files.explanation,
       diff,
@@ -580,21 +581,6 @@ function summariseEntry(group: WrittenFile[], resolved: Map<string, { path: stri
   const path = resolved.get(first.path)?.path ?? first.path;
   const slug = path.replace(/^src\/content\/[^/]+\//, '').replace(/\/index\.mdx$/, '').replace(/\.md$/, '');
   return `${first.action} ${slug}`;
-}
-
-function timestampSlug(): string {
-  const d = new Date();
-  const pad = (n: number) => String(n).padStart(2, '0');
-  return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}-${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}`;
-}
-
-function randomSlug(len: number): string {
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  const values = new Uint8Array(len);
-  crypto.getRandomValues(values);
-  let out = '';
-  for (const v of values) out += alphabet[v % alphabet.length];
-  return out;
 }
 
 function bytesToBase64(bytes: Uint8Array): string {
