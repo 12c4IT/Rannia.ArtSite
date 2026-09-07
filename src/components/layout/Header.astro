@@ -25,7 +25,7 @@ const nav = [
     </details>
 
     <div class="tools">
-      <form class="search" role="search">
+      <form class="search" role="search" action="/search" method="get">
         <label for="site-search" class="sr-only">Search the site</label>
         <input id="site-search" type="search" name="q" placeholder="Search…" autocomplete="off" />
       </form>
@@ -113,12 +113,14 @@ const nav = [
 </style>
 
 <script>
-  // Theme toggle (no-FOUC default is set inline in <head>). Search modal arrives in Task 9.
+  // Theme toggle (no-FOUC default is set inline in <head>).
+  //
+  // The header search form now submits GET to /search — the search results
+  // page (src/pages/search.astro) loads Pagefind and renders results. Nothing
+  // extra to do here; the browser handles the navigation.
   const root = document.documentElement;
   const btn = document.getElementById('theme-toggle');
   const label = btn?.querySelector('.t-label');
-  const form = document.querySelector<HTMLFormElement>('.site-header form.search');
-  form?.addEventListener('submit', (e) => e.preventDefault());
 
   const effective = () =>
     root.getAttribute('data-theme') ||
