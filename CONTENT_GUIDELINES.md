@@ -173,6 +173,6 @@ When in doubt, ask. Don't publish.
 
 ## 9. AI disclosure
 
-The site footer includes a disclosure: "Content on this site is researched and authored by Joe with editorial assistance from AI tooling. Every claim is verified against the cited sources before publication."
+The site footer includes a disclosure: "Content on this site is researched and authored with editorial assistance from AI tooling. Please review the cited sources before relying on any claim."
 
 This is honest, sets expectations, and protects integrity.
