@@ -27,4 +27,3 @@ The public siting of *Maman* is itself a cultural argument. When the first versi
 
 **Marker's note**: The cultural frame is not "the artist's biography". It is the reading of the work in its social and historical conditions — what the work argues *against* or *with* in its wider culture. This response earns the mark by naming what *Maman* is arguing against (the modernist gendering of monumentality) and what it is arguing for (the maternal as public content), not just describing the mother-and-child theme.
 
-*Content: draft — Rannia to review.*

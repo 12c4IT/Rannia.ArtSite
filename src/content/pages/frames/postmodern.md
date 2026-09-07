@@ -29,4 +29,3 @@ But a purely postmodern reading also flattens something. The affective register 
 
 **Marker's note**: The postmodern frame is not a wildcard. It has specific analytic moves: appropriation, irony, questioning of originality, blurring of high/low, dispersal of authorship. This response earns the mark by naming two of them (citation of tradition, multiplicity of casts) and — importantly — by acknowledging the limits of the frame ("a purely postmodern reading also flattens something"). "Discuss" wants that move-across-positions.
 
-*Content: draft — Rannia to review.*

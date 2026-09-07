@@ -29,4 +29,3 @@ Scale, formally, is a device rather than a decoration. The spider is not merely 
 
 **Marker's note**: The structural frame is about how *form* constructs meaning. This response earns the mark by naming specific structural components (material, scale, negative space, chromatic hierarchy) and saying what each contributes. A weaker response would describe the sculpture's appearance without connecting appearance to argument. Every formal observation here has a "so what" attached.
 
-*Content: draft — Rannia to review.*

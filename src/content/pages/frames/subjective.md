@@ -38,4 +38,3 @@ The subjective frame reads the sculpture through the *feeling* it produces in a 
 
 **Marker's note**: A subjective reading is not just "how the work makes me feel". It is a reading of the work's psychological content and its capacity to organise a viewer's emotional response. The response above earns the mark because it names both — Bourgeois' interior psychological life *and* how the sculpture positions the viewer's body — and shows how the second is produced by the first.
 
-*Content: draft — Rannia to review against Bourgeois' own writings in Bernadac & Obrist (1998).*
