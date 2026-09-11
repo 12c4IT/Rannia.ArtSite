@@ -113,6 +113,22 @@ const nav = [
 </style>
 
 <script>
+  // Nav — force <details open> on desktop.
+  //
+  // The header uses <details>/<summary> so mobile gets a native disclosure
+  // dropdown for free. On desktop we hide the summary and re-flow the <ul>
+  // inline. But browsers still respect the native rule that a <details>
+  // without the `open` attribute hides its non-summary content, regardless
+  // of `display: flex` in author CSS. Result: nav vanishes on desktop.
+  //
+  // Cheapest robust fix: at load and on resize, mirror the viewport into
+  // `.nav.open`. Desktop → open; mobile → collapsed (user toggles).
+  const nav = document.querySelector<HTMLDetailsElement>('.site-header details.nav');
+  const navMq = matchMedia('(min-width: 900px)');
+  const syncNav = () => { if (nav) nav.open = navMq.matches; };
+  syncNav();
+  navMq.addEventListener('change', syncNav);
+
   // Theme toggle (no-FOUC default is set inline in <head>).
   //
   // The header search form now submits GET to /search — the search results
